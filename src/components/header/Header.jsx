@@ -8,13 +8,7 @@ import {
   SearchIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
-import Categories from "./Categories";
-const navigation = [
-  { name: "Dashboard", to: "/", current: true },
-  { name: "Team", to: "/", current: false },
-  { name: "Projects", to: "/", current: false },
-  { name: "Calendar", to: "/", current: false },
-];
+import { ChevronDownIcon } from "@heroicons/react/solid";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -28,7 +22,7 @@ export default function Example() {
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex py-2 flex-col md:flex-row items-center justify-between h-auto space-y-2 md:space-y-0">
               <div className="flex w-full justify-between items-center">
-                <div className=" inset-y-0 left-0 flex items-center sm:hidden">
+                <div className="inset-y-0 left-0 flex items-center md:hidden">
                   {/* Mobile menu button*/}
                   <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-900 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
@@ -42,9 +36,65 @@ export default function Example() {
                 <div className="flex-shrink-0 flex items-center">
                   <h1 className="text-white font-bold text-3xl">ApnaMart</h1>
                 </div>
-                <div className="md:flex-1 hidden sm:block sm:ml-6 md:flex sm:w-0 md:w-full items-center">
+                <div className="md:flex-1 hidden  sm:ml-6 md:flex sm:w-0 md:w-full items-center">
                   <div className="flex items-center justify-center ">
-                    <Categories />
+                    {/* <Categories /> */}
+                    <Menu as="div" className="relative inline-block text-left">
+                      <div>
+                        <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700">
+                          Options
+                          <ChevronDownIcon
+                            className="-mr-1 ml-2 h-5 w-5"
+                            aria-hidden="true"
+                          />
+                        </Menu.Button>
+                      </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="origin-top-left absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white  ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/"
+                                  className={classNames(
+                                    active
+                                      ? "bg-gray-100 text-gray-900"
+                                      : "text-gray-700",
+                                    "block px-4 py-2 text-sm"
+                                  )}
+                                >
+                                  Account settings
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  to="/"
+                                  className={classNames(
+                                    active
+                                      ? "bg-gray-100 text-gray-900"
+                                      : "text-gray-700",
+                                    "block px-4 py-2 text-sm"
+                                  )}
+                                >
+                                  Support
+                                </Link>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
                   </div>
                   <div className="flex  grow justify-center mx-5 px-4 items-center bg-white rounded-md shadow-md lg:min-w-xl lg:max-w-2xl border-0">
                     <input
@@ -169,9 +219,9 @@ export default function Example() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <Categories />
+              {/* <Categories /> */}
               {/* {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
