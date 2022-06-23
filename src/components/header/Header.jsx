@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Fragment, useContext } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   MenuIcon,
@@ -149,7 +150,7 @@ const Header = () => {
                             >
                               <Menu.Items className="origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 {userNavigation.map((item) => (
-                                  <Menu.Item key={item.name}>
+                                  <Menu.Item key={uuidv4()}>
                                     {({ active }) => (
                                       <Link
                                         to={item.to}
@@ -283,9 +284,9 @@ const Header = () => {
                 {/* <Categories /> */}
                 {categories.map((item) => (
                   <Disclosure.Button
-                    key={item.name}
+                    key={uuidv4()}
                     as="a"
-                    to={item.to}
+                    to={`/products?category=${item.name}`}
                     className={classNames(
                       "text-gray-300 hover:bg-gray-700 hover:text-white",
                       "block px-3 py-2 rounded-md text-base font-medium"
@@ -348,12 +349,12 @@ const Header = () => {
         )}
       </Disclosure>
       {/* Categories Menu */}
-      <div className="bg-indigo-100  hidden md:flex w-full justify-evenly items-center">
+      <div className="bg-indigo-100 md:px-28  hidden md:flex w-full justify-evenly items-center">
         {categories.map((item) => (
           <Link
             to={`/products?category=${item.name}`}
             className="flex flex-col gap-1 items-center p-2 group"
-            key={item.name}
+            key={uuidv4()}
           >
             <div className="h-16 w-16">
               <img
