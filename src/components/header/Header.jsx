@@ -18,7 +18,6 @@ import mobiles from "../../assets/images/Categories/phone.png";
 import fashion from "../../assets/images/Categories/fashion.png";
 import electronics from "../../assets/images/Categories/electronics.png";
 import home from "../../assets/images/Categories/home.png";
-import travel from "../../assets/images/Categories/travel.png";
 import appliances from "../../assets/images/Categories/appliances.png";
 import furniture from "../../assets/images/Categories/furniture.png";
 import beauty from "../../assets/images/Categories/beauty.png";
@@ -77,7 +76,7 @@ const Header = () => {
       <Disclosure as="nav" className="bg-indigo-400">
         {({ open }) => (
           <>
-            <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0">
+            <div className="max-w-app  mx-auto px-2">
               <div className="relative flex py-2 flex-col md:flex-row items-center justify-between h-auto space-y-2 md:space-y-0">
                 <div className="flex w-full justify-between items-center">
                   <div className="inset-y-0 left-0 flex items-center md:hidden">
@@ -349,26 +348,28 @@ const Header = () => {
         )}
       </Disclosure>
       {/* Categories Menu */}
-      <div className="bg-indigo-100 md:px-28  hidden md:flex w-full justify-evenly items-center">
-        {categories.map((item) => (
-          <Link
-            to={`/products?category=${item.name}`}
-            className="flex flex-col gap-1 items-center p-2 group"
-            key={uuidv4()}
-          >
-            <div className="h-16 w-16">
-              <img
-                draggable="false"
-                className="h-full w-full object-contain"
-                src={item.icon}
-                alt={item.name}
-              />
-            </div>
-            <span className="text-sm text-gray-800 font-medium group-hover:text-primary-blue">
-              {item.name}
-            </span>
-          </Link>
-        ))}
+      <div className=" bg-indigo-100">
+        <div className="max-w-app mx-auto hidden md:flex justify-between items-center">
+          {categories.map((item) => (
+            <Link
+              to={`/products?category=${item.name}`}
+              className="flex flex-col gap-1 items-center p-2 group"
+              key={uuidv4()}
+            >
+              <div className="h-16 w-16">
+                <img
+                  draggable="false"
+                  className="h-full w-full object-contain"
+                  src={item.icon}
+                  alt={item.name}
+                />
+              </div>
+              <span className="text-sm text-gray-800 font-medium group-hover:text-primary-blue">
+                {item.name}
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   );
