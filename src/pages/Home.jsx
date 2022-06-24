@@ -30,7 +30,7 @@ const Home = () => {
         </title>
         <link rel="canonical" href="https://client-apnamart.vercel.app/" />
       </Helmet>
-      <main className="mx-auto mt-16 flex flex-col justify-center gap-3 px-2 sm:mt-4">
+      <main className="mx-auto sm:mt-4 flex flex-col justify-center gap-3 px-2 mt-2">
         <Carousel />
         <DealSlider title={"Deals of the Day"} time={time} />
         <DealSlider title={"Top Brands On Offer"} time="" />

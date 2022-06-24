@@ -38,19 +38,19 @@ const Carousel = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        <section className="relative h-44 w-full overflow-hidden rounded-sm shadow sm:h-72">
+        <div className="relative flex  w-full overflow-hidden  rounded-sm shadow ">
           {banners.map((el, i) => (
             <SwiperSlide key={uuidv4()}>
               <img
                 draggable="false"
-                className="h-44 w-full object-cover sm:h-72"
+                className="h-32 w-full object-fill sm:h-80 sm:object-cover"
                 src={el}
                 alt="banner"
                 key={i}
               />
             </SwiperSlide>
           ))}
-        </section>
+        </div>
       </Swiper>
     </>
   );
