@@ -10,7 +10,7 @@ function Timer({ expiryTimestamp }) {
   return (
     <div className="flex items-center space-x-2 px-4  ">
       <ClockIcon className="h-6 w-6 text-indigo-600" />
-      <div className="text-xl font-semibold text-indigo-600">
+      <div className=" text-base font-semibold text-indigo-600 sm:text-xl">
         <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
         <span>{seconds}</span>
       </div>

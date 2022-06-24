@@ -76,12 +76,12 @@ const Header = () => {
       <Disclosure as="nav" className="bg-indigo-400">
         {({ open }) => (
           <>
-            <div className="max-w-app  mx-auto px-2">
-              <div className="relative flex py-2 flex-col md:flex-row items-center justify-between h-auto space-y-2 md:space-y-0">
-                <div className="flex w-full justify-between items-center">
+            <div className="mx-auto  max-w-app px-2">
+              <div className="relative flex h-auto flex-col items-center justify-between space-y-2 py-2 md:flex-row md:space-y-0">
+                <div className="flex w-full items-center justify-between">
                   <div className="inset-y-0 left-0 flex items-center md:hidden">
                     {/* Mobile menu button*/}
-                    <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-900 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-900 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                       {open ? (
                         <XIcon className="block h-6 w-6 " aria-hidden="true" />
                       ) : (
@@ -92,47 +92,47 @@ const Header = () => {
                       )}
                     </Disclosure.Button>
                   </div>
-                  <div className="flex-shrink-0 flex items-center">
+                  <div className="flex flex-shrink-0 items-center">
                     <Link
                       to="/"
-                      className="text-white font-bold text-xl sm:text-2xl lg:text-4xl cursor-pointer"
+                      className="cursor-pointer text-xl font-bold text-white sm:text-2xl lg:text-4xl"
                     >
                       ApnaMart
                     </Link>
                   </div>
-                  <div className="md:flex-1 hidden  sm:mx-6 md:flex sm:w-0 md:w-full items-center">
-                    <div className=" hidden sm:flex  justify-center mx-5 px-4 items-center bg-white rounded-md shadow-md cursor-pointer flex-grow border-0">
+                  <div className="hidden items-center  sm:mx-6 sm:w-0 md:flex md:w-full md:flex-1">
+                    <div className=" mx-5 hidden  flex-grow cursor-pointer items-center justify-center rounded-md border-0 bg-white px-4 shadow-md sm:flex">
                       <input
                         type="text"
                         placeholder="Search for puroducts, brands and more"
-                        className="mt-0 block w-full  flex-grow flex-shrink px-0.5 border-0 focus:ring-0 focus:outline-none"
+                        className="mt-0 block w-full  flex-shrink flex-grow border-0 px-0.5 focus:outline-none focus:ring-0"
                       />
-                      <SearchIcon className="w-5 h-5 text-indigo-600" />
+                      <SearchIcon className="h-5 w-5 text-indigo-600" />
                     </div>
                   </div>
-                  <div className="flex  space-x-2 flex-row items-center pr-2   sm:pr-0">
+                  <div className="flex  flex-row items-center space-x-2 pr-2   sm:pr-0">
                     {/* Profile dropdown */}
                     <div className="hidden sm:flex">
                       {!isAuth ? (
-                        <div className=" text-indigo-600  font-semibold relative bg-white p-1.5 px-6 rounded-md shadow-sm">
+                        <div className=" relative  rounded-md bg-white p-1.5 px-6 font-semibold text-indigo-600 shadow-sm">
                           <Link to="/login">Login</Link>
                         </div>
                       ) : (
                         <>
                           <Menu as="div" className=" relative">
                             <div>
-                              <Menu.Button className=" bg-white flex justify-between items-center text-base font-semibold text-indigo-600 p-1.5 px-4 space-x-2 rounded-md shadow">
+                              <Menu.Button className=" flex items-center justify-between space-x-2 rounded-md bg-white p-1.5 px-4 text-base font-semibold text-indigo-600 shadow">
                                 <p className="">
                                   {userContext.name || "Welcome User"}
                                 </p>
                                 {userContext.profileImageUrl === "" ? (
                                   <>
-                                    <UserCircleIcon className="w-7 h-7 " />
+                                    <UserCircleIcon className="h-7 w-7 " />
                                   </>
                                 ) : (
                                   <img
                                     src={userContext.profileImageUrl}
-                                    className="w-8 h-8 rounded-full"
+                                    className="h-8 w-8 rounded-full"
                                     alt="avatar"
                                   />
                                 )}
@@ -147,7 +147,7 @@ const Header = () => {
                               leaveFrom="transform opacity-100 scale-100"
                               leaveTo="transform opacity-0 scale-95"
                             >
-                              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <Menu.Items className="absolute right-0 mt-2 w-44 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 {userNavigation.map((item) => (
                                   <Menu.Item key={uuidv4()}>
                                     {({ active }) => (
@@ -166,7 +166,7 @@ const Header = () => {
                                 <Menu.Item>
                                   <div
                                     onClick={authContext.logout}
-                                    className="block px-4 py-2 text-sm bg-indigo-400 text-gray-700"
+                                    className="block bg-indigo-400 px-4 py-2 text-sm text-gray-700"
                                   >
                                     Sign out
                                   </div>
@@ -178,9 +178,9 @@ const Header = () => {
                       )}
                     </div>
                     <div className=" hidden sm:flex">
-                      <Menu as="div" className="ml-3 relative">
+                      <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className=" flex text-base font-semibold  items-center text-white rounded-full ">
+                          <Menu.Button className=" flex items-center rounded-full  text-base font-semibold text-white ">
                             <p>More</p>
                             <ChevronDownIcon
                               className="-mr-1 ml-2 h-5 w-5"
@@ -197,7 +197,7 @@ const Header = () => {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
@@ -254,8 +254,8 @@ const Header = () => {
                         </Transition>
                       </Menu>
                     </div>
-                    <div className=" text-white relative flex items-center p-2">
-                      <span className="absolute top-0 right-0  h-4 w-4 px-2  text-center rounded-full font-bold ">
+                    <div className=" relative flex items-center p-2 text-white">
+                      <span className="absolute top-0 right-0  h-4 w-4 rounded-full  px-2 text-center font-bold ">
                         0
                       </span>
                       <ShoppingCartIcon
@@ -265,21 +265,21 @@ const Header = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex md:hidden w-full">
-                  <div className="flex  grow justify-center md:mx-5 px-4 items-center bg-white rounded-md  lg:min-w-xl lg:max-w-2xl border-0">
+                <div className="flex w-full md:hidden">
+                  <div className="lg:min-w-xl  flex grow items-center justify-center rounded-md border-0 bg-white  px-4 md:mx-5 lg:max-w-2xl">
                     <input
                       type="text"
                       placeholder="Search for puroducts, brands and more"
-                      className="mt-0 flex w-full px-0.5 border-0 focus:ring-0 "
+                      className="mt-0 flex w-full border-0 px-0.5 focus:ring-0 "
                     />
-                    <SearchIcon className="w-5 h-5 text-indigo-600" />
+                    <SearchIcon className="h-5 w-5 text-indigo-600" />
                   </div>
                 </div>
               </div>
             </div>
 
             <Disclosure.Panel className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1">
+              <div className="space-y-1 px-2 pt-2 pb-3">
                 {/* <Categories /> */}
                 {categories.map((item) => (
                   <Disclosure.Button
@@ -288,7 +288,7 @@ const Header = () => {
                     to={`/products?category=${item.name}`}
                     className={classNames(
                       "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      "block px-3 py-2 rounded-md text-base font-medium"
+                      "block rounded-md px-3 py-2 text-base font-medium"
                     )}
                     aria-current={item.current ? "page" : undefined}
                   >
@@ -296,20 +296,20 @@ const Header = () => {
                   </Disclosure.Button>
                 ))}
               </div>
-              <div className="pt-4 pb-3 border-t border-gray-700">
-                {isAuth === false ? (
+              <div className="border-t border-gray-700 pt-4 pb-3">
+                {isAuth ? (
                   <>
                     <div className="flex items-center justify-between px-5">
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
                           {userContext.profileImageUrl === "" ? (
                             <>
-                              <UserCircleIcon className="w-7 h-7 " />
+                              <UserCircleIcon className="h-7 w-7 " />
                             </>
                           ) : (
                             <img
                               src={userContext.profileImageUrl}
-                              className="w-8 h-8 rounded-full"
+                              className="h-8 w-8 rounded-full"
                               alt="avatar"
                             />
                           )}
@@ -325,9 +325,9 @@ const Header = () => {
                       </div>
                       <button
                         onClick={authContext.logout}
-                        className="block px-2 py-1 rounded-md text-lg font-semibold text-black hover:text-white hover:bg-gray-700 border-gray-900 border-2"
+                        className="block rounded-md border-2 border-gray-900 px-2 py-1 text-lg font-semibold text-black hover:bg-gray-700 hover:text-white"
                       >
-                        <LogoutIcon className="w-6 h-6" />
+                        <LogoutIcon className="h-6 w-6" />
                       </button>
                     </div>
                   </>
@@ -336,7 +336,7 @@ const Header = () => {
                     <Link
                       aria-hidden="true"
                       to="/auth/Signin"
-                      className=" mx-2 flex items-center justify-center px-3 py-1 border bg-white border-gray-700 rounded-md shadow-sm text-lg font-semibold text-gray-800"
+                      className=" mx-2 flex items-center justify-center rounded-md border border-gray-700 bg-white px-3 py-1 text-lg font-semibold text-gray-800 shadow-sm"
                     >
                       Sign in
                     </Link>
@@ -349,11 +349,11 @@ const Header = () => {
       </Disclosure>
       {/* Categories Menu */}
       <div className=" bg-indigo-100">
-        <div className="max-w-app mx-auto hidden md:flex justify-between items-center">
+        <div className="mx-auto hidden max-w-app items-center justify-between md:flex">
           {categories.map((item) => (
             <Link
               to={`/products?category=${item.name}`}
-              className="flex flex-col gap-1 items-center p-2 group"
+              className="group flex flex-col items-center gap-1 p-2"
               key={uuidv4()}
             >
               <div className="h-16 w-16">
@@ -364,7 +364,7 @@ const Header = () => {
                   alt={item.name}
                 />
               </div>
-              <span className="text-sm text-gray-800 font-medium group-hover:text-primary-blue">
+              <span className="group-hover:text-primary-blue text-sm font-medium text-gray-800">
                 {item.name}
               </span>
             </Link>

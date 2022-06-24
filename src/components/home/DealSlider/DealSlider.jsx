@@ -59,13 +59,15 @@ const DealSlider = ({ title, time }) => {
     <div className="w-full overflow-hidden bg-white shadow">
       {/* <!-- header --> */}
       <div className="flex items-center justify-between px-6 py-3">
-        <div className="flex items-center justify-start">
-          <h1 className="text-xl font-semibold text-indigo-600">{title}s</h1>
+        <div className="flex flex-col items-center justify-start sm:flex-row">
+          <h1 className=" whitespace-nowrap text-base  font-semibold text-indigo-600 sm:text-xl">
+            {title}
+          </h1>
           {time !== "" && <Timer expiryTimestamp={time} />}
         </div>
         <Link
           to="/products"
-          className="rounded-sm bg-indigo-400 px-5 py-2.5 text-base font-semibold text-white shadow-lg"
+          className="whitespace-nowrap rounded-sm bg-indigo-400 px-4 py-2 text-sm font-semibold leading-4 text-white shadow-lg"
         >
           VIEW ALL
         </Link>
