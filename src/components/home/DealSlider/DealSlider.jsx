@@ -3,7 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { offerProducts } from "../../../utils/constants";
 import { getRandomProducts } from "../../../utils/functions";
-
+import Timer from "../../../utils/Timer";
 export const PreviousBtn = ({ className, onClick }) => {
   return (
     <div className={className} onClick={onClick}>
@@ -54,17 +54,18 @@ export const settings = {
   ],
 };
 
-const DealSlider = ({ title }) => {
+const DealSlider = ({ title, time }) => {
   return (
-    <div className="bg-white w-full shadow overflow-hidden">
+    <div className="w-full overflow-hidden bg-white shadow">
       {/* <!-- header --> */}
-      <div className="flex px-6 py-3 justify-between items-center">
-        <div className="flex justify-start items-center">
-          <h1 className="text-xl font-medium">{title}</h1>
+      <div className="flex items-center justify-between px-6 py-3">
+        <div className="flex items-center justify-start">
+          <h1 className="text-xl font-semibold text-indigo-600">{title}s</h1>
+          {time !== "" && <Timer expiryTimestamp={time} />}
         </div>
         <Link
           to="/products"
-          className="bg-indigo-400 text-base font-semibold text-white px-5 py-2.5 rounded-sm shadow-lg"
+          className="rounded-sm bg-indigo-400 px-5 py-2.5 text-base font-semibold text-white shadow-lg"
         >
           VIEW ALL
         </Link>

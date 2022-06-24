@@ -21,7 +21,7 @@ import "./styles.css";
 import { Autoplay, Pagination, Navigation } from "swiper";
 
 const banners = [gadgetSale, kitchenSale, poco, fashionSale, realme, oppo];
-export default function App() {
+const Carousel = () => {
   return (
     <>
       <Swiper
@@ -34,16 +34,16 @@ export default function App() {
         pagination={{
           clickable: true,
         }}
-        navigation={true}
+        navigation={false}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        <section className="h-44 sm:h-72 w-full rounded-sm shadow relative overflow-hidden">
+        <section className="relative h-44 w-full overflow-hidden rounded-sm shadow sm:h-72">
           {banners.map((el, i) => (
             <SwiperSlide key={uuidv4()}>
               <img
                 draggable="false"
-                className="h-44 sm:h-72 w-full object-cover"
+                className="h-44 w-full object-cover sm:h-72"
                 src={el}
                 alt="banner"
                 key={i}
@@ -54,4 +54,5 @@ export default function App() {
       </Swiper>
     </>
   );
-}
+};
+export default Carousel;

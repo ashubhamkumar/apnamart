@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { clearErrors, getSliderProducts } from "../store/actions/productAction";
 import Carousel from "../layout/Carousel";
-import Timer from "../utils/Timer";
 
 const Home = () => {
   const dispatch = useDispatch();
   const time = new Date();
   time.setSeconds(time.getSeconds() + 86400);
-  const { error, loading } = useSelector((state) => state.products);
+  const { error } = useSelector((state) => state.products);
 
   useEffect(() => {
     if (error) {
@@ -31,14 +30,11 @@ const Home = () => {
         </title>
         <link rel="canonical" href="https://client-apnamart.vercel.app/" />
       </Helmet>
-      <main className="justify-center mx-auto flex flex-col gap-3 px-2 mt-16 sm:mt-4">
+      <main className="mx-auto mt-16 flex flex-col justify-center gap-3 px-2 sm:mt-4">
         <Carousel />
-
-        <DealSlider title={"Deals of the Day"}>
-          <Timer expiryTimestamp={time} />
-        </DealSlider>
-        <DealSlider title={"Top Brands On Offer"} />
-        <DealSlider title={"Top Offers On"} />
+        <DealSlider title={"Deals of the Day"} time={time} />
+        <DealSlider title={"Top Brands On Offer"} time="" />
+        <DealSlider title={"Top Offers On"} time="" />
       </main>
     </>
   );
