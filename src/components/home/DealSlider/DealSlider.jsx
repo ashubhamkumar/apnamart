@@ -1,9 +1,24 @@
 import Product from "./Product";
-import { NextBtn, PreviousBtn } from "../banner/Banner";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { offerProducts } from "../../../utils/constants";
 import { getRandomProducts } from "../../../utils/functions";
 
+export const PreviousBtn = ({ className, onClick }) => {
+  return (
+    <div className={className} onClick={onClick}>
+      <ChevronLeftIcon />
+    </div>
+  );
+};
+
+export const NextBtn = ({ className, onClick }) => {
+  return (
+    <div className={className} onClick={onClick}>
+      <ChevronRightIcon />
+    </div>
+  );
+};
 export const settings = {
   dots: false,
   infinite: false,
