@@ -22,7 +22,7 @@ import appliances from "../../assets/images/Categories/appliances.png";
 import furniture from "../../assets/images/Categories/furniture.png";
 import beauty from "../../assets/images/Categories/beauty.png";
 import grocery from "../../assets/images/Categories/grocery.png";
-const categories = [
+export const categories = [
   {
     name: "Mobiles",
     icon: mobiles,
@@ -73,11 +73,14 @@ const Header = () => {
   const isAuth = authContext.isLoggedIn;
   return (
     <>
-      <Disclosure as="nav" className="bg-indigo-400">
+      <Disclosure
+        as="nav"
+        className="sticky  right-0  top-0 left-0  bg-indigo-400"
+      >
         {({ open }) => (
           <>
-            <div className="mx-auto  max-w-app px-2">
-              <div className="relative flex h-auto flex-col items-center justify-between space-y-2 py-2 md:flex-row md:space-y-0">
+            <div className=" relative mx-auto max-w-app  bg-indigo-400 px-2">
+              <div className=" flex h-auto flex-col items-center justify-between space-y-2 py-2 md:flex-row md:space-y-0">
                 <div className="flex w-full items-center justify-between">
                   <div className="inset-y-0 left-0 flex items-center md:hidden">
                     {/* Mobile menu button*/}
@@ -347,30 +350,6 @@ const Header = () => {
           </>
         )}
       </Disclosure>
-      {/* Categories Menu */}
-      <div className=" bg-indigo-100">
-        <div className="mx-auto hidden max-w-app items-center justify-between md:flex">
-          {categories.map((item) => (
-            <Link
-              to={`/products?category=${item.name}`}
-              className="group flex flex-col items-center gap-1 p-2"
-              key={uuidv4()}
-            >
-              <div className="h-16 w-16">
-                <img
-                  draggable="false"
-                  className="h-full w-full object-contain"
-                  src={item.icon}
-                  alt={item.name}
-                />
-              </div>
-              <span className="group-hover:text-primary-blue text-sm font-medium text-gray-800">
-                {item.name}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
     </>
   );
 };

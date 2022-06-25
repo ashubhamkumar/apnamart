@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { clearErrors, getSliderProducts } from "../store/actions/productAction";
 import Carousel from "../layout/Carousel";
+import Categories from "../components/header/Categories";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,8 @@ const Home = () => {
         </title>
         <link rel="canonical" href="https://client-apnamart.vercel.app/" />
       </Helmet>
-      <main className="mx-auto sm:mt-4 flex flex-col justify-center gap-3 px-2 mt-2">
+      <Categories />
+      <main className="mx-auto mt-2 flex flex-col justify-center gap-3 px-2 sm:mt-4">
         <Carousel />
         <DealSlider title={"Deals of the Day"} time={time} />
         <DealSlider title={"Top Brands On Offer"} time="" />

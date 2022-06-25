@@ -38,7 +38,7 @@ const Carousel = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        <div className="relative flex  w-full overflow-hidden  rounded-sm shadow ">
+        <div className="  flex w-full overflow-hidden  rounded-sm shadow ">
           {banners.map((el, i) => (
             <SwiperSlide key={uuidv4()}>
               <img
