@@ -4,19 +4,19 @@ const Product = ({ image, name, offer, tag }) => {
   return (
     <Link
       to="/products"
-      className="flex flex-col  items-center gap-1.5 p-6 cursor-pointer"
+      className="flex cursor-pointer  flex-col items-center gap-1.5 p-6"
     >
-      <div className="w-36 h-36 transform hover:scale-110 transition-transform duration-150 ease-out">
+      <div className="h-36 w-36 transform transition-transform duration-150 ease-out hover:scale-110">
         <img
           draggable="false"
-          className="w-full h-full object-contain"
+          className="h-full w-full object-contain"
           src={image}
           alt={name}
         />
       </div>
-      <h2 className="font-medium text-sm mt-2">{name}</h2>
+      <h2 className="mt-2 text-sm font-medium">{name}</h2>
       <span className="text-primary-green text-sm">{offer}</span>
-      <span className="text-gray-500 text-sm">{tag}</span>
+      <span className="text-sm text-gray-500">{tag}</span>
     </Link>
   );
 };

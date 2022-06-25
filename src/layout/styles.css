@@ -29,3 +29,29 @@
   height: 100%;
   object-fit: cover;
 } */
+.swiper-button-next {
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100px !important;
+  width: 50px !important;
+  color: white !important;
+  background: #818cf8 !important;
+  border-radius: 6px !important;
+  box-shadow: 10px !important;
+}
+.swiper-button-prev {
+  height: 100px !important;
+  width: 50px !important;
+  background: #818cf8 !important;
+  color: white !important;
+  border-radius: 6px !important;
+  box-shadow: 10px !important;
+}
+@media only screen and (max-width: 768px) {
+  .swiper-button-next {
+    visibility: hidden !important;
+  }
+  .swiper-button-prev {
+    visibility: hidden !important;
+  }
+}
