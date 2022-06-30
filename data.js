@@ -1,8 +1,6 @@
-{
-  "products": [
+export const products= [
     {
       "brand":"Logitech",
-     
       "name": "Logitech B175 Wireless Optical Mouse  (2.4GHz Wireless, Black)",
       "description": "If you are looking for an ergonomically designed wireless mouse, then this Logitech product with 2.4 GHz of connectivity is ideal for you. Furthermore, it’s long-lasting battery lasts for up to 12 months, so you can work with ease and convenience.",
       "highlights": ["Wireless", "Interface: 2.4GHz Wireless", "Optical Mouse"],
@@ -62,14 +60,10 @@
       "warranty": 3,
       "ratings": 4.75,
       "numOfReviews": 6,
-      
-      "createdAt": "2022-02-09T17:01:57.220Z",
-      
+      "createdAt": "2022-02-09T17:01:57.220Z"
     },
     {
-      "brand": "Logitech"
-      ,
-      
+      "brand": "Logitech",
       "name": "Logitech MX MASTER 3 MOUSE Wireless Optical Mouse  (2.4GHz Wireless, Black)",
       "description": "Enjoy smooth operation with the fast and precise Logitech MX Master 3 Mouse, which is designed with a MagSpeed wheel and electromagnetic scrolling. Thanks to its ergonomic shape and well-placed thumb wheel, this mouse fits comfortably in your palm. On a charge of just one minute, this mouse offers up to three hours of continuous use. Also, this Flow-enabled mouse allows you to seamlessly transfer text and files between three different computers for added convenience.",
       "highlights": ["Wireless", "Interface: 2.4GHz Wireless", "Optical Mouse"],
@@ -124,9 +118,7 @@
       "warranty": 1,
       "ratings": 4.875,
       "numOfReviews": 4,
-      
-      "createdAt": "2022-02-09T17:08:04.774Z",
-      
+      "createdAt": "2022-02-09T17:08:04.774Z"
     },
     {
       "brand": {
@@ -8930,4 +8922,4 @@
       "__v": 1
     }
   ]
-}
+

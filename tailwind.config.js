@@ -4,9 +4,12 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        "app": " 90rem",
+        app: " 90rem",
       },
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 };
