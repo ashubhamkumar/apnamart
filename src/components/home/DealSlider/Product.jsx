@@ -4,12 +4,12 @@ const Product = ({ image, name, offer, tag }) => {
   return (
     <Link
       to="/products"
-      className="flex cursor-pointer  flex-col items-center gap-1.5 p-6"
+      className="flex z-10 cursor-pointer relative flex-col items-center gap-1.5 p-6"
     >
       <div className="h-36 w-36 transform transition-transform duration-150 ease-out hover:scale-110">
         <img
           draggable="false"
-          className="h-full w-full object-contain"
+          className="h-full w-full object-fill"
           src={image}
           alt={name}
         />

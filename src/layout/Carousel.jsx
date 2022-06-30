@@ -23,12 +23,12 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 const banners = [gadgetSale, kitchenSale, poco, fashionSale, realme, oppo];
 const Carousel = () => {
   return (
-    <>
+    <div className="-z-10">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 2000,
+          delay: 3000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -36,9 +36,9 @@ const Carousel = () => {
         }}
         navigation={false}
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
+        className="mySwiper "
       >
-        <div className="  flex w-full overflow-hidden  rounded-sm shadow ">
+        <div className=" flex w-full overflow-hidden  rounded-sm shadow ">
           {banners.map((el, i) => (
             <SwiperSlide key={uuidv4()}>
               <img
@@ -52,7 +52,7 @@ const Carousel = () => {
           ))}
         </div>
       </Swiper>
-    </>
+    </div>
   );
 };
 export default Carousel;

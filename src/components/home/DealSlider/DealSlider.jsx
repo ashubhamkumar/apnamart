@@ -1,5 +1,5 @@
 import Product from "./Product";
-
+import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
 import { offerProducts } from "../../../utils/constants";
 import { getRandomProducts } from "../../../utils/functions";
@@ -9,7 +9,7 @@ import Timer from "../../../utils/Timer";
 
 const DealSlider = ({ title, time }) => {
   return (
-    <div className="w-full overflow-hidden bg-white shadow">
+    <div className=" -z-10 w-full overflow-hidden bg-white shadow">
       {/* <!-- header --> */}
       <div className="flex items-center justify-between px-6 py-3">
         <div className="flex flex-col items-center justify-start sm:flex-row">
@@ -27,15 +27,12 @@ const DealSlider = ({ title, time }) => {
       </div>
       <hr />
       {/* <!-- header --> */}
-
       <Slider>
-        <div className="flex items-center">
-          {getRandomProducts(offerProducts, 12).map((item, i) => (
-            <SwiperSlide>
-              <Product {...item} key={i} />
-            </SwiperSlide>
-          ))}
-        </div>
+        {getRandomProducts(offerProducts, 12).map((item, i) => (
+          <SwiperSlide key={uuidv4()}>
+            <Product {...item} key={i} />
+          </SwiperSlide>
+        ))}
       </Slider>
     </div>
   );

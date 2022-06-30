@@ -30,7 +30,7 @@ const Slider = (props) => {
           },
         }}
         modules={[Navigation]}
-        className="mySwiper"
+        className="mySwiper "
       >
         {props.children}
       </Swiper>
