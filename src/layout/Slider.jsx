@@ -1,7 +1,7 @@
 import React from "react";
 import { Swiper } from "swiper/react";
 // import required modules
-import { Navigation, Autoplay } from "swiper";
+import { Navigation } from "swiper";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -9,15 +9,12 @@ import "swiper/css/pagination";
 import "./styles.css";
 const Slider = (props) => {
   return (
-    <div className="">
+    
       <Swiper
         slidesPerView={2}
         spaceBetween={10}
         navigation={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
+       
         breakpoints={{
           640: {
             slidesPerView: 2,
@@ -33,11 +30,10 @@ const Slider = (props) => {
           },
         }}
         modules={[Navigation]}
-        className="mySwiper "
+        className="mySwiper"
       >
         {props.children}
       </Swiper>
-    </div>
   );
 };
 

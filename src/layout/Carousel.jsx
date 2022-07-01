@@ -23,7 +23,7 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 const banners = [gadgetSale, kitchenSale, poco, fashionSale, realme, oppo];
 const Carousel = () => {
   return (
-    <div className="-z-10 hidden sm:flex">
+    <div className=" hidden sm:flex">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
