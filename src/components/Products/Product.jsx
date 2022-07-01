@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getDiscount } from "../../utils/functions";
+//import { getDiscount } from "../../utils/functions";
 
 import { StarIcon } from "@heroicons/react/outline";
 
@@ -15,9 +15,8 @@ const Product = ({
 }) => {
   return (
     <div className="flex flex-col items-start gap-2 px-4 py-6 relative hover:shadow-lg rounded-lg">
-      {/* <!-- image & product title --> */}
       <Link
-        to={`/product/${id}`}
+        to={`/product/${title}`}
         className="flex flex-col items-center text-center group"
       >
         <div className="w-44 h-48">

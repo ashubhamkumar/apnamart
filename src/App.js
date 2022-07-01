@@ -12,6 +12,7 @@ import Register from "./pages/Signup";
 import Cart from "./pages/Cart";
 import Footer from "./components/Footer";
 import Products from "./pages/Products";
+import ProductDetails from "./components/Products/ProductDetails";
 const App = () => {
   return (
     <>
@@ -25,12 +26,15 @@ const App = () => {
         ></Route>
         <Route path="/auth/signup" element={<Register />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:keyword" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
       {/* tost */}
       <ToastContainer
-        position="top-right"
+        position="bottom-center"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop
