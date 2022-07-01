@@ -1,25 +1,18 @@
-
 import React from "react";
-import { Helmet } from "react-helmet";
 import DealSlider from "../components/home/DealSlider/DealSlider";
 import Carousel from "../layout/Carousel";
 import Categories from "../components/header/Categories";
+import MetaTags from "../utils/MetaTags";
 
 const Home = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + 86400);
- 
-
- 
   return (
     <>
-      <Helmet>
-        <title>
-          Online Shopping Site for Mobiles, Electronics, Furniture, Grocery,
-          Lifestyle, Books & More. Best Offers!
-        </title>
-        <link rel="canonical" href="https://client-apnamart.vercel.app/" />
-      </Helmet>
+      <MetaTags
+        title="Online Shopping Site for Mobiles, Electronics, Furniture, Grocery,Lifestyle, Books & More. Best Offers!"
+        keywords="Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More, Best Offers"
+      />
       <Categories />
       <main className="mx-auto mt-2 flex flex-col justify-center gap-3 px-2 sm:mt-4">
         <Carousel />
@@ -32,5 +25,3 @@ const Home = () => {
 };
 
 export default Home;
-
-

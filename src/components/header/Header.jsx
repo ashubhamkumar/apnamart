@@ -118,7 +118,7 @@ const Header = () => {
                     <div className="hidden sm:flex">
                       {!isAuth ? (
                         <div className=" relative  rounded-md bg-white p-1.5 px-6 font-semibold text-indigo-600 shadow-sm">
-                          <Link to="/login">Login</Link>
+                          <Link to="/auth/signin">Login</Link>
                         </div>
                       ) : (
                         <>
@@ -128,7 +128,7 @@ const Header = () => {
                                 <p className="">
                                   {userContext.name || "Welcome User"}
                                 </p>
-                                {userContext.profileImageUrl === "" ? (
+                                {userContext.profileImageUrl ? (
                                   <>
                                     <UserCircleIcon className="h-7 w-7 " />
                                   </>
@@ -242,15 +242,15 @@ const Header = () => {
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
-                                <Link
-                                  to="/"
+                                <div
+                                  onClick={authContext.logout}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
                                   Sign out
-                                </Link>
+                                </div>
                               )}
                             </Menu.Item>
                           </Menu.Items>
