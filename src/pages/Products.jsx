@@ -1,15 +1,19 @@
 import Slider from "@mui/material/Slider";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
-import { XIcon } from "@heroicons/react/outline";
+import MetaTags from "../utils/MetaTags";
+import { useParams, useLocation } from "react-router-dom";
+import { categories } from "../utils/constants";
+import Product from "../components/Products/Product";
+import { v4 as uuidv4 } from "uuid";
+import apnaMart from "../api/apnaMart";
+//icons
 import {
+  ChevronUpIcon,
   ChevronDownIcon,
-  FilterIcon,
-  MinusSmIcon,
-  PlusSmIcon,
-  ViewGridIcon,
-} from "@heroicons/react/solid";
-
+  XIcon,
+} from "@heroicons/react/outline";
+import { StarIcon, FilterIcon } from "@heroicons/react/solid";
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
   { name: "Best Rating", href: "#", current: false },
@@ -24,57 +28,55 @@ const subCategories = [
   { name: "Hip Bags", href: "#" },
   { name: "Laptop Sleeves", href: "#" },
 ];
-const filters = [
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
-  {
-    id: "size",
-    name: "Size",
-    options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
-    ],
-  },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
-  const [price, setPrice] = useState([0, 200000]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const location = useLocation();
+  const params = useParams();
+  const [price, setPrice] = useState([0, 200000]);
+  const [category, setCategory] = useState(
+    location.search ? location.search.split("=")[1] : ""
+  );
+  const [ratings, setRatings] = useState(0);
+  const [product, setproduct] = useState([]);
+  const keyword = params.keyword;
+  //const [currentPage, setCurrentPage] = useState(1);
+  const [categoryToggle, setCategoryToggle] = useState(true);
+  const [ratingsToggle, setRatingsToggle] = useState(true);
   const priceHandler = (e, newPrice) => {
     setPrice(newPrice);
   };
 
+  const clearFilters = () => {
+    setPrice([0, 200000]);
+    setCategory("");
+    setRatings(0);
+  };
+
+  const getAllProducts = async () => {
+    try {
+      const response = await apnaMart.get(`/app/search-product?q=s`);
+      if ((response.status = 200)) {
+        console.log(response.data);
+        setproduct(response.data.searchProducts);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllProducts();
+
+    return () => {};
+  }, []);
+
   return (
-    <div className="bg-white ">
+    <div className="bg-gray-50 ">
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -111,6 +113,12 @@ export default function Example() {
                       Filters
                     </h2>
                     <button
+                      onClick={() => clearFilters()}
+                      className="bg-indigo-400 uppercase px-2 py-1 rounded-md shadow-md text-white"
+                    >
+                      Clear All
+                    </button>
+                    <button
                       type="button"
                       className="-mr-2 w-10 h-10 bg-white p-2 rounded-md flex items-center justify-center text-gray-400"
                       onClick={() => setMobileFiltersOpen(false)}
@@ -122,74 +130,174 @@ export default function Example() {
 
                   {/* Filters */}
                   <form className="mt-4 border-t border-gray-200">
-                    <h3 className="sr-only">Categories</h3>
-                    <ul className="font-medium text-gray-900 px-2 py-3">
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className="block px-2 py-3">
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {filters.map((section) => (
-                      <Disclosure
-                        as="div"
-                        key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
+                    <div className="px-6">
+                      <span className="font-medium text-xs">Price</span>
+                      <Slider
+                        value={price}
+                        onChange={priceHandler}
+                        valueLabelDisplay="auto"
+                        getAriaLabel={() => "Price range slider"}
+                        min={0}
+                        max={200000}
+                        style={{ color: `#6366f1` }}
+                      />
+                      <div className="flex gap-1 items-center justify-between mb-2">
+                        <span className="flex   border px-4 py-1 max-w-20 rounded-sm text-gray-800 bg-gray-50">
+                          ₹{price[0].toLocaleString()}
+                        </span>
+                        <span className="font-medium text-gray-400">to</span>
+                        <span className="flex border px-4 py-1 rounded-sm text-gray-800 bg-gray-50">
+                          ₹{price[1].toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col border-b px-4">
+                      <div
+                        className="flex justify-between cursor-pointer py-2 pb-4 items-center"
+                        onClick={() => setCategoryToggle(!categoryToggle)}
                       >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-mx-2 -my-3 flow-root">
-                              <Disclosure.Button className="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500">
-                                <span className="font-medium text-gray-900">
-                                  {section.name}
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <MinusSmIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusSmIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-6">
-                              <div className="space-y-6">
-                                {section.options.map((option, optionIdx) => (
+                        <p className="font-medium text-xs uppercase">
+                          Category
+                        </p>
+                        {categoryToggle ? (
+                          <ChevronUpIcon className="h-5 text-indigo-600" />
+                        ) : (
+                          <ChevronDownIcon className="h-5 text-indigo-600" />
+                        )}
+                      </div>
+
+                      {categoryToggle && (
+                        <div className="flex flex-col pb-1">
+                          <div>
+                            <div
+                              className="mt-4 space-y-4"
+                              onChange={(e) => setCategory(e.target.value)}
+                              name="category-radio-buttons"
+                              value={category}
+                            >
+                              {categories.map((el, i) => (
+                                <>
                                   <div
-                                    key={option.value}
+                                    key={uuidv4()}
                                     className="flex items-center"
                                   >
                                     <input
-                                      id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                                      id={el}
+                                      name="push-categories"
+                                      type="radio"
+                                      value={el}
+                                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                     />
                                     <label
-                                      htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                      className="ml-3 min-w-0 flex-1 text-gray-500"
+                                      htmlFor={el}
+                                      className="ml-3 block text-sm font-medium text-gray-700"
                                     >
-                                      {option.label}
+                                      {el}
                                     </label>
                                   </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          </>
+                                </>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-col border-b px-4">
+                      <div
+                        className="flex justify-between cursor-pointer py-2 pb-4 items-center"
+                        onClick={() => setCategoryToggle(!categoryToggle)}
+                      >
+                        <p className="font-medium text-xs uppercase">brand</p>
+                        {categoryToggle ? (
+                          <ChevronUpIcon className="h-5 text-indigo-600" />
+                        ) : (
+                          <ChevronDownIcon className="h-5 text-indigo-600" />
                         )}
-                      </Disclosure>
-                    ))}
+                      </div>
+
+                      {categoryToggle && (
+                        <div className="flex flex-col pb-1">
+                          <div>
+                            <div
+                              className="mt-4 space-y-4"
+                              onChange={(e) => setCategory(e.target.value)}
+                              name="category-radio-buttons"
+                              value={category}
+                            >
+                              {categories.map((el, i) => (
+                                <>
+                                  <div
+                                    key={uuidv4()}
+                                    className="flex items-center"
+                                  >
+                                    <input
+                                      id={el}
+                                      name="push-categories"
+                                      type="radio"
+                                      value={el}
+                                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                    />
+                                    <label
+                                      htmlFor={el}
+                                      className="ml-3 block text-sm font-medium text-gray-700"
+                                    >
+                                      {el}
+                                    </label>
+                                  </div>
+                                </>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {/* ratings */}
+                    <div className="flex flex-col border-b px-4">
+                      <div
+                        className="flex justify-between cursor-pointer py-2  items-center"
+                        onClick={() => setRatingsToggle(!ratingsToggle)}
+                      >
+                        <p className="font-medium text-xs uppercase">
+                          Customer Ratings
+                        </p>
+                        {ratingsToggle ? (
+                          <ChevronUpIcon className="h-5 text-indigo-600" />
+                        ) : (
+                          <ChevronDownIcon className="h-5 text-indigo-600" />
+                        )}
+                      </div>
+
+                      {ratingsToggle && (
+                        <div className="flex flex-col pb-1">
+                          <div
+                            className="mt-4 space-y-4"
+                            onChange={(e) => setRatings(e.target.value)}
+                            value={ratings}
+                            name="ratings-radio-buttons"
+                          >
+                            {[4, 3, 2, 1].map((el, i) => (
+                              <div key={uuidv4()} className="flex items-center">
+                                <input
+                                  id={el}
+                                  value={el}
+                                  name="push-Ratings"
+                                  type="radio"
+                                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                />
+                                <label
+                                  htmlFor={el}
+                                  className="ml-3 flex text-sm font-medium text-gray-700"
+                                >
+                                  {el}
+                                  <StarIcon className="h-5 text-indigo-500" /> &
+                                  above
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -197,8 +305,8 @@ export default function Example() {
           </Dialog>
         </Transition.Root>
 
-        <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative  flex items-baseline justify-between pt-24 pb-6 border-b border-gray-200">
+        <main className="max-w-full mx-auto px-4 sm:px-6">
+          <div className="relative  flex items-baseline justify-between pt-4 pb-6 border-b border-gray-200">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
               {"Today's Deals"}
             </h1>
@@ -251,13 +359,6 @@ export default function Example() {
 
               <button
                 type="button"
-                className="p-2 -m-2 ml-5 sm:ml-7 text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">View grid</span>
-                <ViewGridIcon className="w-5 h-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
                 className="p-2 -m-2 ml-4 sm:ml-6 text-gray-400 hover:text-gray-500 lg:hidden"
                 onClick={() => setMobileFiltersOpen(true)}
               >
@@ -272,98 +373,221 @@ export default function Example() {
               Products
             </h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-4 gap-y-10">
               {/* Filters */}
 
-              <form className="hidden lg:block">
-                <div className="">
-                  <span className="font-medium text-xs">Price range</span>
-
-                  <Slider
-                    value={price}
-                    onChange={priceHandler}
-                    valueLabelDisplay="auto"
-                    getAriaLabel={() => "Price range slider"}
-                    min={0}
-                    max={200000}
-                    sm={{ color: `#6366f1` }}
-                  />
-
-                  <div className="flex gap-1 items-center justify-between mb-2">
-                    <span className="flex-1  px-4 py-1 rounded-sm text-gray-800 bg-gray-50">
+              <form className="hidden lg:block  sm:max-w-64 rounded-r-md bg-white p-4">
+                <div className="flex justify-between py-2  border-indigo-600">
+                  <h1 className="text-indigo-600  uppercase sm:text-lg font-semibold">
+                    Filter
+                  </h1>
+                  <button
+                    onClick={() => clearFilters()}
+                    className="bg-indigo-400 uppercase px-2 py-1 rounded-md shadow-md text-white"
+                  >
+                    Clear All
+                  </button>
+                </div>
+                <div className="flex  flex-col border-b border-indigo-600 my-2">
+                  <div className=" flex flex-col items-start px-2">
+                    <span className="font-medium text-lg">Price</span>
+                    <Slider
+                      value={price}
+                      onChange={priceHandler}
+                      valueLabelDisplay="auto"
+                      getAriaLabel={() => "Price range slider"}
+                      min={0}
+                      max={200000}
+                      style={{ color: `#6366f1` }}
+                    />
+                  </div>
+                  <div className="flex   items-center font-extralight justify-between mb-2">
+                    <span className="flex rounded-md  border  py-1 px-2 rounded-xs text-indigo-800 ">
                       ₹{price[0].toLocaleString()}
                     </span>
                     <span className="font-medium text-gray-400">to</span>
-                    <span className="flex-1 border px-4 py-1 rounded-sm text-gray-800 bg-gray-50">
+                    <span className="flex border rounded-md py-1  px-2  rounded-xs text-indigo-800 ">
                       ₹{price[1].toLocaleString()}
                     </span>
                   </div>
                 </div>
-
-                {filters.map((section) => (
-                  <Disclosure
-                    as="div"
-                    key={section.id}
-                    className="border-b border-gray-200 py-6"
+                {/* category filter */}
+                <div className="flex flex-col border-b ">
+                  <div
+                    className="flex justify-between cursor-pointer py-2 pb-4 items-center"
+                    onClick={() => setCategoryToggle(!categoryToggle)}
                   >
-                    {({ open }) => (
-                      <>
-                        <h3 className="-my-3 flow-root">
-                          <Disclosure.Button className="py-3 bg-white w-full flex items-center justify-between text-sm text-gray-400 hover:text-gray-500">
-                            <span className="font-medium text-gray-900">
-                              {section.name}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              {open ? (
-                                <MinusSmIcon
-                                  className="h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <PlusSmIcon
-                                  className="h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </span>
-                          </Disclosure.Button>
-                        </h3>
-                        <Disclosure.Panel className="pt-6">
-                          <div className="space-y-4">
-                            {section.options.map((option, optionIdx) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center"
-                              >
+                    <p className="font-medium text-xs uppercase">Category</p>
+                    {categoryToggle ? (
+                      <ChevronUpIcon className="h-5 text-indigo-600" />
+                    ) : (
+                      <ChevronDownIcon className="h-5 text-indigo-600" />
+                    )}
+                  </div>
+
+                  {categoryToggle && (
+                    <div className="flex flex-col pb-1">
+                      <div>
+                        <div
+                          className="mt-4 space-y-4"
+                          onChange={(e) => setCategory(e.target.value)}
+                          name="category-radio-buttons"
+                          value={category}
+                        >
+                          {categories.map((el, i) => (
+                            <>
+                              <div key={uuidv4()} className="flex items-center">
                                 <input
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  defaultValue={option.value}
-                                  type="checkbox"
-                                  defaultChecked={option.checked}
-                                  className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                                  id={el}
+                                  name="push-categories"
+                                  type="radio"
+                                  value={el}
+                                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                 />
                                 <label
-                                  htmlFor={`filter-${section.id}-${optionIdx}`}
-                                  className="ml-3 text-sm text-gray-600"
+                                  htmlFor={el}
+                                  className="ml-3 block text-sm font-medium text-gray-700"
                                 >
-                                  {option.label}
+                                  {el}
                                 </label>
                               </div>
-                            ))}
-                          </div>
-                        </Disclosure.Panel>
-                      </>
+                            </>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {/* brand */}
+                <div className="flex flex-col border-b ">
+                  <div
+                    className="flex justify-between cursor-pointer py-2 pb-4 items-center"
+                    onClick={() => setCategoryToggle(!categoryToggle)}
+                  >
+                    <p className="font-medium text-xs uppercase">Brand</p>
+                    {categoryToggle ? (
+                      <ChevronUpIcon className="h-5 text-indigo-600" />
+                    ) : (
+                      <ChevronDownIcon className="h-5 text-indigo-600" />
                     )}
-                  </Disclosure>
-                ))}
+                  </div>
+
+                  {categoryToggle && (
+                    <div className="flex flex-col pb-1">
+                      <div>
+                        <div
+                          className="mt-4 space-y-4"
+                          onChange={(e) => setCategory(e.target.value)}
+                          name="category-radio-buttons"
+                          value={category}
+                        >
+                          {categories.map((el, i) => (
+                            <>
+                              <div key={uuidv4()} className="flex items-center">
+                                <input
+                                  id={el}
+                                  name="push-categories"
+                                  type="radio"
+                                  value={el}
+                                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                />
+                                <label
+                                  htmlFor={el}
+                                  className="ml-3 block text-sm font-medium text-gray-700"
+                                >
+                                  {el}
+                                </label>
+                              </div>
+                            </>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {/* category filter */}
+
+                {/* ratings filter */}
+                <div className="flex flex-col border-b">
+                  <div
+                    className="flex justify-between cursor-pointer py-2  items-center"
+                    onClick={() => setRatingsToggle(!ratingsToggle)}
+                  >
+                    <p className="font-medium text-xs uppercase">
+                      Customer Ratings
+                    </p>
+                    {ratingsToggle ? (
+                      <ChevronUpIcon className="h-5 text-indigo-600" />
+                    ) : (
+                      <ChevronDownIcon className="h-5 text-indigo-600" />
+                    )}
+                  </div>
+
+                  {ratingsToggle && (
+                    <div className="flex flex-col pb-1">
+                      <div
+                        className="mt-4 space-y-4"
+                        onChange={(e) => setRatings(e.target.value)}
+                        value={ratings}
+                        name="ratings-radio-buttons"
+                      >
+                        {[4, 3, 2, 1].map((el, i) => (
+                          <div key={uuidv4()} className="flex items-center">
+                            <input
+                              id={el}
+                              value={el}
+                              name="push-Ratings"
+                              type="radio"
+                              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                            />
+                            <label
+                              htmlFor={el}
+                              className="ml-3 flex text-sm font-medium text-gray-700"
+                            >
+                              {el}
+                              <StarIcon className="h-5 text-indigo-500" /> &
+                              above
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3">
-                {/* Replace with your content */}
-                <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 lg:h-full" />
-                {/* /End replace */}
+              <div className="lg:col-span-5 shadow bg-gray-50">
+                <div>
+                  <div className="flex-1">
+                    {product?.length === 0 && (
+                      <div className="flex flex-col items-center justify-center gap-3 bg-white shadow-sm rounded-sm p-6 sm:p-16">
+                        <img
+                          draggable="false"
+                          className="w-1/2 h-44 object-contain"
+                          src="https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/error-no-search-results_2353c5.png"
+                          alt="Search Not Found"
+                        />
+                        <h1 className="text-2xl font-medium text-gray-900">
+                          Sorry, no results found!
+                        </h1>
+                        <p className="text-xl text-center text-primary-grey">
+                          Please check the spelling or try searching for
+                          something else
+                        </p>
+                      </div>
+                    )}
+                    <div className=" py-4  overflow-hidden bg-white">
+                      <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                        {product?.map((product) => (
+                          <div key={uuidv4()} className="group relative">
+                            <Product {...product} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
