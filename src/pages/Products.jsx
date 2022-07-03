@@ -2,11 +2,10 @@ import Slider from "@mui/material/Slider";
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import MetaTags from "../utils/MetaTags";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { categories } from "../utils/constants";
 import Product from "../components/Products/Product";
 import { v4 as uuidv4 } from "uuid";
-import apnaMart from "../api/apnaMart";
 //icons
 import {
   ChevronUpIcon,
@@ -14,6 +13,10 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { StarIcon, FilterIcon } from "@heroicons/react/solid";
+//redux
+import { useSelector, useDispatch } from "react-redux"; // hooks
+import { getProducts as listProducts } from "../store/redux/actions/productActions";
+
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
   { name: "Best Rating", href: "#", current: false },
@@ -27,18 +30,15 @@ function classNames(...classes) {
 }
 
 const Products = () => {
+  const dispatch = useDispatch();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-
   const location = useLocation();
-  const params = useParams();
   const [price, setPrice] = useState([0, 200000]);
   const [category, setCategory] = useState(
     location.search ? location.search.split("=")[1] : ""
   );
   const [ratings, setRatings] = useState(0);
-  const [product, setproduct] = useState([]);
-  const keyword = params.keyword || "s";
-  //const [currentPage, setCurrentPage] = useState(1);
+
   const [categoryToggle, setCategoryToggle] = useState(true);
   const [ratingsToggle, setRatingsToggle] = useState(true);
   const priceHandler = (e, newPrice) => {
@@ -51,23 +51,12 @@ const Products = () => {
     setRatings(0);
   };
 
-  const getAllProducts = async () => {
-    try {
-      const response = await apnaMart.get(`/app/search-product?q=${keyword}`);
-      if ((response.status = 200)) {
-        console.log(response.data);
-        setproduct(response.data.searchProducts);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getAllProducts();
+  const getProducts = useSelector((state) => state.getProducts);
+  const { products } = getProducts;
 
-    return () => {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <>
@@ -163,37 +152,33 @@ const Products = () => {
                         </div>
 
                         {categoryToggle && (
-                          <div className="flex flex-col pb-1">
-                            <div>
-                              <div
-                                className="mt-4 space-y-4"
-                                onChange={(e) => setCategory(e.target.value)}
-                                name="category-radio-buttons"
-                                value={category}
-                              >
-                                {categories.map((el, i) => (
-                                  <>
-                                    <div
-                                      key={uuidv4()}
-                                      className="flex items-center"
-                                    >
-                                      <input
-                                        id={el}
-                                        name="push-categories"
-                                        type="radio"
-                                        value={el}
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                      />
-                                      <label
-                                        htmlFor={el}
-                                        className="ml-3 block text-sm font-medium text-gray-700"
-                                      >
-                                        {el}
-                                      </label>
-                                    </div>
-                                  </>
-                                ))}
-                              </div>
+                          <div key={uuidv4()} className="flex flex-col pb-1">
+                            <div
+                              className="mt-4 space-y-4"
+                              onChange={(e) => setCategory(e.target.value)}
+                              name="category-radio-buttons"
+                              value={category}
+                            >
+                              {categories.map((el, i) => (
+                                <div
+                                  key={uuidv4()}
+                                  className="flex items-center"
+                                >
+                                  <input
+                                    id={el}
+                                    name="push-categories"
+                                    type="radio"
+                                    value={el}
+                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                  />
+                                  <label
+                                    htmlFor={el}
+                                    className="ml-3 block text-sm font-medium text-gray-700"
+                                  >
+                                    {el}
+                                  </label>
+                                </div>
+                              ))}
                             </div>
                           </div>
                         )}
@@ -213,36 +198,32 @@ const Products = () => {
 
                         {categoryToggle && (
                           <div className="flex flex-col pb-1">
-                            <div>
-                              <div
-                                className="mt-4 space-y-4"
-                                onChange={(e) => setCategory(e.target.value)}
-                                name="category-radio-buttons"
-                                value={category}
-                              >
-                                {categories.map((el, i) => (
-                                  <>
-                                    <div
-                                      key={uuidv4()}
-                                      className="flex items-center"
-                                    >
-                                      <input
-                                        id={el}
-                                        name="push-categories"
-                                        type="radio"
-                                        value={el}
-                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                      />
-                                      <label
-                                        htmlFor={el}
-                                        className="ml-3 block text-sm font-medium text-gray-700"
-                                      >
-                                        {el}
-                                      </label>
-                                    </div>
-                                  </>
-                                ))}
-                              </div>
+                            <div
+                              className="mt-4 space-y-4"
+                              onChange={(e) => setCategory(e.target.value)}
+                              name="category-radio-buttons"
+                              value={category}
+                            >
+                              {categories.map((el, i) => (
+                                <div
+                                  key={uuidv4()}
+                                  className="flex items-center"
+                                >
+                                  <input
+                                    id={el}
+                                    name="push-categories"
+                                    type="radio"
+                                    value={el}
+                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                  />
+                                  <label
+                                    htmlFor={el}
+                                    className="ml-3 block text-sm font-medium text-gray-700"
+                                  >
+                                    {el}
+                                  </label>
+                                </div>
+                              ))}
                             </div>
                           </div>
                         )}
@@ -334,7 +315,7 @@ const Products = () => {
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         {sortOptions.map((option) => (
-                          <Menu.Item key={option.name}>
+                          <Menu.Item key={uuidv4()}>
                             {({ active }) => (
                               <a
                                 href={option.href}
@@ -426,36 +407,29 @@ const Products = () => {
 
                     {categoryToggle && (
                       <div className="flex flex-col pb-1">
-                        <div>
-                          <div
-                            className="mt-4 space-y-4"
-                            onChange={(e) => setCategory(e.target.value)}
-                            name="category-radio-buttons"
-                            value={category}
-                          >
-                            {categories.map((el, i) => (
-                              <>
-                                <div
-                                  key={uuidv4()}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={el}
-                                    name="push-categories"
-                                    type="radio"
-                                    value={el}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                  />
-                                  <label
-                                    htmlFor={el}
-                                    className="ml-3 block text-sm font-medium text-gray-700"
-                                  >
-                                    {el}
-                                  </label>
-                                </div>
-                              </>
-                            ))}
-                          </div>
+                        <div
+                          className="mt-4 space-y-4"
+                          onChange={(e) => setCategory(e.target.value)}
+                          name="category-radio-buttons"
+                          value={category}
+                        >
+                          {categories.map((el, i) => (
+                            <div key={uuidv4()} className="flex items-center">
+                              <input
+                                id={el}
+                                name="push-categories"
+                                type="radio"
+                                value={el}
+                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                              />
+                              <label
+                                htmlFor={el}
+                                className="ml-3 block text-sm font-medium text-gray-700"
+                              >
+                                {el}
+                              </label>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
@@ -476,36 +450,29 @@ const Products = () => {
 
                     {categoryToggle && (
                       <div className="flex flex-col pb-1">
-                        <div>
-                          <div
-                            className="mt-4 space-y-4"
-                            onChange={(e) => setCategory(e.target.value)}
-                            name="category-radio-buttons"
-                            value={category}
-                          >
-                            {categories.map((el, i) => (
-                              <>
-                                <div
-                                  key={uuidv4()}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={el}
-                                    name="push-categories"
-                                    type="radio"
-                                    value={el}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                  />
-                                  <label
-                                    htmlFor={el}
-                                    className="ml-3 block text-sm font-medium text-gray-700"
-                                  >
-                                    {el}
-                                  </label>
-                                </div>
-                              </>
-                            ))}
-                          </div>
+                        <div
+                          className="mt-4 space-y-4"
+                          onChange={(e) => setCategory(e.target.value)}
+                          name="category-radio-buttons"
+                          value={category}
+                        >
+                          {categories.map((el, i) => (
+                            <div key={uuidv4()} className="flex items-center">
+                              <input
+                                id={el}
+                                name="push-categories"
+                                type="radio"
+                                value={el}
+                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                              />
+                              <label
+                                htmlFor={el}
+                                className="ml-3 block text-sm font-medium text-gray-700"
+                              >
+                                {el}
+                              </label>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
@@ -565,7 +532,7 @@ const Products = () => {
                 <div className="lg:col-span-5 shadow bg-gray-50">
                   <div>
                     <div className="flex-1">
-                      {product?.length === 0 && (
+                      {products?.length === 0 && (
                         <div className="flex flex-col items-center justify-center gap-3 bg-white shadow-sm rounded-sm p-6 sm:p-16">
                           <img
                             draggable="false"
@@ -584,7 +551,7 @@ const Products = () => {
                       )}
                       <div className=" py-4  overflow-hidden bg-white">
                         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                          {product?.map((product) => (
+                          {products?.map((product) => (
                             <div key={uuidv4()} className="group relative">
                               <Product {...product} />
                             </div>

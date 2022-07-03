@@ -10,13 +10,13 @@ const Product = ({
   rating,
   discount,
   brand,
-  stock,
   price,
   costPrice,
+  slug,
 }) => {
   return (
     <div className="  py-4 px-2 hover:shadow-xl">
-      <Link to={`/product/${title}`}>
+      <Link to={`/product/${slug}`}>
         <div>
           <img
             src={`https://api.theshubham.dev/${imageUrl}`}
