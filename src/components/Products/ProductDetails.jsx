@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/solid";
 
 import DealSlider from "../home/DealSlider/DealSlider";
-import { useSelector, useDispatch } from "react-redux"; // hooks
+import { useSelector, useDispatch } from "react-redux"; 
 import { getProductDetails } from "../../store/redux/actions/productActions";
-
+import { addToCart } from "../../store/redux/actions/cartActions";
 import Loader from "../../layout/Loader";
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -22,6 +22,27 @@ export default function ProductDetails() {
     if (slug !== "") dispatch(getProductDetails(slug));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, slug]);
+  //buy & add now
+  const navigate = useNavigate();
+
+  const [quantity, setQuantity] = useState(1);
+
+  const buyNow = async () => {
+    // let response = await payUsingPaytm({
+    //   amount: 500,
+    //   email: "codeforinterview01@gmail.com",
+    // });
+    // var information = {
+    //   action: "https://securegw-stage.paytm.in/order/process",
+    //   params: response,
+    // };
+    // post(information);
+  };
+
+  const addItemToCart = (id) => {
+    dispatch(addToCart(id, quantity));
+    navigate("/cart");
+  };
 
   return (
     <>
@@ -33,7 +54,7 @@ export default function ProductDetails() {
             <div className="bg-white">
               <div className="pt-6">
                 {/* Image gallery */}
-                <div className="mt-6 max-w-2xl mx-auto px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
+                <div className="mt-6 max-w-2xl mx-auto px-6 lg:max-w-app lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
                   <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                     <img
                       src={`https://api.theshubham.dev/${product[0].imageUrl}`}
@@ -134,16 +155,16 @@ export default function ProductDetails() {
                     </div>
 
                     <button
-                      type="submit"
-                      className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Buy Now
-                    </button>
-                    <button
-                      type="submit"
-                      className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={() => addItemToCart(product[0].id)}
+                      className="my-4 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Add to bag
+                    </button>
+                    <button
+                      onClick={() => buyNow()}
+                      className="my-4 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Buy Now
                     </button>
                   </div>
 
