@@ -14,6 +14,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import AuthContext from "../../store/authContext";
 import UserContext from "../../store/userContext";
 //categories icons
+import { useSelector } from "react-redux";
 import mobiles from "../../assets/images/Categories/phone.png";
 import fashion from "../../assets/images/Categories/fashion.png";
 import electronics from "../../assets/images/Categories/electronics.png";
@@ -71,6 +72,7 @@ const Header = () => {
   const authContext = useContext(AuthContext);
   const userContext = useContext(UserContext);
   const isAuth = authContext.isLoggedIn;
+  const { cartItems } = useSelector((state) => state.cart);
   return (
     <>
       <Disclosure
@@ -257,15 +259,20 @@ const Header = () => {
                         </Transition>
                       </Menu>
                     </div>
-                    <div className=" relative flex items-center p-2 text-white">
-                      <span className="absolute top-0 right-0  h-4 w-4 rounded-full  px-2 text-center font-bold ">
-                        0
-                      </span>
+                    <Link
+                      to="/cart"
+                      className=" relative flex items-center p-2 text-white"
+                    >
+                      {cartItems.length > 0 && (
+                        <span className="absolute top-0 right-0  h-4 w-4 rounded-full  px-2 text-center font-bold ">
+                          {cartItems.length}
+                        </span>
+                      )}
                       <ShoppingCartIcon
                         className="h-7 w-7"
                         aria-hidden="true"
                       />
-                    </div>
+                    </Link>
                   </div>
                 </div>
                 <div className="flex w-full md:hidden">
