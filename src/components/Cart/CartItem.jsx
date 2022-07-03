@@ -1,6 +1,11 @@
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {
+  PlusCircleIcon,
+  TrashIcon,
+  MinusCircleIcon,
+} from "@heroicons/react/outline";
+import {
   addItemsToCart,
   removeItemsFromCart,
 } from "../../store/redux/actions/cartActions";
@@ -11,7 +16,7 @@ import { Link } from "react-router-dom";
 const CartItem = ({
   product,
   name,
-  seller,
+  brand,
   price,
   cuttedPrice,
   discount,
@@ -68,16 +73,18 @@ const CartItem = ({
           <div className="flex flex-col sm:flex-row justify-between items-start pr-5 gap-1 sm:gap-0">
             <div className="flex flex-col gap-0.5 sm:w-3/5">
               <p className="group-hover:text-primary-blue">
-                {name.length > 42 ? `${name.substring(0, 42)}...` : name}
+                {name.split(" ").slice(0, 10).join(" ")}
               </p>
-              <span className="text-sm text-gray-500">Seller: {seller}</span>
+              <span className="text-sm text-indigo-500">Barnd: {brand}</span>
             </div>
 
             <div className="flex flex-col sm:gap-2">
               <p className="text-sm">
                 Delivery by {getDeliveryDate()} |{" "}
-                <span className="text-primary-green">Free</span>{" "}
-                <span className="line-through">₹{quantity * 40}</span>
+                <span className="text-gray-700">Free</span>{" "}
+                <span className="line-through text-gray-700">
+                  ₹{quantity * 40}
+                </span>
               </p>
               <span className="text-xs text-gray-500">
                 7 Days Replacement Policy
@@ -88,9 +95,9 @@ const CartItem = ({
 
           {/* <!-- price desc --> */}
           <div className="flex items-baseline gap-2 text-xl font-medium">
-            <span>₹{(price * quantity).toLocaleString()}</span>
+            <span>₹{(price * quantity).toFixed(2)}</span>
             <span className="text-sm text-gray-500 line-through font-normal">
-              ₹{(cuttedPrice * quantity).toLocaleString()}
+              ₹{(cuttedPrice * quantity).toFixed(2)}
             </span>
             <span className="text-sm text-primary-green">
               {discount}%&nbsp;off
@@ -101,26 +108,24 @@ const CartItem = ({
         {/* <!-- description --> */}
       </Link>
 
-      {/* <!-- save for later --> */}
       <div className="flex justify-between pr-4 sm:pr-0 sm:justify-start sm:gap-6">
-        {/* <!-- quantity --> */}
         <div className="flex gap-1 items-center">
           <span
             onClick={() => decreaseQuantity(product, quantity)}
-            className="w-7 h-7 text-3xl font-light bg-gray-50 rounded-full border flex items-center justify-center cursor-pointer"
+            className="w-7 h-7 text-3xl font-light   flex items-center justify-center cursor-pointer"
           >
-            <p>-</p>
+            <MinusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 hover:shadow-xl" />
           </span>
           <input
-            className="w-11 border outline-none text-center rounded-sm py-0.5 text-gray-700 font-medium text-sm qtyInput"
+            className="w-11 border outline-none text-center rounded-sm py-0.5 text-indigo-700 font-medium text-sm "
             value={quantity}
             disabled
           />
           <span
             onClick={() => increaseQuantity(product, quantity, stock)}
-            className="w-7 h-7 text-xl font-light bg-gray-50 rounded-full border flex items-center justify-center cursor-pointer"
+            className="w-7 h-7 text-xl font-light   flex items-center justify-center cursor-pointer"
           >
-            +
+            <PlusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 hover:shadow-xl" />
           </span>
         </div>
         {/* <!-- quantity --> */}
@@ -128,9 +133,9 @@ const CartItem = ({
           <>
             <button
               onClick={() => removeCartItem(product)}
-              className="font-medium hover:text-red-600"
+              className="font-semibold  text-red-500 hover:shadow-xl hover:text-red-600"
             >
-              REMOVE
+              <TrashIcon className="h-7" />
             </button>
           </>
         )}

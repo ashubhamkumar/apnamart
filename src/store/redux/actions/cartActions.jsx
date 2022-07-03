@@ -19,6 +19,7 @@ export const addItemsToCart =
         product: data.id,
         name: data.title,
         seller: "apnaMart",
+        brand: data.brand,
         price: data.costPrice,
         cuttedPrice: data.price,
         image: data.imageUrl,

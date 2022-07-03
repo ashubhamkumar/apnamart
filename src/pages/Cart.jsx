@@ -22,7 +22,7 @@ const Cart = () => {
           {/* <!-- cart column --> */}
           <div className="flex-1">
             {/* <!-- cart items container --> */}
-            <div className="flex flex-col shadow bg-gray-50">
+            <div className="flex flex-col shadow bg-white">
               <span className="font-semibold text-indigo-600 text-lg px-2 sm:px-8 py-4 border-b">
                 My Cart ({cartItems.length})
               </span>
