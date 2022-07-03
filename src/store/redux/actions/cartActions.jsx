@@ -1,30 +1,28 @@
 import apnaMart from "../../../api/apnaMart";
+
 import {
   ADD_TO_CART,
   EMPTY_CART,
   REMOVE_FROM_CART,
   SAVE_SHIPPING_INFO,
-} from "../constants/cartConstants";
+} from "../constants/cartConstant";
 
 // add to cart
 export const addItemsToCart =
   (id, quantity = 1) =>
   async (dispatch, getState) => {
-    const { data } = await apnaMart.get(`/app/add-product-to-cart`, {
-      productId: id,
-      quantity: quantity,
-    });
-
+    const response = await apnaMart.get(`/app/product-by-id?id=${id}`);
+    const data = response.data.Products;
     dispatch({
       type: ADD_TO_CART,
       payload: {
-        product: data.product._id,
-        name: data.product.name,
-        seller: data.product.brand.name,
-        price: data.product.price,
-        cuttedPrice: data.product.cuttedPrice,
-        image: data.product.images[0].url,
-        stock: data.product.stock,
+        product: data.id,
+        name: data.title,
+        seller: "apnaMart",
+        price: data.costPrice,
+        cuttedPrice: data.price,
+        image: data.imageUrl,
+        stock: data.stock,
         quantity,
       },
     });

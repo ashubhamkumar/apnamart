@@ -3,7 +3,7 @@ import {
   EMPTY_CART,
   REMOVE_FROM_CART,
   SAVE_SHIPPING_INFO,
-} from "../constants/cartConstants";
+} from "../constants/cartConstant";
 
 export const cartReducer = (
   state = { cartItems: [], shippingInfo: {} },

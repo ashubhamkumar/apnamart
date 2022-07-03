@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/solid";
 
 import DealSlider from "../home/DealSlider/DealSlider";
-import { useSelector, useDispatch } from "react-redux"; 
+import { useSelector, useDispatch } from "react-redux";
 import { getProductDetails } from "../../store/redux/actions/productActions";
-import { addToCart } from "../../store/redux/actions/cartActions";
+import { addItemsToCart } from "../../store/redux/actions/cartActions";
 import Loader from "../../layout/Loader";
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
@@ -25,8 +25,6 @@ export default function ProductDetails() {
   //buy & add now
   const navigate = useNavigate();
 
-  const [quantity, setQuantity] = useState(1);
-
   const buyNow = async () => {
     // let response = await payUsingPaytm({
     //   amount: 500,
@@ -40,7 +38,7 @@ export default function ProductDetails() {
   };
 
   const addItemToCart = (id) => {
-    dispatch(addToCart(id, quantity));
+    dispatch(addItemsToCart(id));
     navigate("/cart");
   };
 
@@ -158,7 +156,7 @@ export default function ProductDetails() {
                       onClick={() => addItemToCart(product[0].id)}
                       className="my-4 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                      Add to bag
+                      Add to Cart
                     </button>
                     <button
                       onClick={() => buyNow()}
