@@ -64,10 +64,9 @@ export const getProductDetails = (slug) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
     const { data } = await apnaMart.get(`/app/get-product-details/${slug}`);
-
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
-      payload: data.product,
+      payload: data,
     });
   } catch (error) {
     dispatch({
