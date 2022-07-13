@@ -15,10 +15,10 @@ const PriceSidebar = (props) => {
               ₹
               {cartItems
                 .reduce(
-                  (sum, item) => sum + item.cuttedPrice * item.quantity,
+                  (sum, item) => sum + item.price * item.quantity,
                   0
                 )
-                .toLocaleString()}
+                .toFixed(2)}
             </span>
           </p>
           <p className="flex justify-between">
@@ -29,11 +29,11 @@ const PriceSidebar = (props) => {
                 .reduce(
                   (sum, item) =>
                     sum +
-                    (item.cuttedPrice * item.quantity -
-                      item.price * item.quantity),
+                    (item.price * item.quantity -
+                      item.costPrice * item.quantity),
                   0
                 )
-                .toLocaleString()}
+                .toFixed(2)}
             </span>
           </p>
           <p className="flex justify-between">
@@ -44,24 +44,11 @@ const PriceSidebar = (props) => {
             <span>
               ₹
               {cartItems
-                .reduce((sum, item) => sum + item.price * item.quantity, 0)
-                .toLocaleString()}
+                .reduce((sum, item) => sum + item.costPrice * item.quantity, 0)
+                .toFixed(2)}
             </span>
           </p>
 
-          {/* <p className="font-medium text-primary-green">
-            You will save ₹
-            {cartItems
-              .reduce(
-                (sum, item) =>
-                  sum +
-                  (item.cuttedPrice * item.quantity -
-                    item.price * item.quantity),
-                0
-              )
-              .toLocaleString()}{" "}
-            on this order
-          </p> */}
           <div className="flex justify-center text-center text-sm py-4 text-gray-500">
             {props.children}
           </div>

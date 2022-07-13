@@ -8,19 +8,20 @@ import {
 import {
   addItemsToCart,
   removeItemsFromCart,
-} from "../../store/redux/actions/cartActions";
+} from "../../reduxStore/actions/cartAction";
 import { getDeliveryDate } from "../../utils/functions";
 
 import { Link } from "react-router-dom";
 
 const CartItem = ({
-  product,
-  name,
+  productId,
+  title,
   brand,
+  costPrice,
   price,
-  cuttedPrice,
+  slug,
   discount,
-  image,
+  imageUrl,
   stock,
   quantity,
   inCart,
@@ -50,10 +51,10 @@ const CartItem = ({
   return (
     <div
       className="flex flex-col gap-3 py-5 pl-2 sm:pl-6 border-b overflow-hidden"
-      key={product}
+      key={productId}
     >
       <Link
-        to={`/product/${product}`}
+        to={`/product/${slug}`}
         className="flex flex-col sm:flex-row gap-5 items-stretch w-full group"
       >
         {/* <!-- product image --> */}
@@ -61,8 +62,8 @@ const CartItem = ({
           <img
             draggable="false"
             className="h-full w-full object-contain"
-            src={`https://api.theshubham.dev/${image}`}
-            alt={name}
+            src={`https://api.theshubham.dev/${imageUrl}`}
+            alt={imageUrl}
           />
         </div>
         {/* <!-- product image --> */}
@@ -72,8 +73,8 @@ const CartItem = ({
           {/* <!-- product title --> */}
           <div className="flex flex-col sm:flex-row justify-between items-start pr-5 gap-1 sm:gap-0">
             <div className="flex flex-col gap-0.5 sm:w-3/5">
-              <p className="group-hover:text-primary-blue">
-                {name.split(" ").slice(0, 10).join(" ")}
+              <p className="group-hover:text-indigo-600">
+                {title.split(" ").slice(0, 10).join(" ")}
               </p>
               <span className="text-sm text-indigo-500">Barnd: {brand}</span>
             </div>
@@ -95,9 +96,9 @@ const CartItem = ({
 
           {/* <!-- price desc --> */}
           <div className="flex items-baseline gap-2 text-xl font-medium">
-            <span>₹{(price * quantity).toFixed(2)}</span>
+            <span>₹{(costPrice * quantity).toFixed(2)}</span>
             <span className="text-sm text-gray-500 line-through font-normal">
-              ₹{(cuttedPrice * quantity).toFixed(2)}
+              ₹{(price * quantity).toFixed(2)}
             </span>
             <span className="text-sm text-primary-green">
               {discount}%&nbsp;off
@@ -108,10 +109,10 @@ const CartItem = ({
         {/* <!-- description --> */}
       </Link>
 
-      <div className="flex justify-between pr-4 sm:pr-0 sm:justify-start sm:gap-6">
+      <div className="flex justify-between mt-4 pr-4 sm:pr-0 sm:justify-start sm:gap-6">
         <div className="flex gap-1 items-center">
           <span
-            onClick={() => decreaseQuantity(product, quantity)}
+            onClick={() => decreaseQuantity(productId, quantity)}
             className="w-7 h-7 text-3xl font-light   flex items-center justify-center cursor-pointer"
           >
             <MinusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 hover:shadow-xl" />
@@ -122,7 +123,7 @@ const CartItem = ({
             disabled
           />
           <span
-            onClick={() => increaseQuantity(product, quantity, stock)}
+            onClick={() => increaseQuantity(productId, quantity, stock)}
             className="w-7 h-7 text-xl font-light   flex items-center justify-center cursor-pointer"
           >
             <PlusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 hover:shadow-xl" />
@@ -132,7 +133,7 @@ const CartItem = ({
         {inCart && (
           <>
             <button
-              onClick={() => removeCartItem(product)}
+              onClick={() => removeCartItem(productId)}
               className="font-semibold  text-red-500 hover:shadow-xl hover:text-red-600"
             >
               <TrashIcon className="h-7" />

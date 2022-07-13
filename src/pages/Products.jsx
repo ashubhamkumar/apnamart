@@ -1,38 +1,27 @@
 import Slider from "@mui/material/Slider";
 import { Fragment, useState, useEffect } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
-import MetaTags from "../utils/MetaTags";
-import { useLocation } from "react-router-dom";
+import { Dialog, Transition } from "@headlessui/react";
+import { useLocation, useParams } from "react-router-dom";
 import { categories } from "../utils/constants";
 import Product from "../components/Products/Product";
 import { v4 as uuidv4 } from "uuid";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "../layout/Loader";
+import { clearErrors, getProducts } from "../reduxStore/actions/productAction";
+import { toast } from "react-toastify";
 //icons
 import {
   ChevronUpIcon,
   ChevronDownIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { StarIcon, FilterIcon } from "@heroicons/react/solid";
-//redux
-import { useSelector, useDispatch } from "react-redux"; // hooks
-import { getProducts as listProducts } from "../store/redux/actions/productActions";
-
-const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { StarIcon } from "@heroicons/react/solid";
 
 const Products = () => {
-  const dispatch = useDispatch();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const dispatch = useDispatch();
   const location = useLocation();
+  const params = useParams();
   const [price, setPrice] = useState([0, 200000]);
   const [category, setCategory] = useState(
     location.search ? location.search.split("=")[1] : ""
@@ -41,6 +30,8 @@ const Products = () => {
 
   const [categoryToggle, setCategoryToggle] = useState(true);
   const [ratingsToggle, setRatingsToggle] = useState(true);
+  const { products, loading, error } = useSelector((state) => state.products);
+  const keyword = params.keyword;
   const priceHandler = (e, newPrice) => {
     setPrice(newPrice);
   };
@@ -50,17 +41,16 @@ const Products = () => {
     setCategory("");
     setRatings(0);
   };
-
-  const getProducts = useSelector((state) => state.getProducts);
-  const { products } = getProducts;
-
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
-
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProducts(keyword, category, price, ratings));
+  }, [dispatch, keyword, category, price, ratings, error]);
   return (
     <>
-      <MetaTags title="All Products | ApnaMart" />
+      {loading && <Loader />}{" "}
       <div className="bg-gray-50 ">
         <div>
           {/* Mobile filter dialog */}
@@ -290,62 +280,6 @@ const Products = () => {
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
                 {"Today's Deals"}
               </h1>
-
-              <div className="flex items-center">
-                <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                      Sort
-                      <ChevronDownIcon
-                        className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                        aria-hidden="true"
-                      />
-                    </Menu.Button>
-                  </div>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-1">
-                        {sortOptions.map((option) => (
-                          <Menu.Item key={uuidv4()}>
-                            {({ active }) => (
-                              <a
-                                href={option.href}
-                                className={classNames(
-                                  option.current
-                                    ? "font-medium text-gray-900"
-                                    : "text-gray-500",
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm"
-                                )}
-                              >
-                                {option.name}
-                              </a>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-
-                <button
-                  type="button"
-                  className="p-2 -m-2 ml-4 sm:ml-6 text-gray-400 hover:text-gray-500 lg:hidden"
-                  onClick={() => setMobileFiltersOpen(true)}
-                >
-                  <span className="sr-only">Filters</span>
-                  <FilterIcon className="w-5 h-5" aria-hidden="true" />
-                </button>
-              </div>
             </div>
 
             <div aria-labelledby="products-heading" className="pt-6 pb-24">
@@ -365,7 +299,7 @@ const Products = () => {
                       onClick={() => clearFilters()}
                       className="bg-indigo-400 uppercase px-2 py-1 rounded-md shadow-md text-white"
                     >
-                      Clear All
+                      Clear
                     </button>
                   </div>
                   <div className="flex  flex-col border-b border-indigo-600 my-2">
@@ -373,7 +307,7 @@ const Products = () => {
                       <span className="font-medium text-lg">Price</span>
                       <Slider
                         value={price}
-                        onChange={priceHandler}
+                        //onChange={priceHandler}
                         valueLabelDisplay="auto"
                         getAriaLabel={() => "Price range slider"}
                         min={0}

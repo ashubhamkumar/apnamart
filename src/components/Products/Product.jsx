@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import { StarIcon, BadgeCheckIcon } from "@heroicons/react/solid";
 
 const Product = ({
-  id,
-  title,
+  _id,
+  name,
   imageUrl,
-  rating,
+  ratings,
   discount,
   brand,
   price,
-  costPrice,
+  sellingPrice,
   slug,
 }) => {
   return (
@@ -28,25 +28,25 @@ const Product = ({
           <div className="p-4">
             <div className="flex items-center">
               <h2 className="text-lg truncate font-semibold ">
-                {title.split(" ").slice(0, 5).join(" ")}
+                {name.split(" ").slice(0, 5).join(" ")}
               </h2>
             </div>
-            <p className="text-xs text-gray-600 my-2">{title}</p>
+            <p className="text-xs text-gray-600 my-2">{name}</p>
             <div className="flex items-center justify-between my-2">
               <div className=" flex ">
                 <span className="text-sm px-1.5 py-0.5 bg-indigo-500 rounded text-white flex items-center gap-0.5">
-                  {rating.toFixed(1)} <StarIcon className="h-5 " />
+                  {ratings.toFixed(1)} <StarIcon className="h-5 " />
                 </span>
               </div>
               <div>
                 <BadgeCheckIcon className="text-indigo-500 h-6" />
               </div>
             </div>
-            <p className="text-indigo-400 uppercase text-base">{brand}</p>
+            <p className="text-indigo-400 uppercase text-base">{brand.brandname}</p>
             <div className="flex items-center justify-between py-4">
               <div className=" space-x-1">
                 <span className="font-semibold text-base">
-                  ₹&nbsp;{costPrice.toFixed(2)}
+                  ₹&nbsp;{sellingPrice.toFixed(2)}
                 </span>{" "}
                 <span className="text-gray-700  line-through text-sm">
                   ₹{price.toLocaleString()}{" "}

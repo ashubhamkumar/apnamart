@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Header from "./components/header/Header";
 import AuthContext from "./store/authContext";
+
 //pages
 import SignupOtpVerification from "./pages/auth/SignupOtpVerification";
 import Home from "./pages/Home";
@@ -22,6 +23,44 @@ const App = () => {
       behavior: "smooth",
     });
   }, [pathname]);
+
+  // useEffect(() => {
+  //   console.log(navigator.userAgent);
+  //   console.log(navigator.product);
+  //   navigator.geolocation.getCurrentPosition(
+  //     function success(position) {
+  //       // for when getting location is a success
+  //       console.log(
+  //         "latitude",
+  //         position.coords.latitude,
+  //         "longitude",
+  //         position.coords.longitude
+  //       );
+  //     },
+  //     function error(error_message) {
+  //       // for when getting location results in an error
+  //       console.log(
+  //         "An error has occured while retrieving location",
+  //         error_message
+  //       );
+  //     }
+  //   );
+  //   function ipLookUp() {
+  //     axios("http://ip-api.com/json").then(
+  //       function success(response) {
+  //         console.log("User's Location Data is ", response);
+  //         console.log("User's Country", response.country);
+  //       },
+
+  //       function fail(data, status) {
+  //         console.log("Request failed.  Returned status of", status);
+  //       }
+  //     );
+  //   }
+  //   ipLookUp();
+  //   return () => {};
+  // }, []);
+
   // // disable right click
   // window.addEventListener("contextmenu", (e) => e.preventDefault());
   // window.addEventListener("keydown", (e) => {
