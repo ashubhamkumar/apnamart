@@ -14,10 +14,7 @@ const PriceSidebar = (props) => {
             <span>
               ₹
               {cartItems
-                .reduce(
-                  (sum, item) => sum + item.price * item.quantity,
-                  0
-                )
+                .reduce((sum, item) => sum + item.price * item.quantity, 0)
                 .toFixed(2)}
             </span>
           </p>
@@ -30,7 +27,7 @@ const PriceSidebar = (props) => {
                   (sum, item) =>
                     sum +
                     (item.price * item.quantity -
-                      item.costPrice * item.quantity),
+                      item.sellingPrice * item.quantity),
                   0
                 )
                 .toFixed(2)}
@@ -44,7 +41,10 @@ const PriceSidebar = (props) => {
             <span>
               ₹
               {cartItems
-                .reduce((sum, item) => sum + item.costPrice * item.quantity, 0)
+                .reduce(
+                  (sum, item) => sum + item.sellingPrice * item.quantity,
+                  0
+                )
                 .toFixed(2)}
             </span>
           </p>

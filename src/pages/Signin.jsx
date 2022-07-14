@@ -1,52 +1,38 @@
 import { Link } from "react-router-dom";
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { LockClosedIcon } from "@heroicons/react/solid";
-import { useNavigate } from "react-router-dom";
-import apnaMart from "../api/apnaMart";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import AuthContext from "../store/authContext";
-import UserContext from "../store/userContext";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, loginUser } from "../reduxStore/actions/userAction";
+
 const Signin = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userContext = useContext(UserContext);
-  const authContext = useContext(AuthContext);
+
+  const location = useLocation();
+
+  const { isAuthenticated, error } = useSelector((state) => state.user);
+
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const SigninHandler = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      if (email === "" && password === "") {
-        toast.warn("Please enter a valid credentials (non empty Value).");
-      } else {
-        const response = await apnaMart.post(
-          `/auth/user/signin`,
-          { email, password },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.status === 201) {
-          toast(response.data.msg);
-          let expirationTime = new Date();
-          expirationTime.setDate(expirationTime.getDate() + 1);
-          authContext.login(response.data.token, expirationTime.toISOString());
-          userContext.userDetails(
-            response.data.name,
-            response.data.email,
-            response.data.phone,
-            response.data.profileImageUrl
-          );
-          navigate("../", { replace: true });
-        } else {
-          toast.error(response.data.message);
-        }
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
+    dispatch(loginUser(email, password));
   };
+
+  const redirect = location.search ? location.search.split("=")[1] : "account";
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+      navigate(`/${redirect}`);
+    }
+  }, [dispatch, error, isAuthenticated, redirect, navigate]);
+
   return (
     <>
       <div className="min-h-full flex items-center h-screen justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -59,7 +45,7 @@ const Signin = () => {
               Sign in to your account
             </h2>
           </div>
-          <form className=" space-y-4 " onSubmit={SigninHandler}>
+          <form className=" space-y-4 " onSubmit={handleLogin}>
             <div className="rounded-md   space-y-2">
               <div>
                 <label htmlFor="email-address" className="">

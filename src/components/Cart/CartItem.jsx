@@ -15,9 +15,9 @@ import { Link } from "react-router-dom";
 
 const CartItem = ({
   productId,
-  title,
+  name,
   brand,
-  costPrice,
+  sellingPrice,
   price,
   slug,
   discount,
@@ -74,7 +74,7 @@ const CartItem = ({
           <div className="flex flex-col sm:flex-row justify-between items-start pr-5 gap-1 sm:gap-0">
             <div className="flex flex-col gap-0.5 sm:w-3/5">
               <p className="group-hover:text-indigo-600">
-                {title.split(" ").slice(0, 10).join(" ")}
+                {name.split(" ").slice(0, 10).join(" ")}
               </p>
               <span className="text-sm text-indigo-500">Barnd: {brand}</span>
             </div>
@@ -96,7 +96,7 @@ const CartItem = ({
 
           {/* <!-- price desc --> */}
           <div className="flex items-baseline gap-2 text-xl font-medium">
-            <span>₹{(costPrice * quantity).toFixed(2)}</span>
+            <span>₹{(sellingPrice * quantity).toFixed(2)}</span>
             <span className="text-sm text-gray-500 line-through font-normal">
               ₹{(price * quantity).toFixed(2)}
             </span>

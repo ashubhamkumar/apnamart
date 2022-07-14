@@ -14,7 +14,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import AuthContext from "../../store/authContext";
 import UserContext from "../../store/userContext";
 //categories icons
-
+import { useSelector } from "react-redux";
 import mobiles from "../../assets/images/Categories/phone.png";
 import fashion from "../../assets/images/Categories/fashion.png";
 import electronics from "../../assets/images/Categories/electronics.png";
@@ -72,7 +72,7 @@ const Header = () => {
   const authContext = useContext(AuthContext);
   const userContext = useContext(UserContext);
   const isAuth = authContext.isLoggedIn;
-
+  const { cartItems } = useSelector((state) => state.cart);
   return (
     <>
       <Disclosure
@@ -263,14 +263,14 @@ const Header = () => {
                       to="/cart"
                       className=" relative flex items-center  p-2 text-white"
                     >
-                      {/* {cartItems.length > 0 && (
+                      {cartItems.length > 0 && (
                         <p className="absolute -top-1 -right-2 h-5 w-5  rounded-full  text-indigo-600 bg-white px-2.5  font-semibold ">
                           <span className=" flex items-center justify-center text-center">
                             {" "}
                             {cartItems.length}
                           </span>
                         </p>
-                      )} */}
+                      )}
                       <ShoppingCartIcon
                         className="h-7 w-7"
                         aria-hidden="true"
