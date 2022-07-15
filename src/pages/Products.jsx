@@ -1,4 +1,9 @@
 import Slider from "@mui/material/Slider";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import { indigo } from "@mui/material/colors";
+import RadioGroup from "@mui/material/RadioGroup";
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useLocation, useParams } from "react-router-dom";
@@ -50,7 +55,6 @@ const Products = () => {
   }, [dispatch, keyword, category, price, ratings, error]);
   return (
     <>
-      {loading && <Loader />}{" "}
       <div className="bg-gray-50 ">
         <div>
           {/* Mobile filter dialog */}
@@ -91,7 +95,7 @@ const Products = () => {
                         onClick={() => clearFilters()}
                         className="bg-indigo-400 uppercase px-2 py-1 rounded-md shadow-md text-white"
                       >
-                        Clear All
+                        Clear
                       </button>
                       <button
                         type="button"
@@ -143,78 +147,35 @@ const Products = () => {
 
                         {categoryToggle && (
                           <div key={uuidv4()} className="flex flex-col pb-1">
-                            <div
-                              className="mt-4 space-y-4"
-                              onChange={(e) => setCategory(e.target.value)}
-                              name="category-radio-buttons"
-                              value={category}
-                            >
-                              {categories.map((el, i) => (
-                                <div
-                                  key={uuidv4()}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={el}
-                                    name="push-categories"
-                                    type="radio"
+                            <FormControl>
+                              <RadioGroup
+                                aria-labelledby="category-radio-buttons-group"
+                                onChange={(e) => setCategory(e.target.value)}
+                                name="category-radio-buttons"
+                                value={category}
+                              >
+                                {categories.map((el, i) => (
+                                  <FormControlLabel
                                     value={el}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                    control={
+                                      <Radio
+                                        size="small"
+                                        sx={{
+                                          "&, &.Mui-checked": {
+                                            color: indigo[500],
+                                          },
+                                        }}
+                                      />
+                                    }
+                                    label={
+                                      <span className="text-sm" key={i}>
+                                        {el}
+                                      </span>
+                                    }
                                   />
-                                  <label
-                                    htmlFor={el}
-                                    className="ml-3 block text-sm font-medium text-gray-700"
-                                  >
-                                    {el}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex flex-col border-b px-4">
-                        <div
-                          className="flex justify-between cursor-pointer py-2 pb-4 items-center"
-                          onClick={() => setCategoryToggle(!categoryToggle)}
-                        >
-                          <p className="font-medium text-xs uppercase">brand</p>
-                          {categoryToggle ? (
-                            <ChevronUpIcon className="h-5 text-indigo-600" />
-                          ) : (
-                            <ChevronDownIcon className="h-5 text-indigo-600" />
-                          )}
-                        </div>
-
-                        {categoryToggle && (
-                          <div className="flex flex-col pb-1">
-                            <div
-                              className="mt-4 space-y-4"
-                              onChange={(e) => setCategory(e.target.value)}
-                              name="category-radio-buttons"
-                              value={category}
-                            >
-                              {categories.map((el, i) => (
-                                <div
-                                  key={uuidv4()}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={el}
-                                    name="push-categories"
-                                    type="radio"
-                                    value={el}
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                  />
-                                  <label
-                                    htmlFor={el}
-                                    className="ml-3 block text-sm font-medium text-gray-700"
-                                  >
-                                    {el}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
+                                ))}
+                              </RadioGroup>
+                            </FormControl>
                           </div>
                         )}
                       </div>
@@ -236,35 +197,40 @@ const Products = () => {
 
                         {ratingsToggle && (
                           <div className="flex flex-col pb-1">
-                            <div
-                              className="mt-4 space-y-4"
-                              onChange={(e) => setRatings(e.target.value)}
-                              value={ratings}
-                              name="ratings-radio-buttons"
-                            >
-                              {[4, 3, 2, 1].map((el, i) => (
-                                <div
-                                  key={uuidv4()}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={el}
+                            <FormControl>
+                              <RadioGroup
+                                aria-labelledby="ratings-radio-buttons-group"
+                                onChange={(e) => setRatings(e.target.value)}
+                                value={ratings}
+                                name="ratings-radio-buttons"
+                              >
+                                {[4, 3, 2, 1].map((el, i) => (
+                                  <FormControlLabel
                                     value={el}
-                                    name="push-Ratings"
-                                    type="radio"
-                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                    key={i}
+                                    control={
+                                      <Radio
+                                        size="small"
+                                        sx={{
+                                          "&, &.Mui-checked": {
+                                            color: indigo[500],
+                                          },
+                                        }}
+                                      />
+                                    }
+                                    label={
+                                      <span className="flex items-center text-sm">
+                                        {el}
+                                        <StarIcon
+                                          sx={{ fontSize: "12px", mr: 0.5 }}
+                                        />{" "}
+                                        & above
+                                      </span>
+                                    }
                                   />
-                                  <label
-                                    htmlFor={el}
-                                    className="ml-3 flex text-sm font-medium text-gray-700"
-                                  >
-                                    {el}
-                                    <StarIcon className="h-5 text-indigo-500" />{" "}
-                                    & above
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
+                                ))}
+                              </RadioGroup>
+                            </FormControl>
                           </div>
                         )}
                       </div>
@@ -276,17 +242,7 @@ const Products = () => {
           </Transition.Root>
 
           <main className="max-w-full mx-auto px-4 sm:px-6">
-            <div className="relative  flex items-baseline justify-between pt-4 pb-6 border-b border-gray-200">
-              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
-                {"Today's Deals"}
-              </h1>
-            </div>
-
-            <div aria-labelledby="products-heading" className="pt-6 pb-24">
-              <h2 id="products-heading" className="sr-only">
-                Products
-              </h2>
-
+            <div className="pt-6 pb-24">
               <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-4 gap-y-10">
                 {/* Filters */}
 
@@ -304,10 +260,12 @@ const Products = () => {
                   </div>
                   <div className="flex  flex-col border-b border-indigo-600 my-2">
                     <div className=" flex flex-col items-start px-2">
-                      <span className="font-medium text-lg">Price</span>
+                      <span className="font-medium uppercase text-base text-indigo-600">
+                        Price
+                      </span>
                       <Slider
                         value={price}
-                        //onChange={priceHandler}
+                        onChange={priceHandler}
                         valueLabelDisplay="auto"
                         getAriaLabel={() => "Price range slider"}
                         min={0}
@@ -326,12 +284,14 @@ const Products = () => {
                     </div>
                   </div>
                   {/* category filter */}
-                  <div className="flex flex-col border-b ">
+                  <div className="flex  flex-col border-b border-indigo-600 my-2">
                     <div
                       className="flex justify-between cursor-pointer py-2 pb-4 items-center"
                       onClick={() => setCategoryToggle(!categoryToggle)}
                     >
-                      <p className="font-medium text-xs uppercase">Category</p>
+                      <p className="font-medium uppercase text-base text-indigo-600">
+                        Category
+                      </p>
                       {categoryToggle ? (
                         <ChevronUpIcon className="h-5 text-indigo-600" />
                       ) : (
@@ -340,86 +300,46 @@ const Products = () => {
                     </div>
 
                     {categoryToggle && (
-                      <div className="flex flex-col pb-1">
-                        <div
-                          className="mt-4 space-y-4"
-                          onChange={(e) => setCategory(e.target.value)}
-                          name="category-radio-buttons"
-                          value={category}
-                        >
-                          {categories.map((el, i) => (
-                            <div key={uuidv4()} className="flex items-center">
-                              <input
-                                id={el}
-                                name="push-categories"
-                                type="radio"
+                      <div className="flex flex-col ">
+                        <FormControl>
+                          <RadioGroup
+                            aria-labelledby="category-radio-buttons-group"
+                            onChange={(e) => setCategory(e.target.value)}
+                            name="category-radio-buttons"
+                            value={category}
+                          >
+                            {categories.map((el, i) => (
+                              <FormControlLabel
                                 value={el}
-                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                control={
+                                  <Radio
+                                    size="small"
+                                    sx={{
+                                      "&, &.Mui-checked": {
+                                        color: indigo[500],
+                                      },
+                                    }}
+                                  />
+                                }
+                                label={
+                                  <span className="text-sm" key={i}>
+                                    {el}
+                                  </span>
+                                }
                               />
-                              <label
-                                htmlFor={el}
-                                className="ml-3 block text-sm font-medium text-gray-700"
-                              >
-                                {el}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
                       </div>
                     )}
                   </div>
-                  {/* brand */}
-                  <div className="flex flex-col border-b ">
-                    <div
-                      className="flex justify-between cursor-pointer py-2 pb-4 items-center"
-                      onClick={() => setCategoryToggle(!categoryToggle)}
-                    >
-                      <p className="font-medium text-xs uppercase">Brand</p>
-                      {categoryToggle ? (
-                        <ChevronUpIcon className="h-5 text-indigo-600" />
-                      ) : (
-                        <ChevronDownIcon className="h-5 text-indigo-600" />
-                      )}
-                    </div>
-
-                    {categoryToggle && (
-                      <div className="flex flex-col pb-1">
-                        <div
-                          className="mt-4 space-y-4"
-                          onChange={(e) => setCategory(e.target.value)}
-                          name="category-radio-buttons"
-                          value={category}
-                        >
-                          {categories.map((el, i) => (
-                            <div key={uuidv4()} className="flex items-center">
-                              <input
-                                id={el}
-                                name="push-categories"
-                                type="radio"
-                                value={el}
-                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                              />
-                              <label
-                                htmlFor={el}
-                                className="ml-3 block text-sm font-medium text-gray-700"
-                              >
-                                {el}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  {/* category filter */}
-
                   {/* ratings filter */}
-                  <div className="flex flex-col border-b">
+                  <div className="flex  flex-col border-b border-indigo-600 my-2">
                     <div
                       className="flex justify-between cursor-pointer py-2  items-center"
                       onClick={() => setRatingsToggle(!ratingsToggle)}
                     >
-                      <p className="font-medium text-xs uppercase">
+                      <p className="font-medium uppercase text-base text-indigo-600">
                         Customer Ratings
                       </p>
                       {ratingsToggle ? (
@@ -430,33 +350,39 @@ const Products = () => {
                     </div>
 
                     {ratingsToggle && (
-                      <div className="flex flex-col pb-1">
-                        <div
-                          className="mt-4 space-y-4"
-                          onChange={(e) => setRatings(e.target.value)}
-                          value={ratings}
-                          name="ratings-radio-buttons"
-                        >
-                          {[4, 3, 2, 1].map((el, i) => (
-                            <div key={uuidv4()} className="flex items-center">
-                              <input
-                                id={el}
+                      <div className="flex flex-col ">
+                        <FormControl>
+                          <RadioGroup
+                            aria-labelledby="ratings-radio-buttons-group"
+                            onChange={(e) => setRatings(e.target.value)}
+                            value={ratings}
+                            name="ratings-radio-buttons"
+                          >
+                            {[4, 3, 2, 1].map((el, i) => (
+                              <FormControlLabel
                                 value={el}
-                                name="push-Ratings"
-                                type="radio"
-                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                                key={i}
+                                control={
+                                  <Radio
+                                    size="small"
+                                    sx={{
+                                      "&, &.Mui-checked": {
+                                        color: indigo[500],
+                                      },
+                                    }}
+                                  />
+                                }
+                                label={
+                                  <span className="flex items-center text-sm">
+                                    {el}
+                                    <StarIcon className="text-indigo-600 h-4 w-4" />{" "}
+                                    & above
+                                  </span>
+                                }
                               />
-                              <label
-                                htmlFor={el}
-                                className="ml-3 flex text-sm font-medium text-gray-700"
-                              >
-                                {el}
-                                <StarIcon className="h-5 text-indigo-500" /> &
-                                above
-                              </label>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
                       </div>
                     )}
                   </div>
@@ -464,33 +390,32 @@ const Products = () => {
 
                 {/* Product grid */}
                 <div className="lg:col-span-5 shadow bg-gray-50">
-                  <div>
-                    <div className="flex-1">
-                      {products?.length === 0 && (
-                        <div className="flex flex-col items-center justify-center gap-3 bg-white shadow-sm rounded-sm p-6 sm:p-16">
-                          <img
-                            draggable="false"
-                            className="w-1/2 h-44 object-contain"
-                            src="https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/error-no-search-results_2353c5.png"
-                            alt="Search Not Found"
-                          />
-                          <h1 className="text-2xl font-medium text-gray-900">
-                            Sorry, no results found!
-                          </h1>
-                          <p className="text-xl text-center text-primary-grey">
-                            Please check the spelling or try searching for
-                            something else
-                          </p>
-                        </div>
-                      )}
-                      <div className=" py-4  overflow-hidden bg-white">
-                        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                          {products?.map((product) => (
-                            <div key={uuidv4()} className="group relative">
-                              <Product {...product} />
-                            </div>
-                          ))}
-                        </div>
+                  {loading && <Loader />}{" "}
+                  <div className="flex-1">
+                    {products?.length === 0 && (
+                      <div className="flex flex-col items-center justify-center gap-3 bg-white shadow-sm rounded-sm p-6 sm:p-16">
+                        <img
+                          draggable="false"
+                          className="w-1/2 h-44 object-contain"
+                          src="https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/error-no-search-results_2353c5.png"
+                          alt="Search Not Found"
+                        />
+                        <h1 className="text-2xl font-medium text-indigo-600">
+                          Sorry, no results found!
+                        </h1>
+                        <p className="text-xl text-center text-primary-grey">
+                          Please check the spelling or try searching for
+                          something else
+                        </p>
+                      </div>
+                    )}
+                    <div className=" py-4  overflow-hidden bg-white">
+                      <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                        {products?.map((product) => (
+                          <div key={uuidv4()} className="group relative">
+                            <Product {...product} />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>

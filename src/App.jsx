@@ -1,19 +1,23 @@
-import React, { useContext, useEffect } from "react";
+import React, { lazy, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import Header from "./components/header/Header";
-import AuthContext from "./store/authContext";
+import { Route, Routes, useLocation } from "react-router-dom";
 
+import ProtectedRoute from "./routes/ProtectedRoute";
 //pages
-import SignupOtpVerification from "./pages/auth/SignupOtpVerification";
-import Home from "./pages/Home";
-import Login from "./pages/Signin";
-import Register from "./pages/Signup";
-import Cart from "./pages/Cart";
-import Footer from "./components/Footer";
-import Products from "./pages/Products";
-import ProductDetails from "./components/Products/ProductDetails";
+const Header = lazy(() => import("./components/header/Header"));
+const SignupOtpVerification = lazy(() =>
+  import("./pages/auth/SignupOtpVerification")
+);
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Signin"));
+const Register = lazy(() => import("./pages/Signup"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Footer = lazy(() => import("./components/Footer"));
+const Products = lazy(() => import("./pages/Products"));
+const ProductDetails = lazy(() =>
+  import("./components/Products/ProductDetails")
+);
 const App = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -24,52 +28,6 @@ const App = () => {
     });
   }, [pathname]);
 
-  // useEffect(() => {
-  //   console.log(navigator.userAgent);
-  //   console.log(navigator.product);
-  //   navigator.geolocation.getCurrentPosition(
-  //     function success(position) {
-  //       // for when getting location is a success
-  //       console.log(
-  //         "latitude",
-  //         position.coords.latitude,
-  //         "longitude",
-  //         position.coords.longitude
-  //       );
-  //     },
-  //     function error(error_message) {
-  //       // for when getting location results in an error
-  //       console.log(
-  //         "An error has occured while retrieving location",
-  //         error_message
-  //       );
-  //     }
-  //   );
-  //   function ipLookUp() {
-  //     axios("http://ip-api.com/json").then(
-  //       function success(response) {
-  //         console.log("User's Location Data is ", response);
-  //         console.log("User's Country", response.country);
-  //       },
-
-  //       function fail(data, status) {
-  //         console.log("Request failed.  Returned status of", status);
-  //       }
-  //     );
-  //   }
-  //   ipLookUp();
-  //   return () => {};
-  // }, []);
-
-  // // disable right click
-  // window.addEventListener("contextmenu", (e) => e.preventDefault());
-  // window.addEventListener("keydown", (e) => {
-  //   if (e.keyCode == 123) e.preventDefault();
-  //   if (e.ctrlKey && e.shiftKey && e.keyCode === 73) e.preventDefault();
-  //   if (e.ctrlKey && e.shiftKey && e.keyCode === 74) e.preventDefault();
-  // });
-  const authContext = useContext(AuthContext);
-  const isAuth = authContext.isLoggedIn;
   return (
     <>
       <Header />
@@ -87,13 +45,17 @@ const App = () => {
         <Route path="/products/:keyword" element={<Products />} />
         <Route
           path="/cart"
-          element={isAuth ? <Cart /> : <Navigate to="/auth/signin" />}
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
         />
       </Routes>
       <Footer />
       {/* tost */}
       <ToastContainer
-        position="bottom-center"
+        position="top-center"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop

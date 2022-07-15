@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Fragment, useContext } from "react";
+import { Fragment, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   MenuIcon,
@@ -11,8 +12,7 @@ import {
   LogoutIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import AuthContext from "../../store/authContext";
-import UserContext from "../../store/userContext";
+
 //categories icons
 import { useSelector } from "react-redux";
 import mobiles from "../../assets/images/Categories/phone.png";
@@ -23,6 +23,7 @@ import appliances from "../../assets/images/Categories/appliances.png";
 import furniture from "../../assets/images/Categories/furniture.png";
 import beauty from "../../assets/images/Categories/beauty.png";
 import grocery from "../../assets/images/Categories/grocery.png";
+import { toast } from "react-toastify";
 export const categories = [
   {
     name: "Mobiles",
@@ -69,10 +70,31 @@ function classNames(...classes) {
 }
 
 const Header = () => {
-  const authContext = useContext(AuthContext);
-  const userContext = useContext(UserContext);
-  const isAuth = authContext.isLoggedIn;
+  const [keyword, setKeyword] = useState("");
+  const navigate = useNavigate();
+
+  const keywordHandler = (e) => {
+    setKeyword(e.target.value);
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+  const handleSubmit = (e) => {
+    if (keyword !== "") {
+      if (keyword.trim()) {
+        navigate(`/products/${keyword}`);
+      } else {
+        navigate("/products");
+      }
+    } else {
+      toast.warn("Please enter a keyword");
+    }
+  };
+
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+
   const { cartItems } = useSelector((state) => state.cart);
+  const logoutHandler = () => {};
   return (
     <>
       <Disclosure
@@ -100,25 +122,31 @@ const Header = () => {
                   <div className="flex flex-shrink-0 items-center">
                     <Link
                       to="/"
-                      className="cursor-pointer text-xl font-bold text-white sm:text-2xl lg:text-4xl"
+                      className="cursor-pointer  text-3xl font-bold text-white sm:text-3xl lg:text-4xl"
                     >
                       ApnaMart
                     </Link>
                   </div>
                   <div className="hidden items-center  sm:mx-6 sm:w-0 md:flex md:w-full md:flex-1">
-                    <div className=" mx-5 hidden  flex-grow cursor-pointer items-center justify-center rounded-md border-0 bg-white px-4 shadow-md sm:flex">
+                    <div className=" mx-5 hidden  flex-grow cursor-pointer items-center justify-center rounded-md border-0 bg-white pl-4 shadow-md sm:flex">
                       <input
+                        onKeyDown={keywordHandler}
                         type="text"
                         placeholder="Search for puroducts, brands and more"
                         className="mt-0 block w-full  flex-shrink flex-grow border-0 px-0.5 focus:outline-none focus:ring-0"
                       />
-                      <SearchIcon className="h-5 w-5 text-indigo-600" />
+                      <button
+                        onClick={handleSubmit}
+                        className="Shadow-lg  rounded-r-md px-4 py-2.5 bg-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                      >
+                        <SearchIcon className="h-5 w-5 text-indigo-600" />
+                      </button>
                     </div>
                   </div>
                   <div className="flex  flex-row items-center space-x-2 pr-2   sm:pr-0">
                     {/* Profile dropdown */}
                     <div className="hidden sm:flex">
-                      {!isAuth ? (
+                      {!isAuthenticated ? (
                         <div className=" relative  rounded-md bg-white p-1.5 px-6 font-semibold text-indigo-600 shadow-sm">
                           <Link to="/auth/signin">Login</Link>
                         </div>
@@ -128,19 +156,9 @@ const Header = () => {
                             <div>
                               <Menu.Button className=" flex items-center justify-between space-x-2 rounded-md bg-white p-1.5 px-4 text-base font-semibold text-indigo-600 shadow">
                                 <p className="">
-                                  {userContext.name || "Welcome User"}
+                                  {user.name || "Welcome User"}
                                 </p>
-                                {userContext.profileImageUrl ? (
-                                  <>
-                                    <UserCircleIcon className="h-7 w-7 " />
-                                  </>
-                                ) : (
-                                  <img
-                                    src={userContext.profileImageUrl}
-                                    className="h-8 w-8 rounded-full"
-                                    alt="avatar"
-                                  />
-                                )}
+                                <UserCircleIcon className="h-7 w-7 " />
                               </Menu.Button>
                             </div>
                             <Transition
@@ -170,7 +188,7 @@ const Header = () => {
                                 ))}
                                 <Menu.Item>
                                   <div
-                                    onClick={authContext.logout}
+                                    onClick={logoutHandler}
                                     className="block bg-indigo-400 px-4 py-2 text-sm text-gray-700"
                                   >
                                     Sign out
@@ -184,15 +202,14 @@ const Header = () => {
                     </div>
                     <div className=" hidden sm:flex">
                       <Menu as="div" className="relative ml-3">
-                        <div>
-                          <Menu.Button className=" flex items-center rounded-full  text-base font-semibold text-white ">
-                            <p>More</p>
-                            <ChevronDownIcon
-                              className="-mr-1 ml-2 h-5 w-5"
-                              aria-hidden="true"
-                            />
-                          </Menu.Button>
-                        </div>
+                        <Menu.Button className=" flex items-center active:rounded-md active:border-2 px-2 py-1 active:border-white  text-base font-semibold text-white ">
+                          <p>More</p>
+                          <ChevronDownIcon
+                            className="-mr-1  h-5 w-5"
+                            aria-hidden="true"
+                          />
+                        </Menu.Button>
+
                         <Transition
                           as={Fragment}
                           enter="transition ease-out duration-100"
@@ -202,7 +219,7 @@ const Header = () => {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
@@ -242,19 +259,6 @@ const Header = () => {
                                 </Link>
                               )}
                             </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <div
-                                  onClick={authContext.logout}
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Sign out
-                                </div>
-                              )}
-                            </Menu.Item>
                           </Menu.Items>
                         </Transition>
                       </Menu>
@@ -279,13 +283,19 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="flex w-full md:hidden">
-                  <div className="lg:min-w-xl  flex grow items-center justify-center rounded-md border-0 bg-white  px-4 md:mx-5 lg:max-w-2xl">
+                  <div className="lg:min-w-xl  flex grow items-center justify-center rounded-md border-0 bg-white  pl-4 md:mx-5 lg:max-w-2xl">
                     <input
                       type="text"
+                      onKeyDown={keywordHandler}
                       placeholder="Search for puroducts, brands and more"
                       className="mt-0 flex w-full border-0 px-0.5 focus:ring-0 "
                     />
-                    <SearchIcon className="h-5 w-5 text-indigo-600" />
+                    <button
+                      onClick={handleSubmit}
+                      className="Shadow-lg  rounded-r-md px-4 py-2.5 bg-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    >
+                      <SearchIcon className="h-5 w-5 text-indigo-600" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -298,46 +308,32 @@ const Header = () => {
                   <Disclosure.Button
                     key={uuidv4()}
                     as="a"
-                    to={`/products?category=${item.name}`}
-                    className={classNames(
-                      "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      "block rounded-md px-3 py-2 text-base font-medium"
-                    )}
-                    aria-current={item.current ? "page" : undefined}
+                    href={`/products?category=${item.name}`}
+                    className="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3  text-lg font-semibold"
                   >
                     {item.name}
                   </Disclosure.Button>
                 ))}
               </div>
               <div className="border-t border-gray-700 pt-4 pb-3">
-                {isAuth ? (
+                {isAuthenticated ? (
                   <>
                     <div className="flex items-center justify-between px-5">
                       <div className="flex items-center">
                         <div className="flex-shrink-0">
-                          {userContext.profileImageUrl === "" ? (
-                            <>
-                              <UserCircleIcon className="h-7 w-7 " />
-                            </>
-                          ) : (
-                            <img
-                              src={userContext.profileImageUrl}
-                              className="h-8 w-8 rounded-full"
-                              alt="avatar"
-                            />
-                          )}
+                          <UserCircleIcon className="h-7 w-7 " />
                         </div>
                         <div className="ml-3">
                           <div className="text-base font-medium leading-none text-white">
-                            {userContext.name || " Hello Guest"}
+                            {user.name || " Hello Guest"}
                           </div>
                           <div className="text-sm font-medium leading-none text-white">
-                            {userContext.email || "devshubhamyadav@gmail.com"}
+                            {user.email || "devshubhamyadav@gmail.com"}
                           </div>
                         </div>
                       </div>
                       <button
-                        onClick={authContext.logout}
+                        onClick={logoutHandler}
                         className="block rounded-md border-2 border-gray-900 px-2 py-1 text-lg font-semibold text-black hover:bg-gray-700 hover:text-white"
                       >
                         <LogoutIcon className="h-6 w-6" />
