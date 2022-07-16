@@ -92,7 +92,7 @@ const Header = () => {
     }
   };
 
-  const { isAuthenticated, userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector((state) => state.userLogin);
   const users = userInfo;
   const { cartItems } = useSelector((state) => state.cart);
   const logoutHandler = () => {
@@ -149,7 +149,7 @@ const Header = () => {
                   <div className="flex  flex-row items-center space-x-2 pr-2   sm:pr-0">
                     {/* Profile dropdown */}
                     <div className="hidden sm:flex">
-                      {!isAuthenticated ? (
+                      {!users ? (
                         <div className=" relative  rounded-md bg-white p-1.5 px-6 font-semibold text-indigo-600 shadow-sm">
                           <Link to="/auth/signin">Login</Link>
                         </div>
@@ -319,7 +319,7 @@ const Header = () => {
                 ))}
               </div>
               <div className="border-t border-gray-700 pt-4 pb-3">
-                {isAuthenticated ? (
+                {users ? (
                   <>
                     <div className="flex items-center justify-between px-5">
                       <div className="flex items-center">

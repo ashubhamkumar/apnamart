@@ -2,12 +2,16 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-  const { loading, isAuthenticated } = useSelector((state) => state.user);
+  const { loading, userInfo } = useSelector((state) => state.userLogin);
 
   return (
     <>
       {loading === false &&
-        (isAuthenticated === false ? <Navigate to="/login" replace="true" /> : children)}
+        (userInfo.token === "" ? (
+          <Navigate to="/login" replace="true" />
+        ) : (
+          children
+        ))}
     </>
   );
 };

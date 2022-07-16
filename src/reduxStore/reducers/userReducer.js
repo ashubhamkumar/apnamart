@@ -27,7 +27,7 @@ import {
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
-      return { loading: true, isAuthenticated: false, error: null };
+      return { loading: true, error: null };
     case USER_LOGIN_SUCCESS:
       return {
         loading: false,
@@ -36,9 +36,9 @@ export const userLoginReducer = (state = {}, action) => {
         error: null,
       };
     case USER_LOGIN_FAIL:
-      return { loading: false, error: action.payload, isAuthenticated: false };
+      return { loading: false, error: action.payload };
     case USER_LOGOUT:
-      return { loading: false, user: null, isAuthenticated: false };
+      return { loading: false, user: null };
     default:
       return state;
   }
