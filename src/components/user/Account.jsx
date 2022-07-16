@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../layout/Loader";
 import MetaTags from "../../utils/MetaTags";
+import ShippingAddress from "../Cart/ShippingAddress";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -58,7 +59,6 @@ const Account = () => {
                     </div>
                   </div>
                   {/* <!-- personal info --> */}
-
                   {/* <!-- email address info --> */}
                   <div className="flex flex-col gap-5 items-start">
                     <span className="font-medium text-lg">
@@ -92,7 +92,6 @@ const Account = () => {
                     </div>
                   </div>
                   {/* <!-- email address info --> */}
-
                   {/* <!-- mobile number info --> */}
                   <div className="flex flex-col gap-5 items-start">
                     <span className="font-medium text-lg">
@@ -119,7 +118,6 @@ const Account = () => {
                       </div>
                     </div>
                   </div>
-                  {/* <!-- mobile number info --> */}
 
                   {/* <!-- faqs --> */}
                   <div className="flex flex-col gap-4 mt-4">

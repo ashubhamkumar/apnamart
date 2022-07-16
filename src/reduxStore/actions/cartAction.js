@@ -3,7 +3,6 @@ import {
   ADD_TO_CART,
   EMPTY_CART,
   REMOVE_FROM_CART,
-  SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
 
 // add to cart
@@ -47,14 +46,4 @@ export const emptyCart = () => async (dispatch, getState) => {
   dispatch({ type: EMPTY_CART });
 
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
-};
-
-// save shipping info
-export const saveShippingInfo = (data) => async (dispatch) => {
-  dispatch({
-    type: SAVE_SHIPPING_INFO,
-    payload: data,
-  });
-
-  localStorage.setItem("shippingInfo", JSON.stringify(data));
 };

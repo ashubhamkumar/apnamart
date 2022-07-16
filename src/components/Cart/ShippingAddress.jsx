@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { saveShippingInfo } from "../../reduxStore/actions/cartAction";
+import { fillUserAddress } from "../../reduxStore/actions/userAction";
 import { toast } from "react-toastify";
 const ShippingAddress = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -18,19 +18,22 @@ const ShippingAddress = () => {
   const [country, setcountry] = useState("");
 
   const dispatch = useDispatch();
-  //   const { datas } = useSelector((state) => state.saveShippingInfo);
-  const saveAddressHandler = () => {
+  const { shippingInfo, userInfo } = useSelector((state) => state.userLogin);
+
+  const saveAddressHandler = (e) => {
+    e.preventDefault();
     console.log("api hit");
     if (
-      streetAddress === "" &&
-      city === "" &&
-      state === "" &&
-      zip.length === 5 &&
+      streetAddress === "" ||
+      city === "" ||
+      state === "" ||
+      zip.length === 5 ||
       country === ""
     ) {
       toast.warn("Please fill all the fields");
     } else {
-      dispatch(saveShippingInfo(streetAddress, city, country, state, zip));
+      dispatch(fillUserAddress(streetAddress, city, state, country, zip));
+      stopEditingHandler();
     }
   };
 
@@ -42,12 +45,13 @@ const ShippingAddress = () => {
             <p className="text-base sm:text-lg px-2 text-indigo-600 font-bold leading-normal ">
               Shipping Address
             </p>
-            <div className="px-2">
-              <div>
-                <span className="text-indigo-600">Deliver to: </span>
+            <div className="px-2 flex">
+              <span className="text-indigo-600">Deliver to: </span>
+              <div className="space-x-2 px-4">
                 <span className="text-gray-900 font-semibold">
-                  {"userName"}
+                  {userInfo?.name.split(" ", 1) || "Guest"}
                 </span>
+                <span className="text">{shippingInfo.zip || ""}</span>
               </div>
             </div>
           </div>
@@ -77,11 +81,18 @@ const ShippingAddress = () => {
                       Street address
                     </label>
                     <input
-                      onChange={(e) => setstreetAddress(e.target.value)}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setstreetAddress(e.target.value);
+                      }}
                       value={streetAddress}
                       type="text"
                       name="street-address"
                       id="street-address"
+                      placeholder={
+                        shippingInfo.streetAddress ||
+                        " Enter your street address"
+                      }
                       autoComplete="street-address"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -95,11 +106,15 @@ const ShippingAddress = () => {
                       City
                     </label>
                     <input
-                      onChange={(e) => setcity(e.target.value)}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setcity(e.target.value);
+                      }}
                       value={city}
                       type="text"
                       name="city"
                       id="city"
+                      placeholder={shippingInfo.city || "Enter your city"}
                       autoComplete="address-level2"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -113,11 +128,15 @@ const ShippingAddress = () => {
                       State / Province
                     </label>
                     <input
-                      onChange={(e) => setstate(e.target.value)}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setstate(e.target.value);
+                      }}
                       value={state}
                       type="text"
                       name="region"
                       id="region"
+                      placeholder={shippingInfo.state || "Enter your state"}
                       autoComplete="address-level1"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -135,6 +154,7 @@ const ShippingAddress = () => {
                       type="text"
                       id="country"
                       name="country"
+                      placeholder={shippingInfo.country || "Enter your country"}
                       autoComplete="country-name"
                       className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -153,6 +173,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="postal-code"
                       id="postal-code"
+                      placeholder={shippingInfo.zip || "Enter your zip code"}
                       autoComplete="postal-code"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />

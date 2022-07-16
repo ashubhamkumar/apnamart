@@ -12,6 +12,9 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_DETAILS_RESET,
   USER_LIST_RESET,
+  FILL_USER_ADDRESS_REQUEST,
+  FILL_USER_ADDRESS_SUCCESS,
+  FILL_USER_ADDRESS_FAIL,
 } from "../constants/userConstants";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 
@@ -141,5 +144,47 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     });
   }
 };
+// Fill User Address/ Shipping info
+export const fillUserAddress =
+  (streetAddress, city, state, country, zip) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FILL_USER_ADDRESS_REQUEST,
+      });
 
-// Clear All Errors
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await apnaMart.put(
+        `/app/fill-user-address`,
+        { streetAddress, city, state, country, zip },
+        config
+      );
+
+      dispatch({
+        type: FILL_USER_ADDRESS_SUCCESS,
+        payload: data,
+      });
+      localStorage.setItem("shippingInfo", JSON.stringify(data));
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      // if (message === "Not authorized, token failed") {
+      //   dispatch(logout());
+      // }
+      dispatch({
+        type: FILL_USER_ADDRESS_FAIL,
+        payload: message,
+      });
+    }
+  };
