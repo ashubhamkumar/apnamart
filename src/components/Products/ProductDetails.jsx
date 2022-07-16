@@ -21,7 +21,9 @@ function classNames(...classes) {
 export default function ProductDetails() {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const { product, error } = useSelector((state) => state.productDetails);
+  const { product, error, loading } = useSelector(
+    (state) => state.productDetails
+  );
   const products = product;
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function ProductDetails() {
   };
   return (
     <>
-      {!products ? (
+      {loading ? (
         <Loader />
       ) : (
         products &&

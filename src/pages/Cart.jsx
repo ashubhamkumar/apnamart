@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 //import { toast } from "react-toastify";
-
 import MetaTags from "../utils/MetaTags";
 import CartItem from "../components/Cart/CartItem";
 import EmptyCart from "../components/Cart/EmptyCart";
@@ -9,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import ShippingAddress from "../components/Cart/ShippingAddress";
 
-// //rozarpay
+//rozarpay
 // function loadScript(src) {
 //   return new Promise((resolve) => {
 //     const script = document.createElement("script");
@@ -125,13 +124,9 @@ const Cart = () => {
                   <CartItem key={uuidv4()} {...item} inCart={true} />
                 ))}
 
-              {/* <!-- place order btn --> */}
-
-              {/* <!-- place order btn --> */}
+              
             </div>
-            {/* <!-- cart items container --> */}
-
-            {/* <!-- saved for later items container --> */}
+           
           </div>
 
           <PriceSidebar cartItems={cartItems}>

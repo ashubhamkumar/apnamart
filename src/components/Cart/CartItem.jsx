@@ -43,9 +43,8 @@ const CartItem = ({
     dispatch(addItemsToCart(id, newQty));
   };
 
-  const removeCartItem = (id) => {
-    dispatch(removeItemsFromCart(id));
-    toast.success("Product Removed From Cart");
+  const removeCartItem = (_id) => {
+    dispatch(removeItemsFromCart(_id));
   };
 
   return (
