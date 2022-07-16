@@ -47,11 +47,13 @@ const ShippingAddress = () => {
             </p>
             <div className="px-2 flex">
               <span className="text-indigo-600">Deliver to: </span>
-              <div className="space-x-2 px-4">
+              <div className="space-x-1 px-4">
                 <span className="text-gray-900 font-semibold">
-                  {userInfo?.name.split(" ", 1) || "Guest"}
+                  {userInfo?.name.split(" ", 1) || "Guest"},
                 </span>
-                <span className="text">{shippingInfo.zip || ""}</span>
+                <span className="text-indigo-600">
+                  {shippingInfo?.zip || ""}
+                </span>
               </div>
             </div>
           </div>
@@ -90,7 +92,7 @@ const ShippingAddress = () => {
                       name="street-address"
                       id="street-address"
                       placeholder={
-                        shippingInfo.streetAddress ||
+                        shippingInfo?.streetAddress ||
                         " Enter your street address"
                       }
                       autoComplete="street-address"
@@ -114,7 +116,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="city"
                       id="city"
-                      placeholder={shippingInfo.city || "Enter your city"}
+                      placeholder={shippingInfo?.city || "Enter your city"}
                       autoComplete="address-level2"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -136,7 +138,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="region"
                       id="region"
-                      placeholder={shippingInfo.state || "Enter your state"}
+                      placeholder={shippingInfo?.state || "Enter your state"}
                       autoComplete="address-level1"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -154,7 +156,7 @@ const ShippingAddress = () => {
                       type="text"
                       id="country"
                       name="country"
-                      placeholder={shippingInfo.country || "Enter your country"}
+                      placeholder={shippingInfo?.country || "Enter your country"}
                       autoComplete="country-name"
                       className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -173,7 +175,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="postal-code"
                       id="postal-code"
-                      placeholder={shippingInfo.zip || "Enter your zip code"}
+                      placeholder={shippingInfo?.zip || "Enter your zip code"}
                       autoComplete="postal-code"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
