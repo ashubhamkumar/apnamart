@@ -394,7 +394,7 @@ const Products = () => {
                 <div className="lg:col-span-5 shadow bg-gray-50">
                   {loading && <Loader />}{" "}
                   <div className="flex-1">
-                    {products?.length === 0 && (
+                    {!loading && products?.length === 0 ? (
                       <div className="flex flex-col items-center justify-center gap-3 bg-white shadow-sm rounded-sm p-6 sm:p-16">
                         <img
                           draggable="false"
@@ -410,16 +410,17 @@ const Products = () => {
                           something else
                         </p>
                       </div>
-                    )}
-                    <div className=" py-4  overflow-hidden bg-white">
-                      <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                        {products?.map((product) => (
-                          <div key={uuidv4()} className="group relative">
-                            <Product {...product} />
-                          </div>
-                        ))}
+                    ) : (
+                      <div className=" py-4  overflow-hidden bg-white">
+                        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                          {products?.map((product) => (
+                            <div key={uuidv4()} className="group relative">
+                              <Product {...product} />
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

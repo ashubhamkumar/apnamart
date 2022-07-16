@@ -1,17 +1,17 @@
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-  const { loading, userInfo } = useSelector((state) => state.userLogin);
+  let location = useLocation();
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   return (
     <>
-      {loading === false &&
-        (userInfo.token === "" ? (
-          <Navigate to="/login" replace="true" />
-        ) : (
-          children
-        ))}
+      {userInfo === null ? (
+        <Navigate to="/auth/signin" state={{ from: location }} replace />
+      ) : (
+        children
+      )}
     </>
   );
 };

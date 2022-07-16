@@ -1,27 +1,17 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import {
-  ChevronRightIcon,
+  CollectionIcon,
   UserIcon,
-  ChatIcon,
-  LogoutIcon,
+  CreditCardIcon,
+  SupportIcon,
 } from "@heroicons/react/solid";
 
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { logout } from "../../reduxStore/actions/userAction";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ activeTab }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const { user } = useSelector((state) => state.user);
-
-  const handleLogout = () => {
-    dispatch(logout());
-    toast.success("Logout Successfully");
-    navigate("/login");
-  };
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const user = userInfo;
 
   return (
     <div className="hidden sm:flex flex-col gap-4 w-1/4 px-1">
@@ -30,34 +20,27 @@ const Sidebar = ({ activeTab }) => {
         {/* <!-- user icon --> */}
 
         {/* <!-- user icon --> */}
-        <div className="flex flex-col gap-1">
-          <p className="text-xs">Hello,</p>
-          <h2 className="font-medium">{user.name}</h2>
+        <div className="flex flex-col gap-1 text-indigo-600">
+          <p className="text-sm">Hello,</p>
+          <h2 className="font-semibold text-xl">{user.name}</h2>
         </div>
       </div>
-      {/* <!-- profile card --> */}
 
       {/* <!-- nav tiles --> */}
       <div className="flex flex-col bg-white rounded-sm shadow">
         {/* <!-- my orders tab --> */}
-        <div className="flex items-center gap-5 px-4 py-4 border-b">
+        <div className="flex items-center gap-5 px-4 py-4 border-b border-indigo-500">
           <Link
-            className="flex w-full justify-between font-medium text-gray-500 hover:text-primary-blue"
+            className="flex w-full  font-medium text-gray-700 hover:text-indigo-600"
             to="/orders"
           >
-            MY ORDERS
-            <span>
-              <ChevronRightIcon />
-            </span>
+            <CollectionIcon className="h-6 text-indigo-500 " />
+            <span className="px-4 font-semibold uppercase">MY ORDERS</span>
           </Link>
         </div>
-        {/* <!-- my orders tab --> */}
 
-        {/* <!-- account settings tab --> */}
         <div className="flex items-center gap-5 px-4 py-4">
-          <span className="text-primary-blue">
-            <UserIcon />
-          </span>
+          <UserIcon className="h-7 text-indigo-500" />
           <p className="flex w-full justify-between font-medium text-gray-500">
             ACCOUNT SETTINGS
           </p>
@@ -67,8 +50,8 @@ const Sidebar = ({ activeTab }) => {
             to="/account"
             className={`${
               activeTab === "profile"
-                ? "bg-blue-50 text-primary-blue font-medium"
-                : "hover:bg-blue-50 hover:text-primary-blue"
+                ? "bg-indigo-100 text-indigo-600 font-medium"
+                : "hover:bg-indigo-50 hover:text-primary-blue"
             } p-3 pl-14`}
           >
             Profile Information
@@ -79,18 +62,11 @@ const Sidebar = ({ activeTab }) => {
           >
             Manage Addresses
           </Link>
-          <Link
-            className="p-3 pl-14 hover:bg-blue-50 hover:text-primary-blue"
-            to="/"
-          >
-            PAN Card Information
-          </Link>
         </div>
         {/* <!-- account settings tab --> */}
-
-        {/* <!-- payments tab --> */}
         <div className="flex items-center gap-5 px-4 py-4">
-          <p className="flex w-full justify-between font-medium text-gray-500">
+          <CreditCardIcon className="h-7 text-indigo-500" />
+          <p className="flex w-full justify-between font-medium text-indigo-600">
             PAYMENTS
           </p>
         </div>
@@ -99,7 +75,7 @@ const Sidebar = ({ activeTab }) => {
             className="p-3 pl-14 hover:bg-blue-50 hover:text-primary-blue flex justify-between pr-6"
             to="/"
           >
-            Gift Cards{" "}
+            Wallet
             <span className="font-medium text-primary-green">₹0</span>
           </Link>
           <Link
@@ -115,29 +91,11 @@ const Sidebar = ({ activeTab }) => {
             Saved Cards
           </Link>
         </div>
-        {/* <!-- payments tab --> */}
 
-        {/* <!-- my chats tab --> */}
-        <div className="flex items-center gap-5 px-4 py-4 border-b">
-          <span className="text-primary-blue">
-            <ChatIcon />
-          </span>
-          <Link
-            className="flex w-full justify-between font-medium text-gray-500 hover:text-primary-blue"
-            to="/"
-          >
-            MY CHATS
-            <span>
-              <ChevronRightIcon />
-            </span>
-          </Link>
-        </div>
-        {/* <!-- my chats tab --> */}
-
-        {/* <!-- my stuff tab --> */}
         <div className="flex items-center gap-5 px-4 py-4">
-          <p className="flex w-full justify-between font-medium text-gray-500">
-            MY STUFF
+          <SupportIcon className="h-7 text-indigo-500" />
+          <p className="flex w-full justify-between font-medium text-indigo-600">
+            Support 24x7
           </p>
         </div>
         <div className="flex flex-col pb-3 border-b text-sm">
@@ -145,57 +103,17 @@ const Sidebar = ({ activeTab }) => {
             className="p-3 pl-14 hover:bg-blue-50 hover:text-primary-blue"
             to="/"
           >
-            My Coupons
+            Help Center
           </Link>
           <Link
             className="p-3 pl-14 hover:bg-blue-50 hover:text-primary-blue"
             to="/"
           >
-            My Reviews & Ratings
-          </Link>
-          <Link
-            className="p-3 pl-14 hover:bg-blue-50 hover:text-primary-blue"
-            to="/"
-          >
-            All Notifications
-          </Link>
-          <Link
-            to="/wishlist"
-            className={`${
-              activeTab === "wishlist"
-                ? "bg-blue-50 text-primary-blue font-medium"
-                : "hover:bg-blue-50 hover:text-primary-blue"
-            } p-3 pl-14`}
-          >
-            My Wishlist
+            FAQ
           </Link>
         </div>
         {/* <!-- my stuff tab --> */}
-
-        {/* <!-- logout tab --> */}
-        <div className="flex items-center gap-5 px-4 py-4 border-b">
-          <div
-            className="flex w-full justify-between font-medium text-gray-500 hover:text-primary-blue cursor-pointer"
-            onClick={handleLogout}
-          >
-            Logout
-            <LogoutIcon className="h-5" />
-          </div>
-        </div>
-        {/* <!-- logout tab --> */}
       </div>
-      {/* <!-- nav tiles --> */}
-
-      {/* <!-- frequenty visited tab --> */}
-      <div className="flex flex-col items-start gap-2 p-4 bg-white rounded-sm shadow">
-        <span className="text-xs font-medium">Frequently Visited:</span>
-        <div className="flex gap-2.5 text-xs text-gray-500">
-          <Link to="/password/update">Change Password</Link>
-          <Link to="/orders">Track Order</Link>
-          <Link to="/">Help Center</Link>
-        </div>
-      </div>
-      {/* <!-- frequenty visited tab --> */}
     </div>
   );
 };

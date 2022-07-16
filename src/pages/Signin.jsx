@@ -14,18 +14,18 @@ const Signin = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
-  const { error, isAuthenticated } = useSelector((state) => state.userLogin);
+  const { error, userInfo } = useSelector((state) => state.userLogin);
 
-  const redirect = location.search ? location.search.split("=")[1] : "";
+  let redirectPath = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
-    if (isAuthenticated) {
-      navigate(`/${redirect}`);
+    if (userInfo !== null) {
+      navigate(redirectPath, { replace: true });
     }
-  }, [dispatch, error, isAuthenticated, redirect, navigate]);
+  }, [dispatch, error, userInfo, redirectPath, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -111,8 +111,8 @@ const Signin = () => {
                 <Link
                   className="text-indigo-500"
                   to={
-                    redirect
-                      ? `/auth/signup?redirect=${redirect}`
+                    redirectPath
+                      ? `/auth/signup?redirect=${redirectPath}`
                       : "/auth/signup"
                   }
                 >

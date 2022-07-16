@@ -61,7 +61,6 @@ export const categories = [
 const userNavigation = [
   { name: "My Profile", to: "/account" },
   { name: "Orders", to: "/orders" },
-  { name: "Coupons", to: "/" },
   { name: "Notifications", to: "/" },
 ];
 
