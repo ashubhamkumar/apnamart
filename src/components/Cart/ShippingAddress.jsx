@@ -22,7 +22,6 @@ const ShippingAddress = () => {
   const address = userInfo?.address || shippingInfo;
   const saveAddressHandler = (e) => {
     e.preventDefault();
-    console.log("api hit");
     if (
       streetAddress === "" ||
       city === "" ||
