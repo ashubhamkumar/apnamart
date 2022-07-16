@@ -157,6 +157,7 @@ const Products = () => {
                                 {categories.map((el, i) => (
                                   <FormControlLabel
                                     value={el}
+                                    key={uuidv4()}
                                     control={
                                       <Radio
                                         size="small"
@@ -207,7 +208,7 @@ const Products = () => {
                                 {[4, 3, 2, 1].map((el, i) => (
                                   <FormControlLabel
                                     value={el}
-                                    key={i}
+                                    key={uuidv4()}
                                     control={
                                       <Radio
                                         size="small"
@@ -311,6 +312,7 @@ const Products = () => {
                             {categories.map((el, i) => (
                               <FormControlLabel
                                 value={el}
+                                key={uuidv4()}
                                 control={
                                   <Radio
                                     size="small"
@@ -361,7 +363,7 @@ const Products = () => {
                             {[4, 3, 2, 1].map((el, i) => (
                               <FormControlLabel
                                 value={el}
-                                key={i}
+                                key={uuidv4()}
                                 control={
                                   <Radio
                                     size="small"

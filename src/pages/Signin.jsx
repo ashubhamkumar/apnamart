@@ -4,24 +4,18 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, loginUser } from "../reduxStore/actions/userAction";
+import { clearErrors, login } from "../reduxStore/actions/userAction";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const location = useLocation();
-
-  const { isAuthenticated, error } = useSelector((state) => state.user);
-
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const handleLogin = (e) => {
-    e.preventDefault();
-    dispatch(loginUser(email, password));
-  };
 
-  const redirect = location.search ? location.search.split("=")[1] : "";
+  const { isAuthenticated, error } = useSelector((state) => state.user);
+  const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (error) {
@@ -33,6 +27,10 @@ const Signin = () => {
     }
   }, [dispatch, error, isAuthenticated, redirect, navigate]);
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(login(email, password));
+  };
   return (
     <>
       <div className="min-h-full flex items-center h-screen justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -110,7 +108,14 @@ const Signin = () => {
             </div>
             <div className="flex items-center justify-between leading-6">
               <div className="text-base font-medium">
-                <Link className="text-indigo-500" to="/auth/signup">
+                <Link
+                  className="text-indigo-500"
+                  to={
+                    redirect
+                      ? `/auth/signup?redirect=${redirect}`
+                      : "/auth/signup"
+                  }
+                >
                   Create an Account
                 </Link>{" "}
               </div>

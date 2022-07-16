@@ -1,159 +1,261 @@
 import axios from "axios";
-import { ALL_ORDERS_FAIL, ALL_ORDERS_REQUEST, ALL_ORDERS_SUCCESS, CLEAR_ERRORS, DELETE_ORDER_FAIL, DELETE_ORDER_REQUEST, DELETE_ORDER_SUCCESS, MY_ORDERS_FAIL, MY_ORDERS_REQUEST, MY_ORDERS_SUCCESS, NEW_ORDER_FAIL, NEW_ORDER_REQUEST, NEW_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, PAYMENT_STATUS_FAIL, PAYMENT_STATUS_REQUEST, PAYMENT_STATUS_SUCCESS, UPDATE_ORDER_FAIL, UPDATE_ORDER_REQUEST, UPDATE_ORDER_SUCCESS } from "../constants/orderConstants";
+import { CART_CLEAR_ITEMS } from "../constants/cartConstants";
+import {
+  ORDER_CREATE_REQUEST,
+  ORDER_CREATE_SUCCESS,
+  ORDER_CREATE_FAIL,
+  ORDER_DETAILS_FAIL,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_REQUEST,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_REQUEST,
+  ORDER_LIST_MY_REQUEST,
+  ORDER_LIST_MY_SUCCESS,
+  ORDER_LIST_MY_FAIL,
+  ORDER_LIST_FAIL,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_REQUEST,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_REQUEST,
+} from "../constants/orderConstants";
+import { logout } from "./userActions";
 
-// New Order
-export const newOrder = (order) => async (dispatch) => {
-    try {
-        dispatch({ type: NEW_ORDER_REQUEST });
+export const createOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_CREATE_REQUEST,
+    });
 
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-        const { data } = await axios.post('/api/v1/order/new', order, config);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-        dispatch({
-            type: NEW_ORDER_SUCCESS,
-            payload: data,
-        })
+    const { data } = await axios.post(`/api/orders`, order, config);
 
-    } catch (error) {
-        dispatch({
-            type: NEW_ORDER_FAIL,
-            payload: error.response.data.message,
-        });
+    dispatch({
+      type: ORDER_CREATE_SUCCESS,
+      payload: data,
+    });
+    dispatch({
+      type: CART_CLEAR_ITEMS,
+      payload: data,
+    });
+    localStorage.removeItem("cartItems");
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
+    dispatch({
+      type: ORDER_CREATE_FAIL,
+      payload: message,
+    });
+  }
 };
 
-// Get User Orders
-export const myOrders = () => async (dispatch) => {
-    try {
-        dispatch({ type: MY_ORDERS_REQUEST });
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_DETAILS_REQUEST,
+    });
 
-        const { data } = await axios.get('/api/v1/orders/me');
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-        dispatch({
-            type: MY_ORDERS_SUCCESS,
-            payload: data.orders,
-        })
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-    } catch (error) {
-        dispatch({
-            type: MY_ORDERS_FAIL,
-            payload: error.response.data.message,
-        });
+    const { data } = await axios.get(`/api/orders/${id}`, config);
+
+    dispatch({
+      type: ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
+    dispatch({
+      type: ORDER_DETAILS_FAIL,
+      payload: message,
+    });
+  }
 };
 
-// Get Order Details
-export const getOrderDetails = (id) => async (dispatch) => {
+export const payOrder =
+  (orderId, paymentResult) => async (dispatch, getState) => {
     try {
-        dispatch({ type: ORDER_DETAILS_REQUEST });
+      dispatch({
+        type: ORDER_PAY_REQUEST,
+      });
 
-        const { data } = await axios.get(`/api/v1/order/${id}`);
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-        dispatch({
-            type: ORDER_DETAILS_SUCCESS,
-            payload: data.order,
-        })
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
+      const { data } = await axios.put(
+        `/api/orders/${orderId}/pay`,
+        paymentResult,
+        config
+      );
+
+      dispatch({
+        type: ORDER_PAY_SUCCESS,
+        payload: data,
+      });
     } catch (error) {
-        dispatch({
-            type: ORDER_DETAILS_FAIL,
-            payload: error.response.data.message,
-        });
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
+      dispatch({
+        type: ORDER_PAY_FAIL,
+        payload: message,
+      });
     }
+  };
+
+export const deliverOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_DELIVER_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/orders/${order._id}/deliver`,
+      {},
+      config
+    );
+
+    dispatch({
+      type: ORDER_DELIVER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+    dispatch({
+      type: ORDER_DELIVER_FAIL,
+      payload: message,
+    });
+  }
 };
 
-// Get Payment Status
-export const getPaymentStatus = (id) => async (dispatch) => {
-    try {
-        dispatch({ type: PAYMENT_STATUS_REQUEST });
+export const listMyOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_MY_REQUEST,
+    });
 
-        const { data } = await axios.get(`/api/v1/payment/status/${id}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-        dispatch({
-            type: PAYMENT_STATUS_SUCCESS,
-            payload: data.txn,
-        })
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-    } catch (error) {
-        dispatch({
-            type: PAYMENT_STATUS_FAIL,
-            payload: error.response.data.message,
-        });
+    const { data } = await axios.get(`/api/orders/myorders`, config);
+
+    dispatch({
+      type: ORDER_LIST_MY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
+    dispatch({
+      type: ORDER_LIST_MY_FAIL,
+      payload: message,
+    });
+  }
 };
 
-// Get All Orders ---ADMIN
-export const getAllOrders = () => async (dispatch) => {
-    try {
-        dispatch({ type: ALL_ORDERS_REQUEST });
+export const listOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_REQUEST,
+    });
 
-        const { data } = await axios.get('/api/v1/admin/orders');
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-        dispatch({
-            type: ALL_ORDERS_SUCCESS,
-            payload: data.orders,
-        })
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-    } catch (error) {
-        dispatch({
-            type: ALL_ORDERS_FAIL,
-            payload: error.response.data.message,
-        });
+    const { data } = await axios.get(`/api/orders`, config);
+
+    dispatch({
+      type: ORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
+    dispatch({
+      type: ORDER_LIST_FAIL,
+      payload: message,
+    });
+  }
 };
-
-// Update Order ---ADMIN
-export const updateOrder = (id, order) => async (dispatch) => {
-    try {
-        dispatch({ type: UPDATE_ORDER_REQUEST });
-
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-
-        const { data } = await axios.put(`/api/v1/admin/order/${id}`, order, config);
-
-        dispatch({
-            type: UPDATE_ORDER_SUCCESS,
-            payload: data.success,
-        });
-
-    } catch (error) {
-        dispatch({
-            type: UPDATE_ORDER_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
-
-// Delete Order ---ADMIN
-export const deleteOrder = (id) => async (dispatch) => {
-    try {
-        dispatch({ type: DELETE_ORDER_REQUEST });
-
-        const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
-
-        dispatch({
-            type: DELETE_ORDER_SUCCESS,
-            payload: data.success,
-        })
-
-    } catch (error) {
-        dispatch({
-            type: DELETE_ORDER_FAIL,
-            payload: error.response.data.message,
-        });
-    }
-};
-
-// Clear All Errors
-export const clearErrors = () => (dispatch) => {
-    dispatch({ type: CLEAR_ERRORS });
-}

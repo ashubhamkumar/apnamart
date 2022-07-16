@@ -59,8 +59,8 @@ export const categories = [
   },
 ];
 const userNavigation = [
-  { name: "My Profile", to: "/" },
-  { name: "Orders", to: "/" },
+  { name: "My Profile", to: "/account" },
+  { name: "Orders", to: "/orders" },
   { name: "Coupons", to: "/" },
   { name: "Notifications", to: "/" },
 ];
@@ -91,7 +91,10 @@ const Header = () => {
     }
   };
 
-  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const res = useSelector((state) => state.user);
+  console.log(res);
+  const isAuthenticated = res.isAuthenticated;
+  const users = res.user;
 
   const { cartItems } = useSelector((state) => state.cart);
   const logoutHandler = () => {};
@@ -155,9 +158,7 @@ const Header = () => {
                           <Menu as="div" className=" relative">
                             <div>
                               <Menu.Button className=" flex items-center justify-between space-x-2 rounded-md bg-white p-1.5 px-4 text-base font-semibold text-indigo-600 shadow">
-                                <p className="">
-                                  {user.name || "Welcome User"}
-                                </p>
+                                <p className="">{"Welcome User"}</p>
                                 <UserCircleIcon className="h-7 w-7 " />
                               </Menu.Button>
                             </div>
@@ -325,10 +326,10 @@ const Header = () => {
                         </div>
                         <div className="ml-3">
                           <div className="text-base font-medium leading-none text-white">
-                            {user.name || " Hello Guest"}
+                            {users.name || " Hello Guest"}
                           </div>
                           <div className="text-sm font-medium leading-none text-white">
-                            {user.email || "devshubhamyadav@gmail.com"}
+                            {users.email || "devshubhamyadav@gmail.com"}
                           </div>
                         </div>
                       </div>

@@ -20,7 +20,7 @@ const DealSlider = ({ title, time }) => {
         </div>
         <Link
           to="/products"
-          className="whitespace-nowrap rounded-sm bg-indigo-400 px-4 py-2 text-sm font-semibold leading-4 text-white shadow-lg"
+          className="whitespace-nowrap rounded-sm bg-indigo-500 px-4 py-2 text-sm font-semibold leading-4 text-white shadow-lg"
         >
           VIEW ALL
         </Link>

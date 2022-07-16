@@ -9,31 +9,29 @@ import "swiper/css/pagination";
 import "./styles.css";
 const Slider = (props) => {
   return (
-    
-      <Swiper
-        slidesPerView={2}
-        spaceBetween={10}
-        navigation={true}
-       
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          768: {
-            slidesPerView: 4,
-            spaceBetween: 10,
-          },
-          1024: {
-            slidesPerView: 8,
-            spaceBetween: 10,
-          },
-        }}
-        modules={[Navigation]}
-        className="mySwiper"
-      >
-        {props.children}
-      </Swiper>
+    <Swiper
+      slidesPerView={1}
+      spaceBetween={10}
+      navigation={true}
+      breakpoints={{
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        1024: {
+          slidesPerView: 6,
+          spaceBetween: 10,
+        },
+      }}
+      modules={[Navigation]}
+      className="mySwiper mySwipers"
+    >
+      {props.children}
+    </Swiper>
   );
 };
 

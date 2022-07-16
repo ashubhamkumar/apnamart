@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
+
 //pages
 const Header = lazy(() => import("./components/header/Header"));
 const SignupOtpVerification = lazy(() =>
@@ -18,8 +19,11 @@ const Products = lazy(() => import("./pages/Products"));
 const ProductDetails = lazy(() =>
   import("./components/Products/ProductDetails")
 );
+const Account = lazy(() => import("./components/user/Account"));
+
 const App = () => {
   const { pathname } = useLocation();
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -27,7 +31,9 @@ const App = () => {
       behavior: "smooth",
     });
   }, [pathname]);
-
+  // useEffect(() => {
+  //   dispatch({ type: LOGIN_USER_SUCCESS });
+  // }, [dispatch]);
   return (
     <>
       <Header />
@@ -51,11 +57,19 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
       <Footer />
       {/* tost */}
       <ToastContainer
-        position="top-center"
+        position="bottom-center"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop

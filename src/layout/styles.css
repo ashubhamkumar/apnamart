@@ -4,8 +4,12 @@
   
 }
 .mySwiper{
-  padding: 0 20px !important;
+  padding: 0 10px !important;
 }
+.mySwipers{
+  padding: 0 40px !important;
+}
+
 
 .swiper-slide {
   text-align: center;
@@ -39,7 +43,7 @@
   height: 30% !important;
   width: 50px !important;
   color: white !important;
-  background: #818cf8 !important;
+  background: #6366f1 !important;
   border-radius: 6px !important;
   box-shadow: 10px !important;
 }
@@ -48,7 +52,7 @@
   top: 35% !important;
   height: 30% !important;
   width: 50px !important;
-  background: #818cf8 !important;
+  background: #6366f1 !important;
   color: white !important;
   border-radius: 6px !important;
   box-shadow: 10px !important;
