@@ -19,7 +19,7 @@ const ShippingAddress = () => {
 
   const dispatch = useDispatch();
   const { shippingInfo, userInfo } = useSelector((state) => state.userLogin);
-
+  const address = userInfo?.address || shippingInfo;
   const saveAddressHandler = (e) => {
     e.preventDefault();
     console.log("api hit");
@@ -51,9 +51,7 @@ const ShippingAddress = () => {
                 <span className="text-gray-900 font-semibold">
                   {userInfo?.name.split(" ", 1) || "Guest"},
                 </span>
-                <span className="text-indigo-600">
-                  {shippingInfo?.zip || ""}
-                </span>
+                <span className="text-indigo-600">{address?.zip || ""}</span>
               </div>
             </div>
           </div>
@@ -92,8 +90,7 @@ const ShippingAddress = () => {
                       name="street-address"
                       id="street-address"
                       placeholder={
-                        shippingInfo?.streetAddress ||
-                        " Enter your street address"
+                        address?.streetAddress || " Enter your street address"
                       }
                       autoComplete="street-address"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -116,7 +113,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="city"
                       id="city"
-                      placeholder={shippingInfo?.city || "Enter your city"}
+                      placeholder={address?.city || "Enter your city"}
                       autoComplete="address-level2"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -138,7 +135,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="region"
                       id="region"
-                      placeholder={shippingInfo?.state || "Enter your state"}
+                      placeholder={address?.state || "Enter your state"}
                       autoComplete="address-level1"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
@@ -156,7 +153,7 @@ const ShippingAddress = () => {
                       type="text"
                       id="country"
                       name="country"
-                      placeholder={shippingInfo?.country || "Enter your country"}
+                      placeholder={address?.country || "Enter your country"}
                       autoComplete="country-name"
                       className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -175,7 +172,7 @@ const ShippingAddress = () => {
                       type="text"
                       name="postal-code"
                       id="postal-code"
-                      placeholder={shippingInfo?.zip || "Enter your zip code"}
+                      placeholder={address?.zip || "Enter your zip code"}
                       autoComplete="postal-code"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
