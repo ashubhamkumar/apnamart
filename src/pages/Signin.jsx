@@ -4,7 +4,7 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, login } from "../reduxStore/actions/userAction";
+import { login } from "../reduxStore/actions/userAction";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -14,13 +14,13 @@ const Signin = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
-  const { isAuthenticated, error } = useSelector((state) => state.user);
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const { error, isAuthenticated } = useSelector((state) => state.userLogin);
+
+  const redirect = location.search ? location.search.split("=")[1] : "";
 
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearErrors());
     }
     if (isAuthenticated) {
       navigate(`/${redirect}`);

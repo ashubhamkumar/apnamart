@@ -12,9 +12,9 @@ import {
   LogoutIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-
+import { logout } from "../../reduxStore/actions/userAction";
 //categories icons
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import mobiles from "../../assets/images/Categories/phone.png";
 import fashion from "../../assets/images/Categories/fashion.png";
 import electronics from "../../assets/images/Categories/electronics.png";
@@ -72,6 +72,7 @@ function classNames(...classes) {
 const Header = () => {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const keywordHandler = (e) => {
     setKeyword(e.target.value);
@@ -91,13 +92,12 @@ const Header = () => {
     }
   };
 
-  const res = useSelector((state) => state.user);
-  console.log(res);
-  const isAuthenticated = res.isAuthenticated;
-  const users = res.user;
-
+  const { isAuthenticated, userInfo } = useSelector((state) => state.userLogin);
+  const users = userInfo;
   const { cartItems } = useSelector((state) => state.cart);
-  const logoutHandler = () => {};
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
   return (
     <>
       <Disclosure
@@ -158,7 +158,9 @@ const Header = () => {
                           <Menu as="div" className=" relative">
                             <div>
                               <Menu.Button className=" flex items-center justify-between space-x-2 rounded-md bg-white p-1.5 px-4 text-base font-semibold text-indigo-600 shadow">
-                                <p className="">{"Welcome User"}</p>
+                                <p className="">
+                                  {users.name || " Hello Guest"}
+                                </p>
                                 <UserCircleIcon className="h-7 w-7 " />
                               </Menu.Button>
                             </div>
@@ -329,7 +331,7 @@ const Header = () => {
                             {users.name || " Hello Guest"}
                           </div>
                           <div className="text-sm font-medium leading-none text-white">
-                            {users.email || "devshubhamyadav@gmail.com"}
+                            {users.email || "guest@gmail.com"}
                           </div>
                         </div>
                       </div>

@@ -22,24 +22,23 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_PROFILE_RESET,
-  CLEAR_ERRORS,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
-      return { loading: true };
+      return { loading: true, isAuthenticated: false, error: null };
     case USER_LOGIN_SUCCESS:
-      return { loading: false, userInfo: action.payload };
-    case USER_LOGIN_FAIL:
-      return { loading: false, error: action.payload };
-    case USER_LOGOUT:
-      return {};
-    case CLEAR_ERRORS:
       return {
-        ...state,
+        loading: false,
+        userInfo: action.payload,
+        isAuthenticated: true,
         error: null,
       };
+    case USER_LOGIN_FAIL:
+      return { loading: false, error: action.payload, isAuthenticated: false };
+    case USER_LOGOUT:
+      return { loading: false, user: null, isAuthenticated: false };
     default:
       return state;
   }

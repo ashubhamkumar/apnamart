@@ -9,7 +9,7 @@ import {
 
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { logoutUser } from "../../reduxStore/actions/userAction";
+import { logout } from "../../reduxStore/actions/userAction";
 
 const Sidebar = ({ activeTab }) => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const Sidebar = ({ activeTab }) => {
   const { user } = useSelector((state) => state.user);
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    dispatch(logout());
     toast.success("Logout Successfully");
     navigate("/login");
   };

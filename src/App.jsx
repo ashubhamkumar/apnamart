@@ -7,12 +7,12 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 //pages
 const Header = lazy(() => import("./components/header/Header"));
-const SignupOtpVerification = lazy(() =>
-  import("./pages/auth/SignupOtpVerification")
-);
+// const SignupOtpVerification = lazy(() =>
+//   import("./pages/auth/SignupOtpVerification")
+// );
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Signin"));
-const Register = lazy(() => import("./pages/Signup"));
+//const Register = lazy(() => import("./pages/Signup"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Footer = lazy(() => import("./components/Footer"));
 const Products = lazy(() => import("./pages/Products"));
@@ -31,20 +31,18 @@ const App = () => {
       behavior: "smooth",
     });
   }, [pathname]);
-  // useEffect(() => {
-  //   dispatch({ type: LOGIN_USER_SUCCESS });
-  // }, [dispatch]);
+
   return (
     <>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth/signin" element={<Login />} />
-        <Route
+        {/* <Route
           path="/auth/signup/otp-verification"
           element={<SignupOtpVerification />}
         ></Route>
-        <Route path="/auth/signup" element={<Register />} />
+        <Route path="/auth/signup" element={<Register />} /> */}
         <Route path="/products" element={<Products />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/products" element={<Products />} />

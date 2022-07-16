@@ -12,7 +12,6 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_DETAILS_RESET,
   USER_LIST_RESET,
-  CLEAR_ERRORS,
 } from "../constants/userConstants";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 
@@ -29,17 +28,17 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await apnaMart.post(
-      "/api/users/login",
+      "/auth/user/signin",
       { email, password },
       config
     );
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: data,
+      payload: data.user,
     });
 
-    sessionStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem("userInfo", JSON.stringify(data.user));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -51,14 +50,14 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-export const logoutUser = () => (dispatch) => {
+export const logout = () => (dispatch) => {
   localStorage.clear();
-  sessionStorage.clear();
+
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: ORDER_LIST_MY_RESET });
   dispatch({ type: USER_LIST_RESET });
-  document.location.href = "/login";
+  document.location.href = "/auth/signin";
 };
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -74,14 +73,14 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await apnaMart.post(
-      "/api/users",
+      "/auth/user/signup",
       { name, email, password },
       config
     );
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
-      payload: data,
+      payload: data.user,
     });
 
     dispatch({
@@ -89,7 +88,7 @@ export const register = (name, email, password) => async (dispatch) => {
       payload: data,
     });
 
-    sessionStorage.setItem("userInfo", JSON.stringify(data));
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
@@ -135,7 +134,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     if (message === "Not authorized, token failed") {
-      dispatch(logoutUser());
+      dispatch(logout());
     }
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
@@ -145,6 +144,3 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 };
 
 // Clear All Errors
-export const clearErrors = () => async (dispatch) => {
-  dispatch({ type: CLEAR_ERRORS });
-};

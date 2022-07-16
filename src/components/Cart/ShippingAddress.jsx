@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AuthContext from "../../store/authContext";
-import UserContext from "../../store/userContext";
+
 import { saveShippingInfo } from "../../reduxStore/actions/cartAction";
 import { toast } from "react-toastify";
 const ShippingAddress = () => {
@@ -18,10 +17,6 @@ const ShippingAddress = () => {
   const [zip, setzip] = useState("");
   const [country, setcountry] = useState("");
 
-  const authContext = useContext(AuthContext);
-  const token = authContext.token;
-  const userContext = useContext(UserContext);
-
   const dispatch = useDispatch();
   //   const { datas } = useSelector((state) => state.saveShippingInfo);
   const saveAddressHandler = () => {
@@ -35,9 +30,7 @@ const ShippingAddress = () => {
     ) {
       toast.warn("Please fill all the fields");
     } else {
-      dispatch(
-        saveShippingInfo(streetAddress, city, country, state, zip, token)
-      );
+      dispatch(saveShippingInfo(streetAddress, city, country, state, zip));
     }
   };
 
@@ -53,7 +46,7 @@ const ShippingAddress = () => {
               <div>
                 <span className="text-indigo-600">Deliver to: </span>
                 <span className="text-gray-900 font-semibold">
-                  {userContext.name}
+                  {"userName"}
                 </span>
               </div>
             </div>

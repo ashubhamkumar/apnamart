@@ -9,12 +9,12 @@ import store from "./reduxStore/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Suspense fallback={<ThemedSuspense />}>
-        <BrowserRouter>
+    <Suspense fallback={<ThemedSuspense />}>
+      <BrowserRouter>
+        <Provider store={store}>
           <App />
-        </BrowserRouter>
-      </Suspense>
-    </Provider>
+        </Provider>
+      </BrowserRouter>
+    </Suspense>
   </React.StrictMode>
 );
