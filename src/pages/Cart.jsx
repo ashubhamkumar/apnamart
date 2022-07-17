@@ -7,6 +7,7 @@ import PriceSidebar from "../components/Cart/PriceSidebar";
 import { v4 as uuidv4 } from "uuid";
 import ShippingAddress from "../components/Cart/ShippingAddress";
 import apnaMart from "../api/apnaMart";
+import logo from "../assets/images/apnamartlogo.png";
 // rozarpay;
 function loadScript(src) {
   return new Promise((resolve) => {
@@ -65,40 +66,39 @@ const Cart = () => {
       name: "ApnaMart",
       description:
         "This is a test payment,balance will be not credited after payment",
-      image:
-        "https://raw.githubusercontent.com/ashubhamkumar/client-apnamart/master/public/apple-touch-icon.png?token=GHSAT0AAAAAABWVEIRYFVO6ND7MVPKEG7RUYWT7MAQ",
+      image: logo,
       handler: function (response) {
         try {
-          console.log(response);
-          apnaMart.post(
-            `/app/place-order`,
-            {
-              userName: userInfo.name,
-              userEmail: userInfo.email,
-              userPhone: userInfo.phone,
-              orderedProduct: cartItems,
-              shippingAddress: userInfo.address,
-              paymentResult: response,
-              razorpay: {
-                paymentId: response.razorpay_payment_id,
-                orderId: response.razorpay_order_id,
-                signature: response.razorpay_signature,
+          apnaMart
+            .post(
+              `/app/place-order`,
+              {
+                userName: userInfo.name,
+                userEmail: userInfo.email,
+                userPhone: userInfo.phone,
+                orderedProduct: cartItems,
+                shippingAddress: userInfo.address,
+                paymentResult: response,
+                razorpay: {
+                  paymentId: response.razorpay_payment_id,
+                  orderId: response.razorpay_order_id,
+                  signature: response.razorpay_signature,
+                },
+                totalAmount: totalAmount,
+                paymentStatus: response.razorpay_payment_status || "Success",
               },
-              totalAmount: totalAmount,
-              paymentStatus: response.razorpay_payment_status || "Success",
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          if (response.status === 201) {
-            toast(response.data.message);
-          } else {
-            toast("Payment Failed!");
-          }
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((res) => {
+              if (res.status === 201) {
+                toast.success(res.data.msg);
+              }
+            });
         } catch (error) {
           toast(error.response.data.message);
         }
@@ -112,6 +112,7 @@ const Cart = () => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
     paymentObject.on("payment.failed", function (response) {
+      console.log(response);
       toast(response.error.code);
       toast(response.error.description);
       toast(response.error.source);
