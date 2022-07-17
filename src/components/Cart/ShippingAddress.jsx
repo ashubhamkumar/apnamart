@@ -40,12 +40,12 @@ const ShippingAddress = () => {
     <div className="w-full shadow-md my-6 ">
       <div className=" px-4  py-4  rounded-t-lg bg-gray-50 ">
         <div className=" flex  items-center justify-between">
-          <div className=" flex justify-start items-center  divide-x-2 divide-indigo-600">
+          <div className=" flex justify-start items-center  flex-col sm:flex-row sm:divide-x-2  sm:divide-indigo-600">
             <p className="text-base sm:text-lg px-2 text-indigo-600 font-bold leading-normal ">
               Shipping Address
             </p>
-            <div className="px-2 flex">
-              <span className="text-indigo-600">Deliver to: </span>
+            <div className="px-2 flex  items-center flex-col sm:flex-row">
+              <span className="text-indigo-600 sr-only">Deliver to: </span>
               <div className="space-x-1 px-4">
                 <span className="text-gray-900 font-semibold">
                   {userInfo?.name.split(" ", 1) || "Guest"},
@@ -54,16 +54,14 @@ const ShippingAddress = () => {
               </div>
             </div>
           </div>
-          <div>
-            <button
-              onClick={startEditingHandler}
-              className="inline-flex sm:ml-3 mt-4 sm:mt-0 items-start justify-start px-6 py-3 bg-indigo-500 hover:bg-indigo-600 focus:outline-none rounded"
-            >
-              <p className="text-sm font-medium leading-none text-white">
-                Add/Change
-              </p>
-            </button>
-          </div>
+          <button
+            onClick={startEditingHandler}
+            className="inline-flex sm:ml-3 mt-4 sm:mt-0 items-start justify-start px-6 py-3 bg-indigo-500 hover:bg-indigo-600 focus:outline-none rounded"
+          >
+            <p className="text-sm font-medium leading-none text-white">
+              Add/Change
+            </p>
+          </button>
         </div>
       </div>
       {isEdit && (

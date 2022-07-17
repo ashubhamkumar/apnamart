@@ -4,6 +4,7 @@ import MetaTags from "../utils/MetaTags";
 import CartItem from "../components/Cart/CartItem";
 import EmptyCart from "../components/Cart/EmptyCart";
 import PriceSidebar from "../components/Cart/PriceSidebar";
+
 import { v4 as uuidv4 } from "uuid";
 import ShippingAddress from "../components/Cart/ShippingAddress";
 import apnaMart from "../api/apnaMart";
@@ -59,7 +60,7 @@ const Cart = () => {
     }
 
     const options = {
-      key: "rzp_test_CIj3XOazJCsjh7",
+      key: "rzp_live_oDexCNjkzuFdXU",
       currency: "INR",
       amount: orderData.amount,
       order_id: orderData.id,
@@ -97,6 +98,9 @@ const Cart = () => {
             .then((res) => {
               if (res.status === 201) {
                 toast.success(res.data.msg);
+              }
+              else {
+                toast.error(res.data.msg);
               }
             });
         } catch (error) {
