@@ -19,7 +19,7 @@ const ShippingAddress = () => {
 
   const dispatch = useDispatch();
   const { shippingInfo, userInfo } = useSelector((state) => state.userLogin);
-  const address = userInfo?.address || shippingInfo;
+  const address = shippingInfo || userInfo?.address;
   const saveAddressHandler = (e) => {
     e.preventDefault();
     if (

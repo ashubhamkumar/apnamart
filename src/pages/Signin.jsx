@@ -108,14 +108,7 @@ const Signin = () => {
             </div>
             <div className="flex items-center justify-between leading-6">
               <div className="text-base font-medium">
-                <Link
-                  className="text-indigo-500"
-                  to={
-                    redirectPath
-                      ? `/auth/signup?redirect=${redirectPath}`
-                      : "/auth/signup"
-                  }
-                >
+                <Link className="text-indigo-500" to="/auth/signup">
                   Create an Account
                 </Link>{" "}
               </div>

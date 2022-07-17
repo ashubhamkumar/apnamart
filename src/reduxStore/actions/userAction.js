@@ -171,9 +171,9 @@ export const fillUserAddress =
 
       dispatch({
         type: FILL_USER_ADDRESS_SUCCESS,
-        payload: data,
+        payload: data.address,
       });
-      localStorage.setItem("shippingInfo", JSON.stringify(data));
+      localStorage.setItem("shippingInfo", JSON.stringify(data.address));
     } catch (error) {
       const message =
         error.response && error.response.data.message

@@ -4,7 +4,7 @@ import MetaTags from "../utils/MetaTags";
 import CartItem from "../components/Cart/CartItem";
 import EmptyCart from "../components/Cart/EmptyCart";
 import PriceSidebar from "../components/Cart/PriceSidebar";
-
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import ShippingAddress from "../components/Cart/ShippingAddress";
 import apnaMart from "../api/apnaMart";
@@ -24,6 +24,7 @@ function loadScript(src) {
   });
 }
 const Cart = () => {
+  const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.userLogin);
   let token = userInfo?.token;
@@ -34,97 +35,101 @@ const Cart = () => {
   let orderData = {};
   const displayRazorpay = async (e) => {
     e.preventDefault();
-    try {
-      const response = await apnaMart.post(
-        `/app/create-order`,
-        { totalAmount },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+    if (!userInfo.address || !cartItems) {
+      toast.error("Please add shipping address");
+    } else {
+      try {
+        const response = await apnaMart.post(
+          `/app/create-order`,
+          { totalAmount },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          orderData = response.data.orderData;
         }
-      );
-      if (response.status === 200) {
-        orderData = response.data.orderData;
+      } catch (error) {
+        toast(error.response.data.message);
       }
-    } catch (error) {
-      toast(error.response.data.message);
-    }
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
-    if (!res) {
-      toast("Payment gateway failed to load !");
-      return;
-    }
 
-    const options = {
-      key: "rzp_live_oDexCNjkzuFdXU",
-      currency: "INR",
-      amount: orderData.amount,
-      order_id: orderData.id,
-      name: "ApnaMart",
-      description:
-        "This is a test payment,balance will be not credited after payment",
-      image: logo,
-      handler: function (response) {
-        try {
-          apnaMart
-            .post(
-              `/app/place-order`,
-              {
-                userName: userInfo.name,
-                userEmail: userInfo.email,
-                userPhone: userInfo.phone,
-                orderedProduct: cartItems,
-                shippingAddress: userInfo.address,
-                paymentResult: response,
-                razorpay: {
-                  paymentId: response.razorpay_payment_id,
-                  orderId: response.razorpay_order_id,
-                  signature: response.razorpay_signature,
+      const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
+      if (!res) {
+        toast("Payment gateway failed to load !");
+        return;
+      }
+      const options = {
+        key: "rzp_live_oDexCNjkzuFdXU",
+        currency: "INR",
+        amount: orderData.amount,
+        order_id: orderData.id,
+        name: "ApnaMart",
+        description:
+          "This is a test payment,balance will be not credited after payment",
+        image: logo,
+        handler: function (response) {
+          try {
+            apnaMart
+              .post(
+                `/app/place-order`,
+                {
+                  userName: userInfo.name,
+                  userEmail: userInfo.email,
+                  userPhone: userInfo.phone,
+                  orderedProduct: cartItems,
+                  shippingAddress: userInfo.address,
+                  paymentResult: response,
+                  razorpay: {
+                    paymentId: response.razorpay_payment_id,
+                    orderId: response.razorpay_order_id,
+                    signature: response.razorpay_signature,
+                  },
+                  totalAmount: totalAmount,
+                  paymentStatus: response.razorpay_payment_status || "Success",
                 },
-                totalAmount: totalAmount,
-                paymentStatus: response.razorpay_payment_status || "Success",
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-            .then((res) => {
-              if (res.status === 201) {
-                toast.success(res.data.msg);
-              }
-              else {
-                toast.error(res.data.msg);
-              }
-            });
-        } catch (error) {
-          toast(error.response.data.message);
-        }
-      },
-      prefill: {
-        name: userInfo?.name,
-        email: userInfo?.email,
-        contact: userInfo?.phone,
-      },
-    };
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-    paymentObject.on("payment.failed", function (response) {
-      console.log(response);
-      toast(response.error.code);
-      toast(response.error.description);
-      toast(response.error.source);
-      toast(response.error.step);
-      toast(response.error.reason);
-      toast(response.error.metadata.order_id);
-      toast(response.error.metadata.payment_id);
-    });
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then((res) => {
+                if (res.status === 201) {
+                  localStorage.removeItem("cartItems");
+                  toast.success(res.data.msg);
+                  navigate("/");
+                } else {
+                  toast.error(res.data.msg);
+                }
+              });
+          } catch (error) {
+            toast(error.response.data.message);
+          }
+        },
+        prefill: {
+          name: userInfo?.name,
+          email: userInfo?.email,
+          contact: userInfo?.phone,
+        },
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+      paymentObject.on("payment.failed", function (response) {
+        toast(response.error.code);
+        toast(response.error.description);
+        toast(response.error.source);
+        toast(response.error.step);
+        toast(response.error.reason);
+        toast(response.error.metadata.order_id);
+        toast(response.error.metadata.payment_id);
+      });
+    }
   };
 
   return (

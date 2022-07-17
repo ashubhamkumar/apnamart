@@ -1,10 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import apnaMart from "../api/apnaMart";
-import UserContext from "../store/userContext";
 import { toast } from "react-toastify";
 const Signup = () => {
-  const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
@@ -31,8 +29,9 @@ const Signup = () => {
         );
         if (response.status === 201) {
           toast(response.data.msg);
-          navigate("../auth/signup/otp-verification", { replace: true });
-          userContext.setEmail(email);
+          navigate(`../auth/signup/otp-verification/${email}`, {
+            replace: true,
+          });
         } else {
           toast.warn(response.data.msg);
         }
