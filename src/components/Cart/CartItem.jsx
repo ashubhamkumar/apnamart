@@ -4,7 +4,7 @@ import {
   PlusCircleIcon,
   TrashIcon,
   MinusCircleIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/solid";
 import {
   addItemsToCart,
   removeItemsFromCart,
@@ -109,23 +109,22 @@ const CartItem = ({
       </Link>
 
       <div className="flex justify-between mt-4 pr-4 sm:pr-0 sm:justify-start sm:gap-6">
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 space-x-4 items-center">
           <span
             onClick={() => decreaseQuantity(productId, quantity)}
-            className="w-7 h-7 text-3xl font-light   flex items-center justify-center cursor-pointer"
+            className="w-7 h-7 text-3xl font-light rounded-full  flex items-center justify-center hover:shadow-xl cursor-pointer"
           >
-            <MinusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 hover:shadow-xl" />
+            <MinusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 " />
           </span>
-          <input
-            className="w-11 border outline-none text-center rounded-sm py-0.5 text-indigo-700 font-medium text-sm "
-            value={quantity}
-            disabled
-          />
+          <span className="text-xl font-light  text-indigo-600">
+            {quantity}
+          </span>
+
           <span
             onClick={() => increaseQuantity(productId, quantity, stock)}
-            className="w-7 h-7 text-xl font-light   flex items-center justify-center cursor-pointer"
+            className="w-7 h-7 text-xl font-light  rounded-full  flex items-center  hover:shadow-xl justify-center cursor-pointer"
           >
-            <PlusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 hover:shadow-xl" />
+            <PlusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 " />
           </span>
         </div>
         {/* <!-- quantity --> */}
@@ -140,7 +139,7 @@ const CartItem = ({
           </>
         )}
       </div>
-      {/* <!-- save for later --> */}
+     
     </div>
   );
 };

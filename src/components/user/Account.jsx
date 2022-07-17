@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../layout/Loader";
 import MetaTags from "../../utils/MetaTags";
-import ShippingAddress from "../Cart/ShippingAddress";
 
 const Account = () => {
   const navigate = useNavigate();
