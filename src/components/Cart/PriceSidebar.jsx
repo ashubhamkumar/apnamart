@@ -56,6 +56,10 @@ const PriceSidebar = (props) => {
               <LockClosedIcon className="h-4 px-1" />
               Secure Transaction
             </span>
+            <span className="text-red-500 my-2">
+              Note : Payment gateway in live mode. After payment you won't get
+              any refund or product.
+            </span>
           </div>
         </div>
       </div>

@@ -70,7 +70,7 @@ const Cart = () => {
         order_id: orderData.id,
         name: "ApnaMart",
         description:
-          "This is a test payment,balance will be not credited after payment",
+          "Payment Gateway in Live Mode. ",
         image: logo,
         handler: function (response) {
           try {
