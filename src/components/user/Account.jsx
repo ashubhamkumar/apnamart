@@ -31,11 +31,11 @@ const Account = () => {
               <div className="flex-1 overflow-hidden shadow bg-white">
                 <div className="flex flex-col gap-12 m-4 sm:mx-8 sm:my-6">
                   <div className="flex flex-col gap-5 items-start">
-                    <div className="font-medium text-lg flex justify-between items-center uppercase text-indigo-600">
+                    <div className="font-medium text-lg flex justify-between items-center ca text-indigo-600">
                       <span>Personal Information</span>
                       <Link
                         to="/account/update"
-                        className="text-sm text-primary-blue font-medium ml-8 cursor-pointer"
+                        className="text-sm  font-medium ml-8 cursor-pointer"
                       >
                         Edit
                       </Link>
