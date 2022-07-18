@@ -123,11 +123,8 @@ const Cart = () => {
       paymentObject.on("payment.failed", function (response) {
         toast(response.error.code);
         toast(response.error.description);
-        toast(response.error.source);
-        toast(response.error.step);
         toast(response.error.reason);
-        toast(response.error.metadata.order_id);
-        toast(response.error.metadata.payment_id);
+        
       });
     }
   };
@@ -142,7 +139,7 @@ const Cart = () => {
           <div className="flex-1">
             <ShippingAddress />
             {/* <!-- cart items container --> */}
-            <div className="flex flex-col shadow bg-white">
+            <div className="flex flex-col shadow my-4 bg-white">
               <span className="font-semibold text-indigo-600 text-lg px-2 sm:px-8 py-4 border-b">
                 My Cart ({cartItems.length})
               </span>
@@ -161,7 +158,7 @@ const Cart = () => {
               onClick={displayRazorpay}
               data-payment_button_id="pl_JuIZnt0weQhXaZ"
               disabled={cartItems.length < 1 ? true : false}
-              className="flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+              className={"flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"}
             >
               PLACE ORDER
             </button>

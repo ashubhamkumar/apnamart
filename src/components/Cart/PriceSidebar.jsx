@@ -50,7 +50,7 @@ const PriceSidebar = (props) => {
             </span>
           </p>
 
-          <div className="flex justify-center flex-col text-center text-sm py-4 text-gray-500">
+          <div className="flex justify-center flex-col text-center text-sm pt-4 text-gray-500">
             {props.children}
             <span className=" flex justify-center items-center  text-black my-1">
               <LockClosedIcon className="h-4 px-1" />

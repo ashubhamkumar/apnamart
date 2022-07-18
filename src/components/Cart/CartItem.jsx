@@ -86,8 +86,8 @@ const CartItem = ({
                   ₹{quantity * 40}
                 </span>
               </p>
-              <span className="text-xs text-gray-500">
-                7 Days Replacement Policy
+              <span className="text-xs text-indigo-500">
+                7 Days Replacement Policy.
               </span>
             </div>
           </div>
@@ -99,7 +99,7 @@ const CartItem = ({
             <span className="text-sm text-gray-500 line-through font-normal">
               ₹{(price * quantity).toFixed(2)}
             </span>
-            <span className="text-sm text-primary-green">
+            <span className="text-sm text-indigo-600">
               {discount}%&nbsp;off
             </span>
           </div>
@@ -114,7 +114,7 @@ const CartItem = ({
             onClick={() => decreaseQuantity(productId, quantity)}
             className="w-7 h-7 text-3xl font-light rounded-full  flex items-center justify-center hover:shadow-xl cursor-pointer"
           >
-            <MinusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 " />
+            <MinusCircleIcon className="h-7 text-gray-600 hover:text-indigo-500 " />
           </span>
           <span className="text-xl font-light  text-indigo-600">
             {quantity}
@@ -124,7 +124,7 @@ const CartItem = ({
             onClick={() => increaseQuantity(productId, quantity, stock)}
             className="w-7 h-7 text-xl font-light  rounded-full  flex items-center  hover:shadow-xl justify-center cursor-pointer"
           >
-            <PlusCircleIcon className="h-7 text-gray-700 hover:text-indigo-500 " />
+            <PlusCircleIcon className="h-7 text-gray-600 hover:text-indigo-500 " />
           </span>
         </div>
         {/* <!-- quantity --> */}
