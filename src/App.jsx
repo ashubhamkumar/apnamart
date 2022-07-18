@@ -4,6 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
+//google Analitics
+import ReactGA from "react-ga";
 
 //pages
 const Header = lazy(() => import("./components/header/Header"));
@@ -20,8 +22,11 @@ const ProductDetails = lazy(() =>
   import("./components/Products/ProductDetails")
 );
 const Account = lazy(() => import("./components/user/Account"));
-
+ReactGA.initialize("UA-196650669-3");
 const App = () => {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
   const { pathname } = useLocation();
 
   useEffect(() => {
