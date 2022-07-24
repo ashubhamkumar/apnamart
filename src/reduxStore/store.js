@@ -15,12 +15,10 @@ import {
 import { cartReducer } from "./reducers/cartReducer";
 
 import {
-  orderCreateReducer,
+  allOrdersReducer,
+  myOrdersReducer,
+  newOrderReducer,
   orderDetailsReducer,
-  orderPayReducer,
-  orderDeliverReducer,
-  orderListMyReducer,
-  orderListReducer,
 } from "./reducers/orderReducer";
 
 const reducer = combineReducers({
@@ -30,12 +28,12 @@ const reducer = combineReducers({
   products: productsReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
-  orderCreate: orderCreateReducer,
+  newOrder: newOrderReducer,
+  myOrders: myOrdersReducer,
+
   orderDetails: orderDetailsReducer,
-  orderPay: orderPayReducer,
-  orderDeliver: orderDeliverReducer,
-  orderListMy: orderListMyReducer,
-  orderList: orderListReducer,
+  allOrders: allOrdersReducer,
+
   newProduct: newProductReducer,
   product: productReducer,
 });

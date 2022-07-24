@@ -1,22 +1,23 @@
-import Product from "./Product";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { offerProducts } from "../../../utils/constants";
 import { getRandomProducts } from "../../../utils/functions";
 import Slider from "../../../layout/Slider";
 import { SwiperSlide } from "swiper/react";
-import Timer from "../../../utils/Timer";
+import { v4 as uuidv4 } from "uuid";
+import Product from "./Product";
 
-const DealSlider = ({ title, time }) => {
+const ProductSlider = ({ title, tagline }) => {
+  const { products } = useSelector((state) => state.products);
+  console.log(products);
   return (
-    <div className=" w-full overflow-hidden bg-white shadow">
+    <section className="bg-white w-full shadow overflow-hidden">
       {/* <!-- header --> */}
       <div className="flex items-center justify-between px-6 py-3">
-        <div className="flex flex-col items-center justify-start sm:flex-row">
+        <div className="items-center justify-start ">
           <h1 className=" whitespace-nowrap text-base  font-semibold text-indigo-600 sm:text-xl">
             {title}
           </h1>
-          {time !== "" && <Timer expiryTimestamp={time} />}
+          <p className="text-sm text-gray-400">{tagline}</p>
         </div>
         <Link
           to="/products"
@@ -26,16 +27,18 @@ const DealSlider = ({ title, time }) => {
         </Link>
       </div>
       <hr />
-      {/* <!-- header --> */}
+
       <Slider>
-        {getRandomProducts(offerProducts, 12).map((item) => (
-          <SwiperSlide key={uuidv4()}>
-            <Product {...item} />
-          </SwiperSlide>
-        ))}
+        {products &&
+          getRandomProducts(products, 12).map((product) => (
+            <SwiperSlide key={uuidv4()}>
+              {" "}
+              <Product {...product} />
+            </SwiperSlide>
+          ))}
       </Slider>
-    </div>
+    </section>
   );
 };
 
-export default DealSlider;
+export default ProductSlider;

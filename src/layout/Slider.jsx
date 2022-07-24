@@ -10,7 +10,7 @@ import "./styles.css";
 const Slider = (props) => {
   return (
     <Swiper
-      slidesPerView={1}
+      slidesPerView={2}
       spaceBetween={10}
       navigation={true}
       breakpoints={{

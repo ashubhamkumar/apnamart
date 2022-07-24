@@ -11,7 +11,13 @@ import {
   ShoppingCartIcon,
   LogoutIcon,
 } from "@heroicons/react/outline";
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import {
+  BellIcon,
+  ChatAltIcon,
+  CollectionIcon,
+  TicketIcon,
+} from "@heroicons/react/solid";
+
 import { logout } from "../../reduxStore/actions/userAction";
 //categories icons
 import { useSelector, useDispatch } from "react-redux";
@@ -59,9 +65,31 @@ export const categories = [
   },
 ];
 const userNavigation = [
-  { name: "My Profile", to: "/account" },
-  { name: "Orders", to: "/orders" },
-  { name: "Notifications", to: "/" },
+  {
+    name: "My Profile",
+    to: "/account",
+    icon: <UserCircleIcon className="h-5 w-5 text-indigo-600  " />,
+  },
+  {
+    name: "Orders",
+    to: "/orders",
+    icon: <CollectionIcon className="h-5 w-5  text-indigo-600 " />,
+  },
+  {
+    name: "Coupons",
+    to: "/",
+    icon: <TicketIcon className="h-5 w-5  text-indigo-600 " />,
+  },
+  {
+    name: "Contact Us",
+    to: "/",
+    icon: <ChatAltIcon className="h-5 w-5 text-indigo-600 " />,
+  },
+  {
+    name: "Notifications",
+    to: "/",
+    icon: <BellIcon className="h-5 w-5 text-indigo-600 " />,
+  },
 ];
 
 function classNames(...classes) {
@@ -73,13 +101,8 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const keywordHandler = (e) => {
-    setKeyword(e.target.value);
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  };
   const handleSubmit = (e) => {
+    e.preventDefault();
     if (keyword !== "") {
       if (keyword.trim()) {
         navigate(`/products/${keyword}`);
@@ -87,7 +110,7 @@ const Header = () => {
         navigate("/products");
       }
     } else {
-      toast.warn("Please enter a keyword");
+      toast.warn("Please enter Search Keyword");
     }
   };
 
@@ -130,22 +153,29 @@ const Header = () => {
                     </Link>
                   </div>
                   <div className="hidden items-center  sm:mx-6 sm:w-0 md:flex md:w-full md:flex-1">
-                    <div className=" mx-5 hidden  flex-grow cursor-pointer items-center justify-center rounded-md border-0 bg-white pl-4 shadow-md sm:flex">
+                    <form
+                      onSubmit={handleSubmit}
+                      className=" mx-5 hidden  flex-grow cursor-pointer items-center justify-center rounded-md border-0 bg-white pl-4 shadow  sm:flex"
+                    >
                       <input
-                        onKeyDown={keywordHandler}
+                        name="keyword"
+                        value={keyword}
+                        onChange={(e) => {
+                          setKeyword(e.target.value);
+                        }}
                         type="text"
                         placeholder="Search for puroducts, brands and more"
                         className="mt-0 block w-full  flex-shrink flex-grow border-0 px-0.5 focus:outline-none focus:ring-0"
                       />
                       <button
-                        onClick={handleSubmit}
-                        className="Shadow-lg  rounded-r-md px-4 py-2.5 bg-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        type="submit"
+                        className="Shadow rounded-r-md px-4 py-2.5 bg-gray-600 text-white focus:outline-none"
                       >
-                        <SearchIcon className="h-5 w-5 text-indigo-600" />
+                        <SearchIcon className="h-5 w-5 " />
                       </button>
-                    </div>
+                    </form>
                   </div>
-                  <div className="flex  flex-row items-center space-x-2 pr-2   sm:pr-0">
+                  <div className="flex  flex-row items-center space-x-6 pr-2 capitalize  sm:pr-0">
                     {/* Profile dropdown */}
                     <div className="hidden sm:flex">
                       {!users ? (
@@ -156,10 +186,8 @@ const Header = () => {
                         <>
                           <Menu as="div" className=" relative">
                             <div>
-                              <Menu.Button className=" flex items-center justify-between space-x-2 rounded-md bg-white p-1.5 px-4 text-base font-semibold text-indigo-600 shadow">
-                                <p className="">
-                                  {users.name || " Hello Guest"}
-                                </p>
+                              <Menu.Button className=" flex items-center capitalize justify-between space-x-2 rounded-md bg-white p-1.5 px-5 text-base font-semibold text-indigo-600 shadow">
+                                <p>{users.name || " Hello Guest"}</p>
                                 <UserCircleIcon className="h-7 w-7 " />
                               </Menu.Button>
                             </div>
@@ -172,7 +200,7 @@ const Header = () => {
                               leaveFrom="transform opacity-100 scale-100"
                               leaveTo="transform opacity-0 scale-95"
                             >
-                              <Menu.Items className="absolute right-0 mt-2 w-44 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <Menu.Items className="absolute capitalize right-0 mt-4 w-48 origin-top-right rounded-md bg-white  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 {userNavigation.map((item) => (
                                   <Menu.Item key={uuidv4()}>
                                     {({ active }) => (
@@ -180,10 +208,11 @@ const Header = () => {
                                         to={item.to}
                                         className={classNames(
                                           active ? "bg-indigo-200" : "",
-                                          "block px-4 py-2 text-base text-gray-700 "
+                                          "flex items-center space-x-2 px-4 py-2 text-base "
                                         )}
                                       >
-                                        {item.name}
+                                        {item.icon}
+                                        <span className="">{item.name}</span>
                                       </Link>
                                     )}
                                   </Menu.Item>
@@ -191,9 +220,10 @@ const Header = () => {
                                 <Menu.Item>
                                   <div
                                     onClick={logoutHandler}
-                                    className="block bg-indigo-400 px-4 py-2 text-sm text-gray-700"
+                                    className="  flex border-t space-x-2 bg-indigo-400 rounded-b-md px-4 py-2 text-sm text-white"
                                   >
-                                    Sign out
+                                    <LogoutIcon className="h-5" />
+                                    <span> Sign out</span>
                                   </div>
                                 </Menu.Item>
                               </Menu.Items>
@@ -202,69 +232,7 @@ const Header = () => {
                         </>
                       )}
                     </div>
-                    <div className=" hidden sm:flex">
-                      <Menu as="div" className="relative ml-3">
-                        <Menu.Button className=" flex items-center active:rounded-md active:border-2 px-2 py-1 active:border-white  text-base font-semibold text-white ">
-                          <p>More</p>
-                          <ChevronDownIcon
-                            className="-mr-1  h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        </Menu.Button>
 
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  to="/"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Contact us
-                                </Link>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  to="/"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  Terms & Conditions
-                                </Link>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  to="/"
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  pravicy & policy
-                                </Link>
-                              )}
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                    </div>
                     <Link
                       to="/cart"
                       className=" relative flex items-center  p-2 text-white"
@@ -285,25 +253,32 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="flex w-full md:hidden">
-                  <div className="lg:min-w-xl  flex grow items-center justify-center rounded-md border-0 bg-white  pl-4 md:mx-5 lg:max-w-2xl">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="lg:min-w-xl flex grow items-center justify-center rounded-md border-0 bg-white  shadow pl-4 md:mx-5 lg:max-w-2xl"
+                  >
                     <input
                       type="text"
-                      onKeyDown={keywordHandler}
+                      value={keyword}
+                      onChange={(e) => {
+                        setKeyword(e.target.value);
+                      }}
+                      name="keyword"
                       placeholder="Search for puroducts, brands and more"
                       className="mt-0 flex w-full border-0 px-0.5 focus:ring-0 "
                     />
                     <button
-                      onClick={handleSubmit}
-                      className="Shadow-lg  rounded-r-md px-4 py-2.5 bg-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                      type="submit"
+                      className="Shadow-lg  rounded-r-md px-4 py-2.5 bg-gray-600 text-white focus:outline-none"
                     >
-                      <SearchIcon className="h-5 w-5 text-indigo-600" />
+                      <SearchIcon className="h-5 w-5 " />
                     </button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
 
-            <Disclosure.Panel className="md:hidden">
+            <Disclosure.Panel className=" relative md:hidden">
               <div className="space-y-1 px-2 pt-2 pb-3">
                 {/* <Categories /> */}
                 {categories.map((item) => (
@@ -311,27 +286,28 @@ const Header = () => {
                     key={uuidv4()}
                     as="a"
                     href={`/products?category=${item.name}`}
-                    className="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3  text-lg font-semibold"
+                    className="text-white hover:bg-gray-700 cursor-pointer capitalize block rounded-md px-3  text-lg font-medium"
                   >
                     {item.name}
                   </Disclosure.Button>
                 ))}
               </div>
-              <div className="border-t border-gray-700 pt-4 pb-3">
+              <div className="border-t border-gray-700 pt-4 pb-3 capitalize">
                 {users ? (
                   <>
-                    <div className="flex items-center justify-between px-5">
+                    <Disclosure.Button
+                      as="a"
+                      href="/account"
+                      className="flex items-center justify-between px-4"
+                    >
                       <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <UserCircleIcon className="h-7 w-7 " />
-                        </div>
-                        <div className="ml-3">
-                          <div className="text-base font-medium leading-none text-white">
+                        <div>
+                          <p className="text-lg font-bold leading-none ">
                             {users.name || " Hello Guest"}
-                          </div>
-                          <div className="text-sm font-medium leading-none text-white">
+                          </p>
+                          <p className="text-sm font-medium leading-none ">
                             {users.email || "guest@gmail.com"}
-                          </div>
+                          </p>
                         </div>
                       </div>
                       <button
@@ -340,17 +316,29 @@ const Header = () => {
                       >
                         <LogoutIcon className="h-6 w-6" />
                       </button>
-                    </div>
+                    </Disclosure.Button>
+                    {userNavigation.map((item) => (
+                      <div key={uuidv4()}>
+                        <Disclosure.Button
+                          as="a"
+                          href={item.to}
+                          className="flex items-center space-x-2 px-4 py-2 text-base "
+                        >
+                          {item.icon}
+                          <span className="">{item.name}</span>
+                        </Disclosure.Button>
+                      </div>
+                    ))}
                   </>
                 ) : (
                   <>
-                    <Link
-                      aria-hidden="true"
-                      to="/auth/Signin"
+                    <Disclosure.Button
+                      as="a"
+                      href="/auth/Signin"
                       className=" mx-2 flex items-center justify-center rounded-md border border-gray-700 bg-white px-3 py-1 text-lg font-semibold text-gray-800 shadow-sm"
                     >
                       Sign in
-                    </Link>
+                    </Disclosure.Button>
                   </>
                 )}
               </div>

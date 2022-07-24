@@ -33,11 +33,11 @@ const Signin = () => {
   };
   return (
     <>
-      <div className="min-h-full flex items-center h-screen justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen flex items-center  justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-6">
           <div className="Flex justify-center items-center">
             <h1 className="text-6xl text-center font-bold text-indigo-600">
-              Apna Mart
+              ApnaMart
             </h1>
             <h2 className="mt-4 text-center text-2xl font-extrabold text-gray-900">
               Sign in to your account

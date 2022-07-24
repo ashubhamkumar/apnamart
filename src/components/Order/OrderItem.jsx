@@ -1,5 +1,4 @@
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import CircleIcon from '@mui/icons-material/Circle';
+
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/functions';
 
@@ -32,21 +31,21 @@ const OrderItem = (props) => {
                             {orderStatus === "Shipped" ? (
                                 <>
                                     <span className="text-primary-orange pb-0.5">
-                                        <CircleIcon sx={{ fontSize: "14px" }} />
+                                        {/* <CircleIcon sx={{ fontSize: "14px" }} /> */}
                                     </span>
                                     Shipped
                                 </>
                             ) : orderStatus === "Delivered" ? (
                                 <>
                                     <span className="text-primary-green pb-0.5">
-                                        <CircleIcon sx={{ fontSize: "14px" }} />
+                                        {/* <CircleIcon sx={{ fontSize: "14px" }} /> */}
                                     </span>
                                     Delivered on {formatDate(deliveredAt)}
                                 </>
                             ) : (
                                 <>
                                     <span className="text-primary-green pb-0.5">
-                                        <RadioButtonUncheckedIcon sx={{ fontSize: "14px" }} />
+                                        {/* <RadioButtonUncheckedIcon sx={{ fontSize: "14px" }} /> */}
                                     </span>
                                     Ordered on {formatDate(createdAt)}
                                 </>
