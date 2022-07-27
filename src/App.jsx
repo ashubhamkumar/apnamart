@@ -23,7 +23,7 @@ const ProductDetails = lazy(() =>
 );
 const Account = lazy(() => import("./components/user/Account"));
 
-const MyOrder = lazy(() => import("./components/order/MyOrder"));
+const MyOrder = lazy(() => import("./components/Orders/MyOrder"));
 ReactGA.initialize("UA-196650669-3");
 const App = () => {
   useEffect(() => {
