@@ -71,7 +71,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className=" shadow bg-white px-10 py-5 mt-10   mx-auto">
+    <footer className="  bg-white px-10 py-5 mt-10  bottom-0  mx-auto">
       <div className="gap-6 justify-between md:flex max-w-app">
         <div className="flex-1">
           <div className="max-w-xs">

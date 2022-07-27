@@ -24,7 +24,7 @@ const MyOrder = () => {
     <>
       <MetaTags title="ApnaMart - Your Order history" />
       <main>
-        <div className="max-w-app mx-auto px-4  py-4">
+        <div className="max-w-app mx-auto px-4  py-4 my-16">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <h1 className="text-2xl font-bold">My Orders</h1>
@@ -45,7 +45,7 @@ const MyOrder = () => {
                       deliveredAt,
                     } = order;
 
-                    return orderedProduct.map((item, index) => (
+                    return orderedProduct?.map((item, index) => (
                       <OrderItem
                         {...item}
                         key={index}

@@ -28,14 +28,10 @@ const OrderItem = (props) => {
           alt={name}
         />
       </div>
-      {/* <!-- image container --> */}
 
-      {/* <!-- order desc container --> */}
       <div className="flex flex-col sm:flex-row justify-between w-full">
         <div className="flex flex-col gap-1 overflow-hidden">
-          <p className="text-sm">
-            {name.length > 40 ? `${name.substring(0, 40)}...` : name}
-          </p>
+          <p className="text-sm">{name.split(" ").slice(0, 5).join(" ")}</p>
           <p className="text-xs text-gray-700 mt-2">Quantity: {quantity}</p>
           <p className="text-xs text-gray-700"> ₹ {sellingPrice.toFixed(2)}</p>
         </div>
@@ -123,7 +119,6 @@ const OrderItem = (props) => {
           </div>
         </div>
       </div>
-      {/* <!-- order desc container --> */}
     </div>
   );
 };
