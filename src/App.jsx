@@ -22,7 +22,7 @@ const ProductDetails = lazy(() =>
   import("./components/Products/ProductDetails")
 );
 const Account = lazy(() => import("./components/user/Account"));
-const MyOrders = lazy(() => import("./components/order/MyOrders"));
+const MyOrder = lazy(() => import("./components/order/MyOrder"));
 ReactGA.initialize("UA-196650669-3");
 const App = () => {
   useEffect(() => {
@@ -73,7 +73,7 @@ const App = () => {
           path="/orders"
           element={
             <ProtectedRoute>
-              <MyOrders />
+              <MyOrder />
             </ProtectedRoute>
           }
         ></Route>

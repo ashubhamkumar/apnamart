@@ -5,7 +5,7 @@ import OrderItem from "./OrderItem";
 import { toast } from "react-toastify";
 import { myOrders, clearErrors } from "../../reduxStore/actions/orderAction";
 import Loader from "../../layout/Loader";
-const MyOrders = () => {
+const MyOrder = () => {
   const dispatch = useDispatch();
   const { orders, loading, error } = useSelector((state) => state.myOrders);
 
@@ -36,7 +36,7 @@ const MyOrders = () => {
               {loading && <Loader />}
               {orders &&
                 orders
-                  .map((order) => {
+                  ?.map((order) => {
                     const {
                       _id,
                       orderStatus,
@@ -65,4 +65,4 @@ const MyOrders = () => {
   );
 };
 
-export default MyOrders;
+export default MyOrder;
