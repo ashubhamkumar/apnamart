@@ -39,6 +39,7 @@ export default function ProductDetails() {
       dispatch(clearErrors());
     }
 
+    console.log(slug);
     if (slug !== "") dispatch(getProductDetails(slug));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, slug]);
@@ -169,8 +170,8 @@ export default function ProductDetails() {
                   <div className="mt-4">
                     <h3 className="text-lg font-medium text-indigo-600">
                       <img
-                        src={`https://api.theshubham.dev/${products.brand.brandUrl}`}
-                        alt={products.brand.brandUrl}
+                        src={`https://api.theshubham.dev/${products.brand?.imageUrl}`}
+                        alt={products.brand?.name}
                         className=" object-center object-cover"
                       />
                     </h3>

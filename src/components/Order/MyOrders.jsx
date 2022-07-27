@@ -22,9 +22,9 @@ const MyOrders = () => {
 
   return (
     <>
-      <MetaTags />
+      <MetaTags title="ApnaMart - Your Order history" />
       <main>
-        <div className="container mx-auto px-4">
+        <div className="max-w-app mx-auto px-4  py-4">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <h1 className="text-2xl font-bold">My Orders</h1>

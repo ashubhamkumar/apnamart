@@ -69,8 +69,7 @@ const Cart = () => {
         amount: orderData.amount,
         order_id: orderData.id,
         name: "ApnaMart",
-        description:
-          "Payment Gateway in Live Mode. ",
+        description: "Payment Gateway in Live Mode. ",
         image: logo,
         handler: function (response) {
           try {
@@ -103,7 +102,7 @@ const Cart = () => {
                 if (res.status === 201) {
                   localStorage.removeItem("cartItems");
                   toast.success(res.data.msg);
-                  navigate("/");
+                  navigate("/orders");
                 } else {
                   toast.error(res.data.msg);
                 }
@@ -124,7 +123,6 @@ const Cart = () => {
         toast(response.error.code);
         toast(response.error.description);
         toast(response.error.reason);
-        
       });
     }
   };
@@ -158,7 +156,9 @@ const Cart = () => {
               onClick={displayRazorpay}
               data-payment_button_id="pl_JuIZnt0weQhXaZ"
               disabled={cartItems.length < 1 ? true : false}
-              className={"flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"}
+              className={
+                "flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+              }
             >
               PLACE ORDER
             </button>
