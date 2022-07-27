@@ -10,6 +10,9 @@ import {
   SLIDER_PRODUCTS_REQUEST,
   SLIDER_PRODUCTS_SUCCESS,
   SLIDER_PRODUCTS_FAIL,
+  ALL_CATEGORIES_REQUEST,
+  ALL_CATEGORIES_SUCCESS,
+  ALL_CATEGORIES_FAIL,
 } from "../constants/productConstants";
 
 // Get All Products --- Filter/Search/Sort
@@ -89,6 +92,23 @@ export const getSliderProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SLIDER_PRODUCTS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+export const getAllCategories = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_CATEGORIES_REQUEST });
+
+    const { data } = await apnaMart.get(`/app/get-all-categories`);
+
+    dispatch({
+      type: ALL_CATEGORIES_SUCCESS,
+      payload: data.categories,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_CATEGORIES_FAIL,
       payload: error.response.data.message,
     });
   }

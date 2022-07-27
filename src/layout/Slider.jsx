@@ -24,7 +24,7 @@ const Slider = (props) => {
         },
         1024: {
           slidesPerView: 6,
-          spaceBetween: 10,
+          spaceBetween: 20,
         },
       }}
       modules={[Navigation]}

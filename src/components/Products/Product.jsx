@@ -42,14 +42,16 @@ const Product = ({
                 <BadgeCheckIcon className="text-indigo-500 h-6" />
               </div>
             </div>
-            <p className="text-indigo-400 uppercase text-base">{brand.brandname}</p>
+            <p className="text-indigo-400 uppercase text-base">
+              {brand.brandname}
+            </p>
             <div className="flex items-center justify-between py-4">
               <div className=" space-x-1">
                 <span className="font-semibold text-base">
                   ₹&nbsp;{sellingPrice.toFixed(2)}
                 </span>{" "}
                 <span className="text-gray-700  line-through text-sm">
-                  ₹{price.toLocaleString()}{" "}
+                  ₹ {price.toFixed(2)}{" "}
                 </span>{" "}
                 <span className="text-sm font-medium text-indigo-600">
                   {discount}%&nbsp;off

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/solid";
-import DealSlider from "../home/DealSlider/DealSlider";
+import ProductSlider from "../home/productSlider/ProductSlider";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -39,7 +39,6 @@ export default function ProductDetails() {
       dispatch(clearErrors());
     }
 
-    console.log(slug);
     if (slug !== "") dispatch(getProductDetails(slug));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, slug]);
@@ -167,33 +166,32 @@ export default function ProductDetails() {
                 </div>
 
                 <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                  <div className="mt-4">
-                    <h3 className="text-lg font-medium text-indigo-600">
-                      <img
-                        src={`https://api.theshubham.dev/${products.brand?.imageUrl}`}
-                        alt={products.brand?.name}
-                        className=" object-center object-cover"
-                      />
-                    </h3>
-                    <h1>{products.highlights}</h1>
-                    <div className="mt-4">{products.specifications}</div>
+                  <div className="my-4 ">
+                    <img
+                      src={`https://api.theshubham.dev/${products.brand?.imageUrl}`}
+                      alt={products.brand?.name}
+                      className=" object-center object-cover h-16  "
+                    />
                   </div>
 
-                  <div className="mt-10">
-                    <h2 className="text-xl font-semibold text-gray-900">
+                  <div className="mt-10 space-y-4">
+                    <h2 className="text-lg font-semibold capitalize text-gray-900">
+                      highlights:
+                    </h2>{" "}
+                    <p>{products.highlights}</p>
+                    <h2 className="text-lg font-semibold capitalize text-gray-900">
+                      specifications:
+                    </h2>{" "}
+                    <p className="">{products.specifications}</p>
+                    <h2 className="text-lg font-semibold capitalize text-gray-900">
                       Description
                     </h2>
-
-                    <div className=" space-y-6">
-                      <p className="text-base text-gray-600">
-                        {products.description}
-                      </p>
-                    </div>
+                    <p className="">{products.description}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <DealSlider title={"Similar products"} time="" />
+            <ProductSlider title={"Similar products"} />
           </div>
         )
       )}

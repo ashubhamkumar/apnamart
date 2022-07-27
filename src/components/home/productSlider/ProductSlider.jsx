@@ -8,7 +8,6 @@ import Product from "./Product";
 
 const ProductSlider = ({ title, tagline }) => {
   const { products } = useSelector((state) => state.products);
-  console.log(products);
   return (
     <section className="bg-white w-full shadow overflow-hidden">
       {/* <!-- header --> */}

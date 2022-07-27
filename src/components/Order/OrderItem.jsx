@@ -15,8 +15,8 @@ const OrderItem = (props) => {
     deliveredAt,
     orderStatus,
   } = props;
-  console.log(props);
-
+  let date = new Date(createdAt);
+  let expectedDate = date.setDate(date.getDate() + 7);
   return (
     <div className="flex p-4 items-start bg-white border rounded gap-2 sm:gap-0 hover:shadow-lg">
       {/* <!-- image container --> */}
@@ -51,28 +51,28 @@ const OrderItem = (props) => {
               {orderStatus === "Confirmed" ? (
                 <>
                   <span className="text-indigo-600 ">
-                    <CheckCircleIcon className="h-4 w-4 text-indigo-600" />
+                    <CheckCircleIcon className="h-5 w-5 text-indigo-600" />
                   </span>
-                  Delivery expected by {formatDate(deliveredAt)}
+                  Delivery expected by {formatDate(expectedDate)}
                 </>
               ) : orderStatus === "Shipped" ? (
                 <>
                   <span className="text-yellow-500 ">
-                    <TruckIcon className="h-4 w-4 text-yellow-500" />
+                    <TruckIcon className="h-7 w-7 text-yellow-500" />
                   </span>
-                  Delivery expected by {formatDate(deliveredAt)}
+                  Delivery expected by {formatDate(expectedDate)}
                 </>
               ) : orderStatus === "Delivered" ? (
                 <>
                   <span className="text-green-600">
-                    <CheckCircleIcon className="h-4" />
+                    <CheckCircleIcon className="h-5" />
                   </span>
                   Delivered on {formatDate(deliveredAt)}
                 </>
               ) : orderStatus === "Cancelled" ? (
                 <>
                   <span className="text-red-500">
-                    <XCircleIcon className="h-4" />
+                    <XCircleIcon className="h-5" />
                   </span>
                   Cancelled
                 </>

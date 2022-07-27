@@ -7,12 +7,17 @@ import RadioGroup from "@mui/material/RadioGroup";
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useLocation, useParams } from "react-router-dom";
-import { categories } from "../utils/constants";
 import Product from "../components/Products/Product";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader";
-import { clearErrors, getProducts } from "../reduxStore/actions/productAction";
+
+import {
+  clearErrors,
+  getProducts,
+  getAllCategories,
+} from "../reduxStore/actions/productAction";
+
 import { toast } from "react-toastify";
 //icons
 import {
@@ -20,7 +25,7 @@ import {
   ChevronDownIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { StarIcon } from "@heroicons/react/solid";
+import { StarIcon, FilterIcon } from "@heroicons/react/solid";
 
 const Products = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -36,6 +41,7 @@ const Products = () => {
   const [categoryToggle, setCategoryToggle] = useState(true);
   const [ratingsToggle, setRatingsToggle] = useState(true);
   const { products, loading, error } = useSelector((state) => state.products);
+  const { categories } = useSelector((state) => state.allCategories);
   const keyword = params.keyword;
   const priceHandler = (e, newPrice) => {
     setPrice(newPrice);
@@ -53,6 +59,13 @@ const Products = () => {
     }
     dispatch(getProducts(keyword, category, price, ratings));
   }, [dispatch, keyword, category, price, ratings, error]);
+  useEffect(() => {
+    dispatch(getAllCategories());
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   return (
     <>
       <div className="bg-gray-50 ">
@@ -154,9 +167,9 @@ const Products = () => {
                                 name="category-radio-buttons"
                                 value={category}
                               >
-                                {categories.map((el, i) => (
+                                {categories?.map((el, i) => (
                                   <FormControlLabel
-                                    value={el}
+                                    value={el.name}
                                     key={uuidv4()}
                                     control={
                                       <Radio
@@ -170,7 +183,7 @@ const Products = () => {
                                     }
                                     label={
                                       <span className="text-sm" key={i}>
-                                        {el}
+                                        {el.name}
                                       </span>
                                     }
                                   />
@@ -183,7 +196,7 @@ const Products = () => {
                       {/* ratings */}
                       <div className="flex flex-col border-b px-4">
                         <div
-                          className="flex justify-between cursor-pointer py-2  items-center"
+                          className="flex justify-between items-center cursor-pointer py-2  "
                           onClick={() => setRatingsToggle(!ratingsToggle)}
                         >
                           <p className="font-medium text-xs uppercase">
@@ -222,9 +235,7 @@ const Products = () => {
                                     label={
                                       <span className="flex items-center text-sm">
                                         {el}
-                                        <StarIcon
-                                          sx={{ fontSize: "12px", mr: 0.5 }}
-                                        />{" "}
+                                        <StarIcon className="text-indigo-600 h-4 w-4" />{" "}
                                         & above
                                       </span>
                                     }
@@ -246,6 +257,19 @@ const Products = () => {
             <div className="pt-6 pb-24">
               <div className="grid grid-cols-1 lg:grid-cols-6 gap-x-4 gap-y-10">
                 {/* Filters */}
+                <div className="flex justify-between items-center lg:hidden">
+                  <p className="text-indigo-600 text-lg font-semibold">
+                    Filter
+                  </p>
+                  <button
+                    type="button"
+                    className="p-2 -m-2 ml-4 sm:ml-6 text-indigo-600 "
+                    onClick={() => setMobileFiltersOpen(true)}
+                  >
+                    <span className="sr-only">Filters</span>
+                    <FilterIcon className="w-7 h-7" aria-hidden="true" />
+                  </button>
+                </div>
 
                 <form className="hidden lg:block  sm:max-w-64 rounded-r-md bg-white p-4">
                   <div className="flex justify-between py-2  border-indigo-600">
@@ -309,9 +333,9 @@ const Products = () => {
                             name="category-radio-buttons"
                             value={category}
                           >
-                            {categories.map((el, i) => (
+                            {categories?.map((el, i) => (
                               <FormControlLabel
-                                value={el}
+                                value={el.name}
                                 key={uuidv4()}
                                 control={
                                   <Radio
@@ -325,7 +349,7 @@ const Products = () => {
                                 }
                                 label={
                                   <span className="text-sm" key={i}>
-                                    {el}
+                                    {el.name}
                                   </span>
                                 }
                               />
