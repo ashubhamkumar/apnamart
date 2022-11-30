@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   MenuIcon,
@@ -10,6 +10,7 @@ import {
   SearchIcon,
   ShoppingCartIcon,
   LogoutIcon,
+  SpeakerPhoneIcon,
 } from "@heroicons/react/outline";
 import {
   BellIcon,
@@ -122,30 +123,34 @@ const Header = () => {
   };
   return (
     <>
-    <div className="bg-indigo-600">
-      <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between">
-          <div className="flex w-0 flex-1 items-center">
-            <span className="flex rounded-lg bg-indigo-800 p-2">
-              <MegaphoneIcon className="h-6 w-6 text-white" aria-hidden="true" />
-            </span>
-            <p className="ml-3 truncate font-medium text-white">
-              <span className="md:hidden">We announced a new product!</span>
-              <span className="hidden md:inline">Big news! We're excited to announce  product demo here.</span>
-            </p>
+      <div className="bg-indigo-600">
+        <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between">
+            <div className="flex w-0 flex-1 items-center">
+              <span className="flex rounded-lg bg-indigo-800 p-2">
+                <SpeakerPhoneIcon
+                  className="h-6 w-6 text-white"
+                  aria-hidden="true"
+                />
+              </span>
+              <p className="ml-3 truncate font-medium text-white">
+                <span className="md:hidden">We announced a new product!</span>
+                <span className="hidden md:inline">
+                  Big news! We're excited to announce product demo here.
+                </span>
+              </p>
+            </div>
+            <div className="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">
+              <Link
+                to="https://youtu.be/KTmhVbybIcs"
+                className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-50"
+              >
+                View Demo
+              </Link>
+            </div>
           </div>
-          <div className="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">
-            <Link
-              to="https://youtu.be/KTmhVbybIcs"
-              className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-50"
-            >
-              View Demo
-            </Link>
-          </div>
-          
         </div>
       </div>
-    </div>
       <Disclosure
         as="nav"
         className="sticky right-0  top-0 left-0 z-10  bg-indigo-400"
