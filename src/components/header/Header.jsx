@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   MenuIcon,
