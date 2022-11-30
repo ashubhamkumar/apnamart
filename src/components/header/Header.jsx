@@ -137,14 +137,14 @@ const Header = () => {
               </p>
             </div>
             <div className="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">
-              <Link
-                to="https://youtu.be/KTmhVbybIcs"
+              <a
+                href="https://youtu.be/KTmhVbybIcs"
                 target={"_blank"}
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-50"
               >
                 View Demo
-              </Link>
+              </a>
             </div>
           </div>
         </div>
