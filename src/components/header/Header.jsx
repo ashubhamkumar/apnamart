@@ -140,6 +140,7 @@ const Header = () => {
               <Link
                 to="https://youtu.be/KTmhVbybIcs"
                 target={"_blank"}
+                rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-600 shadow-sm hover:bg-indigo-50"
               >
                 View Demo
