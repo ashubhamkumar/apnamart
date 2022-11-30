@@ -10,7 +10,6 @@ import {
   SearchIcon,
   ShoppingCartIcon,
   LogoutIcon,
-  SpeakerPhoneIcon,
 } from "@heroicons/react/outline";
 import {
   BellIcon,
@@ -128,10 +127,7 @@ const Header = () => {
           <div className="flex flex-wrap items-center justify-between">
             <div className="flex w-0 flex-1 items-center">
               <span className="flex rounded-lg bg-indigo-800 p-2">
-                <SpeakerPhoneIcon
-                  className="h-6 w-6 text-white"
-                  aria-hidden="true"
-                />
+                <BellIcon className="h-6 w-6 text-white" aria-hidden="true" />
               </span>
               <p className="ml-3 truncate font-medium text-white">
                 <span className="md:hidden">We announced a new product!</span>
