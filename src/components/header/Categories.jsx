@@ -21,14 +21,7 @@ const Categories = () => {
               className="group flex flex-col items-center gap-1 p-2"
               key={uuidv4()}
             >
-              <div className="h-16 w-16">
-                <img
-                  draggable="false"
-                  className="h-full w-full object-contain"
-                  src={`https://api.theshubham.dev/${item.imageUrl}`}
-                  alt={item.name}
-                />
-              </div>
+             
               <span className="group-hover:text-primary-blue text-sm font-medium text-gray-800">
                 {item.name}
               </span>
