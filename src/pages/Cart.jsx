@@ -64,7 +64,7 @@ const Cart = () => {
         return;
       }
       const options = {
-        key: "rzp_live_oDexCNjkzuFdXU",
+        key: process.env.RZP_KEY,
         currency: "INR",
         amount: orderData.amount,
         order_id: orderData.id,
